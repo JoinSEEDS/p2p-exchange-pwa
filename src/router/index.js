@@ -38,9 +38,13 @@ export default function ({ store }) {
         //     next({ name: 'verifyComm', query: { returnUrl: to.path } })
         //   } else next()
         // } else next()
+        console.log('Is authenticator')
         next()
+      } else if (to.path === '/login') {
+        console.log('Is send to login')
       } else {
-        next({ path: `/login?returnUrl=${to.path}` })
+        console.log('Is send to return Url', to.path)
+        next({ path: `/?returnUrl=${to.path}` })
       }
     } else {
       next()

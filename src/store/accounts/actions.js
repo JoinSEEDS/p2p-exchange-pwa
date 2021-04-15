@@ -27,14 +27,17 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       this.$type = 'ual'
       const accountName = await users[0].getAccountName()
       commit('setAccount', accountName)
-      const defaultReturnUrl = localStorage.getItem('returning') ? '/home' : '/home'
+      const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)
       localStorage.setItem('returning', true)
+      const userExist = false
+      const ru = userExist ? returnUrl : '/account'
       console.log('returnUrl', returnUrl)
       console.log('defaultReturnUrl', defaultReturnUrl)
+      console.log('ru', ru)
       // this.$router.push({ path: '/home' })
-      this.$router.push({ path: returnUrl || defaultReturnUrl })
+      this.$router.push({ path: ru || defaultReturnUrl })
       return this.$ualUser
     }
   } catch (e) {
@@ -77,6 +80,7 @@ export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
   let user = null
   if (authenticator) {
     commit('setAutoLogin', true)
+    console.log('autoLogin')
     user = await dispatch('login', { idx, returnUrl, account: localStorage.getItem('account') })
     commit('setAutoLogin', false)
   }

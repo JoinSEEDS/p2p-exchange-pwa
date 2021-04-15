@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import LeftMenu from '~/components/layout/left-menu'
 import RightMenuAuthenticated from '~/components/layout/right-menu-authenticated'
 import RightMenuGuest from '~/components/layout/right-menu-guest'
@@ -21,7 +21,7 @@ export default {
     ...mapGetters('accounts', ['isAuthenticated'])
   },
   methods: {
-    ...mapActions('accounts', ['autoLogin'])
+    // ...mapActions('accounts', ['autoLogin'])
   }
 }
 </script>
@@ -50,7 +50,7 @@ export default {
     )
       left-menu
     q-page-container
-      router-view
+      router-view.main-container.bg-primary
 </template>
 
 <style lang="sass" scoped>
@@ -60,4 +60,7 @@ export default {
 .badge-left
   left: -5px
   right: auto
+.main-container
+  min-height: 94vh
+  padding: 10px
 </style>
