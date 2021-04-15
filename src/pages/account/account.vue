@@ -1,60 +1,87 @@
 <template lang="pug">
  #container
-    .text-h5.text-white Complete your profile
-    .text-weight-regular.text-white General information
-    q-form.q-gutter-lg.q-mt-md
-      q-input(
-        label="Nickname"
-        v-model="params.nickname"
-        outlined
-        dark
-        standout="text-accent"
-      )
-      q-select(
-        label="Time Zone"
-        v-model="params.timeZone"
-        outlined
-        dark
-        standout="text-accent"
-        color="white"
-        :options="options.timeZone"
-        emit-value
-        map-options
-      )
-      q-select(
-        label="Preferred Fiat Currency"
-        v-model="params.preferredFiatCurrency"
-        outlined
-        dark
-        standout="text-accent"
-        :options="options.preferredFiatCurrency"
-        emit-value
-        map-options
-        color="white"
-      )
-      q-select(
-        label="Preferred Contact Method"
-        v-model="params.preferredContactMethod"
-        outlined
-        dark
-        standout="text-accent"
-        :options="options.preferredContactMethod"
-        emit-value
-        map-options
-        color="white"
-      )
-    q-separator(dark)
+    .row.justify-center
+      img.logoImg(src="../../statics/backgrounds/simple_logo.svg")
+    .row.justify-center
+      .col-xs-12.col-sm-8
+        .text-h5.text-white Complete your profile
+        .text-weight-bold.text-white.q-mt-sm General information
+        q-form.q-gutter-y-md.q-mt-sm(@submit="onSubmitForm" ref="form")
+          q-input(
+            label="Nickname"
+            v-model="params.nickname"
+            outlined
+            dark
+            standout="text-accent"
+            :rules="[rules.required]"
+          )
+          q-select(
+            label="Time Zone"
+            v-model="params.timeZone"
+            outlined
+            dark
+            standout="text-accent"
+            color="white"
+            :options="options.timeZone"
+            emit-value
+            map-options
+            :rules="[rules.required]"
+          )
+          q-select(
+            label="Preferred Fiat Currency"
+            v-model="params.preferredFiatCurrency"
+            outlined
+            dark
+            standout="text-accent"
+            :options="options.preferredFiatCurrency"
+            emit-value
+            map-options
+            color="white"
+            :rules="[rules.required]"
+          )
+          q-select(
+            label="Preferred Contact Method"
+            v-model="params.preferredContactMethod"
+            outlined
+            dark
+            standout="text-accent"
+            :options="options.preferredContactMethod"
+            emit-value
+            map-options
+            color="white"
+            :rules="[rules.required]"
+          )
+          q-separator.full-width(dark)
+          .text-weight-bold.text-white Enter your paypal link
+          q-input(
+            label="Paypal email"
+            v-model="params.paypalEmail"
+            outlined
+            dark
+            standout="text-accent"
+            :rules="[rules.required]"
+          )
+          .row.bg-primary.btnSave.q-py-sm
+            q-btn.full-width(
+              label="Save"
+              color="accent"
+              type="submit"
+            )
 </template>
 
 <script>
+import { validation } from '~/mixins/validation'
+
 export default {
   name: 'account',
+  mixins: [validation],
   data () {
     return {
       params: {
         nickname: undefined,
         preferredFiatCurrency: undefined,
-        preferredContactMethod: undefined
+        preferredContactMethod: undefined,
+        paypalEmail: undefined
       },
       options: {
         timeZone: [
@@ -89,10 +116,20 @@ export default {
         ]
       }
     }
+  },
+  methods: {
+    onSubmitForm () {
+      console.log('onSubmitted', this.params)
+    }
   }
 }
 </script>
 
 <style lang="sass" scoped>
-
+.logoImg
+  text-align: center
+  padding: 20px
+.btnSave
+  position: sticky
+  bottom: 0px
 </style>
