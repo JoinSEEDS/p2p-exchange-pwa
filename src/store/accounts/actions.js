@@ -109,3 +109,32 @@ export const fetchAvailableAccounts = async function ({ commit }, idx) {
   const accounts = map.has(chainId) ? map.get(chainId) : []
   commit('setAvailableAccounts', accounts)
 }
+
+export const getAccountInfo = async function ({ commit }, { entryStatus, offset, limit }) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const accountName = this.getters['accounts/account']
+    return this.$accountApi.getAccountInfo({ accountName })
+  } catch (e) {
+    console.error('An error ocurred while trying to get account info', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}
+
+export const saveAccountData = async function ({ commit }, params) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const accountName = this.getters['accounts/account']
+    const response = await this.$accountApi.saveAccountData({ ...params, accountName })
+    return response
+  } catch (e) {
+    console.error('An error ocurred while trying to save account info', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}

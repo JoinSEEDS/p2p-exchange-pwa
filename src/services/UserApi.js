@@ -16,7 +16,7 @@ class UserApi extends BaseEosApi {
       {
         contractAccount: Contracts.CONTRACT_SEEDS,
         table: 'users',
-        tableId: 'authorizer',
+        tableId: 'account',
         defaultSortField: 'account'
       }
     )
@@ -66,45 +66,6 @@ class UserApi extends BaseEosApi {
       userExist: userData.rows.length === 1,
       userData: userData.rows[0]
     }
-  }
-
-  async getUsers ({ offset, limit, authLevel }) {
-    const rounds = await this.fetchByIndex({
-      scope: 'a',
-      indexPosition: 3,
-      indexValue: authLevel,
-      offset,
-      limit
-    })
-    return rounds
-  }
-
-  async createUser ({ accountName, account, authLevel, notes }) {
-    const actions = [{
-      account: '',
-      name: 'setauth',
-      data: {
-        authorizer: accountName,
-        account,
-        auth_level: authLevel,
-        notes
-      }
-    }]
-
-    return this.eosApi.signTransaction(actions)
-  }
-
-  async removeUser ({ accountName, account }) {
-    const actions = [{
-      account: '',
-      name: 'eraseauth',
-      data: {
-        authorizer: accountName,
-        account
-      }
-    }]
-
-    return this.eosApi.signTransaction(actions)
   }
 }
 

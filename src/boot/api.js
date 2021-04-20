@@ -1,5 +1,5 @@
 import { Api, JsonRpc } from 'eosjs'
-import { UserApi } from '~/services'
+import { UserApi, AccountApi } from '~/services'
 
 const signTransaction = async function (actions) {
   actions.forEach(action => {
@@ -55,6 +55,11 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  const accountApi = new AccountApi({
+    eosApi: api
+  })
+
   store['$api'] = api
   store['$userApi'] = userApi
+  store['$accountApi'] = accountApi
 }
