@@ -42,13 +42,13 @@ class AccountApi extends BaseEosApi {
   async saveAccountData ({ accountName, contactMethods, paymentMethods, timeZone, fiatCurrency }) {
     const actions = [{
       account: Contracts.CONTRACT_P2P,
-      name: 'enterround',
+      name: 'upsertuser',
       data: {
         account: accountName,
         contact_methods: contactMethods,
         payment_methods: paymentMethods,
         time_zone: timeZone,
-        fiat_zone: fiatCurrency
+        fiat_currency: fiatCurrency
       }
     }]
 

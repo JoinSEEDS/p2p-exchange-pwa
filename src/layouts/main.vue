@@ -39,7 +39,7 @@ export default {
           aria-label="Menu"
         )
         q-toolbar-title.flex.items-center
-          img.logo(src="statics/telos-logo-white.svg")
+          //- img.logo(src="statics/telos-logo-white.svg")
         right-menu-authenticated(v-if="isAuthenticated")
         right-menu-guest(v-if="!isAuthenticated")
     q-drawer(

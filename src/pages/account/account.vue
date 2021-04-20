@@ -29,11 +29,11 @@
           )
           q-select(
             label="Preferred Fiat Currency"
-            v-model="params.preferredFiatCurrency"
+            v-model="params.fiatCurrency"
             outlined
             dark
             standout="text-accent"
-            :options="options.preferredFiatCurrency"
+            :options="options.fiatCurrency"
             emit-value
             map-options
             color="white"
@@ -41,11 +41,11 @@
           )
           //- q-select(
           //-   label="Preferred Contact Method"
-          //-   v-model="params.preferredContactMethod"
+          //-   v-model="params.contactMethods"
           //-   outlined
           //-   dark
           //-   standout="text-accent"
-          //-   :options="options.preferredContactMethod"
+          //-   :options="options.contactMethods"
           //-   emit-value
           //-   map-options
           //-   color="white"
@@ -79,6 +79,7 @@
 
 <script>
 import { validation } from '~/mixins/validation'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'account',
@@ -87,9 +88,10 @@ export default {
     return {
       params: {
         nickname: undefined,
-        preferredFiatCurrency: undefined,
-        preferredContactMethod: undefined,
-        paypalEmail: undefined
+        fiatCurrency: undefined,
+        contactMethods: undefined,
+        paypalEmail: undefined,
+        timeZone: undefined
       },
       options: {
         timeZone: [
@@ -102,7 +104,7 @@ export default {
             value: 'us-timezone'
           }
         ],
-        preferredFiatCurrency: [
+        fiatCurrency: [
           {
             label: 'USD',
             value: 'usd'
@@ -112,7 +114,7 @@ export default {
             value: 'mxn'
           }
         ],
-        preferredContactMethod: [
+        contactMethods: [
           {
             label: 'Email',
             value: 'email'
@@ -126,8 +128,20 @@ export default {
     }
   },
   methods: {
-    onSubmitForm () {
+    ...mapActions('accounts', ['saveAccountData']),
+    async onSubmitForm () {
       console.log('onSubmitted', this.params)
+      try {
+        await this.saveAccountData({
+          contactMethods: [ { 'key': 'signal', 'value': 'testValue' } ],
+          paymentMethods: [ { 'key': 'paypal', 'value': `https://paypal.me/${this.params.paypalEmail}` } ],
+          timeZone: this.params.timeZone,
+          fiatCurrency: this.params.fiatCurrency
+        })
+        console.log('Account info was saved')
+      } catch (e) {
+
+      }
     },
     openPayPalLink () {
       window.open(`https://paypal.me/${this.params.paypalEmail}`)
