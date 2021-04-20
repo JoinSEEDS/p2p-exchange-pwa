@@ -1,7 +1,7 @@
 import BaseEosApi from './BaseEosApi'
-// import {
-//   Contracts
-// } from '~/const/Contracts'
+import {
+  Contracts
+} from '~/const/Contracts'
 // import User from '../domain/User'
 
 class UserApi extends BaseEosApi {
@@ -14,7 +14,7 @@ class UserApi extends BaseEosApi {
       eosApi,
       notifier,
       {
-        contractAccount: 'accts.seeds',
+        contractAccount: Contracts.CONTRACT_SEEDS,
         table: 'users',
         tableId: 'authorizer',
         defaultSortField: 'account'
@@ -57,7 +57,7 @@ class UserApi extends BaseEosApi {
 
   async checkExistUserSeeds ({ accountName }) {
     const userData = await this.fetchByIndex({
-      scope: 'accts.seeds',
+      scope: Contracts.CONTRACT_SEEDS,
       indexPosition: 1,
       indexValue: accountName
     })

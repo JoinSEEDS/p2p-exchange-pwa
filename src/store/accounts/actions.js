@@ -28,15 +28,18 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       const accountName = await users[0].getAccountName()
 
       const isUserSeeds = await this.$userApi.checkExistUserSeeds({ accountName })
-      console.log('isUserSeeds', isUserSeeds)
+      // console.log('isUserSeeds', isUserSeeds)
 
       if (!isUserSeeds || !isUserSeeds.userExist) {
         commit('general/setErrorMsg', 'Please login with a seeds account.', { root: true })
         await authenticator.logout()
         localStorage.removeItem('autoLogin')
+        commit('setAccount')
+        commit('setSeedsAccount')
         return
       }
       commit('setAccount', accountName)
+      commit('setSeedsAccount', isUserSeeds.userData)
       const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)
@@ -78,8 +81,9 @@ export const logout = async function ({ commit }) {
   } catch (error) {
     console.log('Authenticator logout error', error)
   }
-  commit('profiles/setProfile', undefined, { root: true })
+  // commit('profiles/setProfile', undefined, { root: true })
   commit('setAccount')
+  commit('setSeedsAccount')
   localStorage.removeItem('autoLogin')
   this.$api = null
   this.$router.push({ path: '/' })

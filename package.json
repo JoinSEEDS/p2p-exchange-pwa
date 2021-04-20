@@ -1,10 +1,10 @@
 {
-  "name": "VenifyVarex",
+  "name": "P2P",
   "version": "0.0.1",
-  "description": "Venify Varex",
-  "productName": "Venify Varex",
+  "description": "P2P",
+  "productName": "P2P",
   "cordovaId": "org.cordova.quasar.app",
-  "author": "gregory-latinier <jmgayosso@m1ghty.com>",
+  "author": "jmgayosso <jmgayosso@m1ghty.com>",
   "private": true,
   "scripts": {
     "dev": "quasar dev -m spa",

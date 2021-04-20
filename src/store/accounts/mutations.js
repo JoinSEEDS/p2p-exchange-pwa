@@ -27,3 +27,7 @@ export const setAvailableAccounts = (state, accounts) => {
   state.availableAccounts.list.data = accounts
   state.availableAccounts.list.loaded = true
 }
+
+export const setSeedsAccount = (state, seedsAccount) => {
+  state.seedsAccount = seedsAccount
+}
