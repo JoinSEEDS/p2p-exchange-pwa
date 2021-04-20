@@ -1,4 +1,5 @@
 import { Api, JsonRpc } from 'eosjs'
+import { UserApi } from '~/services'
 
 const signTransaction = async function (actions) {
   actions.forEach(action => {
@@ -45,8 +46,15 @@ export default ({ store }) => {
   const rpc = new JsonRpc(`${process.env.NETWORK_PROTOCOL}://${process.env.NETWORK_HOST}:${process.env.NETWORK_PORT}`)
   store['$defaultApi'] = new Api({ rpc, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })
 
-  store['$api'] = {
+  const api = {
     signTransaction: signTransaction.bind(store),
     getTableRows: getTableRows.bind(store)
   }
+
+  const userApi = new UserApi({
+    eosApi: api
+  })
+
+  store['$api'] = api
+  store['$userApi'] = userApi
 }

@@ -26,6 +26,16 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       this.$ualUser = users[0]
       this.$type = 'ual'
       const accountName = await users[0].getAccountName()
+
+      const isUserSeeds = await this.$userApi.checkExistUserSeeds({ accountName })
+      console.log('isUserSeeds', isUserSeeds)
+
+      if (!isUserSeeds || !isUserSeeds.userExist) {
+        commit('general/setErrorMsg', 'Please login with a seeds account.', { root: true })
+        await authenticator.logout()
+        localStorage.removeItem('autoLogin')
+        return
+      }
       commit('setAccount', accountName)
       const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
@@ -33,9 +43,9 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       localStorage.setItem('returning', true)
       const userExist = false
       const ru = userExist ? returnUrl : '/account'
-      console.log('returnUrl', returnUrl)
-      console.log('defaultReturnUrl', defaultReturnUrl)
-      console.log('ru', ru)
+      // console.log('returnUrl', returnUrl)
+      // console.log('defaultReturnUrl', defaultReturnUrl)
+      // console.log('ru', ru)
       // this.$router.push({ path: '/home' })
       this.$router.push({ path: ru || defaultReturnUrl })
       return this.$ualUser
