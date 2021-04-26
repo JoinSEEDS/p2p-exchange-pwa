@@ -1,5 +1,7 @@
 export default () => ({
   account: null,
+  seedsAccount: undefined,
+  p2pAccount: undefined,
   autoLogin: false,
   loading: {}, // Wallets loading status
   requestAccount: false,
@@ -8,6 +10,5 @@ export default () => ({
       data: [],
       loaded: true
     }
-  },
-  seedsAccount: undefined
+  }
 })

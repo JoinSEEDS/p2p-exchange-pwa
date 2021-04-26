@@ -51,6 +51,16 @@ export default {
       getApp: 'Download the app',
       title: 'Select your wallet',
       selectAccount: 'Please select an account'
+    },
+    account: {
+      completeProfile: 'Complete your profile',
+      generalInformation: 'General information',
+      nickname: 'Nickname',
+      timeZone: 'Time Zone',
+      preferredFiatCurrency: 'Time Zone',
+      paypalLink: 'Paypal Link',
+      enterPaypalLink: 'Enter your paypal link',
+      hintPaypal: 'Open link to confirm you write your profile link correctly'
     }
   }
 }

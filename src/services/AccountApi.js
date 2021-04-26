@@ -30,13 +30,12 @@ class AccountApi extends BaseEosApi {
   }
 
   async getAccountInfo ({ accountName }) {
-    const accountInfo = await this.fetchByIndex({
+    return this.fetchByIndex({
       scope: Contracts.CONTRACT_P2P,
       indexPosition: 1,
       indexValue: accountName
     })
-
-    return accountInfo
+    // return accountInfo
   }
 
   async saveAccountData ({ accountName, contactMethods, paymentMethods, timeZone, fiatCurrency }) {

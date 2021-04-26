@@ -31,3 +31,7 @@ export const setAvailableAccounts = (state, accounts) => {
 export const setSeedsAccount = (state, seedsAccount) => {
   state.seedsAccount = seedsAccount
 }
+
+export const setP2PAccount = (state, p2pAccount) => {
+  state.p2pAccount = p2pAccount
+}

@@ -1,3 +1,5 @@
 import CustomRegex from './customRegex.js'
+import CommonCurrencies from './Common-Currency.json'
+import CommonTimeZone from './Common-TimeZones.json'
 
-export { CustomRegex }
+export { CustomRegex, CommonCurrencies, CommonTimeZone }

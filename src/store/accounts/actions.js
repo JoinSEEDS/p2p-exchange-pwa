@@ -36,10 +36,18 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
         localStorage.removeItem('autoLogin')
         commit('setAccount')
         commit('setSeedsAccount')
+        commit('setP2PAccount')
         return
       }
+
+      // Getting user info
+      const userAccount = await this.$accountApi.getAccountInfo({ accountName })
+      console.log('userAccount', userAccount)
+
       commit('setAccount', accountName)
       commit('setSeedsAccount', isUserSeeds.userData)
+      commit('setP2PAccount', userAccount.rows[0])
+
       const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)
