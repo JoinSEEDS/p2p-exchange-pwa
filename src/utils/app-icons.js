@@ -9,5 +9,6 @@ export default {
   'app:notifications': 'img:statics/app-icons/notification.svg',
   'app:transactions': 'img:statics/app-icons/transactions.svg',
   'app:settings': 'img:statics/app-icons/settings.svg',
-  'app:offer': 'img:statics/app-icons/offer.svg'
+  'app:offer': 'img:statics/app-icons/offer.svg',
+  'app:title': 'img:statics/app-icons/label-title.svg'
 }

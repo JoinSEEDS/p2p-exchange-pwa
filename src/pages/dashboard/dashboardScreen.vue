@@ -5,7 +5,7 @@
         animated
         transition-prev="scale"
         transition-next="scale"
-        class="bg-primary text-white text-center"
+        class="bg-primary text-white"
     )
         q-tab-panel(name="main")
             .text-h6 Main
@@ -51,8 +51,9 @@ export default {
 #container
     display: flex
     flex-direction: column
-    height: 93vh
+    // height: 50vh !important
     padding: 0px
+
 .panelContainer
     flex: 1
 

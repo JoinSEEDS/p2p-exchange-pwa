@@ -30,25 +30,26 @@ export default {
   q-layout(view="lHh Lpr lFf")
     q-header(elevated)
       q-toolbar
-        q-btn(
-          flat
-          dense
-          round
-          @click="menu = !menu"
-          icon="fas fa-bars"
-          aria-label="Menu"
-        )
+        q-icon(name="app:title" class="title-icon")
+        //- q-btn(
+        //-   flat
+        //-   dense
+        //-   round
+        //-   @click="menu = !menu"
+        //-   icon="fas fa-bars"
+        //-   aria-label="Menu"
+        //- )
         q-toolbar-title.flex.items-center
           //- img.logo(src="statics/telos-logo-white.svg")
         right-menu-authenticated(v-if="isAuthenticated")
-        right-menu-guest(v-if="!isAuthenticated")
-    q-drawer(
-      show-if-above
-      v-model="menu"
-      side="left"
-      bordered
-    )
-      left-menu
+        //- right-menu-guest(v-if="!isAuthenticated")
+    //- q-drawer(
+    //-   show-if-above
+    //-   v-model="menu"
+    //-   side="left"
+    //-   bordered
+    //- )
+    //-   left-menu
     q-page-container
       router-view.main-container.bg-primary
 </template>
@@ -61,6 +62,9 @@ export default {
   left: -5px
   right: auto
 .main-container
-  min-height: 94vh
+  min-height: 91.5vh
   padding: 10px
+.title-icon
+  width: 70px
+  height: 25px
 </style>
