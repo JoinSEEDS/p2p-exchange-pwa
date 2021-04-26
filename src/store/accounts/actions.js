@@ -48,17 +48,17 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       commit('setSeedsAccount', isUserSeeds.userData)
       commit('setP2PAccount', userAccount.rows[0])
 
-      const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
+      // const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)
       localStorage.setItem('returning', true)
       const userExist = false
-      const ru = userExist ? returnUrl : '/account'
+      const ru = userExist ? returnUrl : '/dashboard'
       // console.log('returnUrl', returnUrl)
       // console.log('defaultReturnUrl', defaultReturnUrl)
-      // console.log('ru', ru)
+      console.log('ru', ru)
       // this.$router.push({ path: '/home' })
-      this.$router.push({ path: ru || defaultReturnUrl })
+      this.$router.push({ path: returnUrl || 'dashboard' })
       return this.$ualUser
     }
   } catch (e) {

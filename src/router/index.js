@@ -29,16 +29,14 @@ export default function ({ store }) {
     if (to.matched.some(record => !record.meta.guest)) {
       // Verify if the user is authenticated
       if (store.getters['accounts/isAuthenticated']) {
-        // Verify the communication method
-        // if (to.matched.some(record => record.meta.needVerifyComm)) {
-        //   const isRegistered = store.getters['profiles/isRegistered']
-        //   if (!isRegistered) {
-        //     next({ name: 'userRegister' })
-        //   } else if (store.getters['profiles/needVerifyComm']) {
-        //     next({ name: 'verifyComm', query: { returnUrl: to.path } })
-        //   } else next()
-        // } else next()
-        console.log('Is authenticator')
+        console.log('Is authenticated', store.getters['accounts/isP2PProfileCompleted'], to.matched.some(record => record.meta.notProfile))
+        // Verify if the user has profile completed
+        if (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile)) {
+          next()
+        } else {
+          console.log('Not profile completed, redirected to account')
+          next({ name: 'account' })
+        }
         next()
       } else if (to.path === '/login') {
         console.log('Is send to login')

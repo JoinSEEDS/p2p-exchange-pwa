@@ -1,4 +1,5 @@
 export const isAuthenticated = ({ account }) => !!account
+export const isP2PProfileCompleted = ({ p2pAccount }) => !!p2pAccount
 export const account = ({ account }) => account
 export const loading = ({ loading }) => loading
 export const isAutoLoading = ({ autoLogin }) => autoLogin

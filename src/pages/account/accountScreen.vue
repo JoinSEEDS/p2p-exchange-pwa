@@ -80,7 +80,7 @@
 
 <script>
 import { validation } from '~/mixins/validation'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import { CommonCurrencies, CommonTimeZone } from '~/const'
 
 export default {
@@ -114,6 +114,7 @@ export default {
   },
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
+    ...mapGetters('accounts', ['isP2PProfileCompleted']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -136,6 +137,10 @@ export default {
   methods: {
     ...mapActions('accounts', ['saveAccountData']),
     loadProfileData () {
+      if (!this.isP2PProfileCompleted) {
+        this.params.nickname = this.seedsAccount.nickname
+        return
+      }
       const paypalPaymentLink = this.p2pAccount.payment_methods.find(v => v.key === 'paypal')
 
       this.params = {
@@ -156,6 +161,7 @@ export default {
           fiatCurrency: this.params.fiatCurrency
         })
         console.log('Account info was saved')
+        this.$router.push({ name: 'dashboard' })
       } catch (e) {
 
       }
