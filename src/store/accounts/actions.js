@@ -42,7 +42,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
 
       // Getting user info
       const userAccount = await this.$accountApi.getAccountInfo({ accountName })
-      console.log('userAccount', userAccount)
+      // console.log('userAccount', userAccount)
 
       commit('setAccount', accountName)
       commit('setSeedsAccount', isUserSeeds.userData)

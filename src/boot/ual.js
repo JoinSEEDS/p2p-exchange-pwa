@@ -28,7 +28,7 @@ export default async ({ Vue, store }) => {
     new Anchor([mainChain], { appName: process.env.APP_NAME })
   ]
 
-  const ual = new UAL([mainChain], 'tet-ual', authenticators)
+  const ual = new UAL([mainChain], 'p2p', authenticators)
   store['$ual'] = ual
   Vue.prototype.$ual = ual
 }
