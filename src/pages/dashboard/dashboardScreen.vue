@@ -8,8 +8,7 @@
         class="bg-primary text-white"
     )
         q-tab-panel(name="main")
-            .text-h6 Main
-            p Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            main-tab
         q-tab-panel(name="transactions")
             .text-h6 Transactions
             p Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -37,8 +36,10 @@
 </template>
 
 <script>
+import mainTab from '~/pages/main-tab/main-tab'
 export default {
   name: 'dashboard-screens',
+  components: { mainTab },
   data () {
     return {
       tab: 'main'

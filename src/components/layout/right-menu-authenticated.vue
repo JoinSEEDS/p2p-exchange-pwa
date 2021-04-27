@@ -15,21 +15,21 @@ export default {
 </script>
 
 <template lang="pug">
-.q-pa-md
-  q-avatar.cursor-pointer(v-ripple)
-    img(src='https://cdn.quasar.dev/img/avatar.png')
+.q-px-xs
+  q-avatar.cursor-pointer(v-ripple icon="account_circle" size="xl")
+    //- img(src='https://cdn.quasar.dev/img/avatar.png')
     q-menu
       .row.no-wrap.q-pa-md
         .column
-          .text-h6.q-mb-md My Account
+          .text-h6.q-mb-md {{ $t('pages.account.myAccount') }}
           //- q-toggle(v-model='mobileData' label='Use Mobile Data')
           //- q-toggle(v-model='bluetooth' label='Bluetooth')
         q-separator.q-mx-lg(vertical='' inset='')
         .column.items-center
-          q-avatar(size='72px')
-            img(src='https://cdn.quasar.dev/img/avatar4.jpg')
+          q-avatar(size='72px' icon="account_circle")
+            //- img(src='https://cdn.quasar.dev/img/avatar4.jpg')
           .text-subtitle1.q-mt-md.q-mb-xs {{ account }}
-          q-btn(color='primary' label='Logout' push='' size='sm' v-close-popup='' @click="logout")
+          q-btn(color='primary' :label="$t('common.buttons.logout')" push='' size='sm' v-close-popup='' @click="logout")
   //- q-btn(
   //-   to="/profiles/myProfile"
   //-   :label="account"

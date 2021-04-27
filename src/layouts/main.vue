@@ -62,7 +62,7 @@ export default {
   left: -5px
   right: auto
 .main-container
-  min-height: 91.5vh
+  min-height: 93.9vh
   padding: 10px
 .title-icon
   width: 70px

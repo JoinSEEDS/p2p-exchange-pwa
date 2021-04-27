@@ -1,7 +1,7 @@
 <template lang="pug">
 .q-pa-md
-  q-avatar.cursor-pointer(v-ripple)
-    img(src='https://cdn.quasar.dev/img/avatar.png')
+  q-avatar.cursor-pointer(v-ripple icon="user")
+    //- img(src='https://cdn.quasar.dev/img/avatar.png')
     q-menu
       .row.no-wrap.q-pa-md
         .column
@@ -10,8 +10,8 @@
           q-toggle(v-model='bluetooth' label='Bluetooth')
         q-separator.q-mx-lg(vertical='' inset='')
         .column.items-center
-          q-avatar(size='72px')
-            img(src='https://cdn.quasar.dev/img/avatar4.jpg')
+          q-avatar(size='72px' icon="user")
+            //- img(src='https://cdn.quasar.dev/img/avatar4.jpg')
           .text-subtitle1.q-mt-md.q-mb-xs John Doe
           q-btn(color='primary' label='Logout' push='' size='sm' v-close-popup='')
 

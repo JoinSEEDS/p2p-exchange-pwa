@@ -53,6 +53,7 @@ export default {
       selectAccount: 'Please select an account'
     },
     account: {
+      myAccount: 'My Account',
       completeProfile: 'Complete your profile',
       generalInformation: 'General information',
       nickname: 'Nickname',
@@ -61,6 +62,12 @@ export default {
       paypalLink: 'Paypal Link',
       enterPaypalLink: 'Enter your paypal link',
       hintPaypal: 'Open link to confirm you write your profile link correctly'
+    },
+    mainTab: {
+      seeds: 'Seeds',
+      walletBalance: 'Wallet Balance',
+      toSell: 'To Sell',
+      toBuy: 'To Buy'
     }
   }
 }
