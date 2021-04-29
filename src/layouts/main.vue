@@ -51,7 +51,9 @@ export default {
     //- )
     //-   left-menu
     q-page-container
-      router-view.main-container.bg-primary
+      .row.justify-center.bg-accent
+        .col-5.col-xs-12.col-sm-10.col-md-5.col-lg-6
+          router-view.main-container.bg-primary
 </template>
 
 <style lang="sass" scoped>
