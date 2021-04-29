@@ -67,7 +67,11 @@ export default {
       seeds: 'Seeds',
       walletBalance: 'Wallet Balance',
       toSell: 'To Sell',
-      toBuy: 'To Buy'
+      toBuy: 'To Buy',
+      recentActivity: 'Recent Activity',
+      makeYour: 'Make your',
+      firstTransaction: 'First Transaction',
+      viewAll: 'View All'
     }
   }
 }

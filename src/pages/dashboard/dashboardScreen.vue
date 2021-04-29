@@ -7,15 +7,15 @@
         transition-next="scale"
         class="bg-primary text-white"
     )
-        q-tab-panel(name="main")
+        q-tab-panel(name="main").tabContainer
             main-tab
-        q-tab-panel(name="transactions")
+        q-tab-panel(name="transactions").tabContainer
             .text-h6 Transactions
             p Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        q-tab-panel(name="notifications")
+        q-tab-panel(name="notifications").tabContainer
             .text-h6 Notifications
             p Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        q-tab-panel(name="settings")
+        q-tab-panel(name="settings").tabContainer
             .text-h6 Settings
             p Lorem ipsum dolor sit amet consectetur adipisicing elit.
     q-tabs.tabsContainer(
@@ -57,6 +57,8 @@ export default {
 
 .panelContainer
     flex: 1
+    display: flex
+    background: pink
 
 .tab-icon
   display: inline-block
@@ -70,4 +72,9 @@ export default {
   height: 25px
   background: $accent
 
+.tabContainer
+  height: 86vh
+  display: flex
+  flex-direction: column
+  padding: 30px
 </style>

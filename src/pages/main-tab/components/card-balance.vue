@@ -1,5 +1,5 @@
 <template lang="pug">
-#container.q-pa-md.flex
+#container.q-pa-md
   .row
     .col-10
         .text-h5 {{ $t('pages.mainTab.seeds') }}
@@ -27,6 +27,7 @@ export default {
   width: 100%
   min-height: 200px
   border-radius: 25px
+  max-height: 200px
 
 .coin
   background-image: url('./icons/Coin.svg')
