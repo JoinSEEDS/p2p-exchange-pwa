@@ -19,17 +19,22 @@ export default {
   q-avatar.cursor-pointer(v-ripple icon="account_circle" size="xl")
     //- img(src='https://cdn.quasar.dev/img/avatar.png')
     q-menu
-      .row.no-wrap.q-pa-md
-        .column
-          .text-h6.q-mb-md {{ $t('pages.account.myAccount') }}
-          //- q-toggle(v-model='mobileData' label='Use Mobile Data')
-          //- q-toggle(v-model='bluetooth' label='Bluetooth')
-        q-separator.q-mx-lg(vertical='' inset='')
-        .column.items-center
-          q-avatar(size='72px' icon="account_circle")
-            //- img(src='https://cdn.quasar.dev/img/avatar4.jpg')
-          .text-subtitle1.q-mt-md.q-mb-xs {{ account }}
-          q-btn(color='primary' :label="$t('common.buttons.logout')" push='' size='sm' v-close-popup='' @click="logout")
+      .row.bg-light
+        .col.q-pt-sm
+          .text-h6.q-px-md.text-dark  {{ account }}
+          q-list
+            q-item(clickable v-ripple to="/account")
+              q-item-section(avatar)
+                q-icon(name="person_outline" color="dark")
+              q-item-section.text-dark {{ $t('menu.profile') }}
+            q-item(clickable v-ripple @click="logout")
+              q-item-section(avatar)
+                q-icon(name="logout" color="dark")
+              q-item-section.text-dark {{ $t('menu.logout') }}
+          //- .text-h6 {{ $t('pages.account.myAccount') }}
+          //- q-avatar(size='72px' icon="account_circle")
+              //- img(src='https://cdn.quasar.dev/img/avatar4.jpg')
+          //- q-btn(color='primary' :label="$t('common.buttons.logout')" push='' size='sm' v-close-popup='' @click="logout")
   //- q-btn(
   //-   to="/profiles/myProfile"
   //-   :label="account"

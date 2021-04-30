@@ -18,20 +18,21 @@
         q-tab-panel(name="settings").tabContainer
             .text-h6 Settings
             p Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    q-separator(color="warning")
     q-tabs.tabsContainer(
         v-model="tab"
-        class="bg-primary text-grey-5 shadow-2"
+        class="bg-primary text-grey-5 custom-border"
         align="justify"
         indicator-color="transparent"
         active-color="accent"
     )
-        q-tab(name="main")
+        q-tab(name="main").tab-style
             i.i-main(:class=" tab === 'main' ? 'tab-icon-active' : 'tab-icon'")
-        q-tab(name="transactions")
+        q-tab(name="transactions").tab-style
             i.i-transactions(:class=" tab === 'transactions' ? 'tab-icon-active' : 'tab-icon'")
-        q-tab(name="notifications")
+        q-tab(name="notifications").tab-style
             i.i-notification(:class=" tab === 'notifications' ? 'tab-icon-active' : 'tab-icon'")
-        q-tab(name="settings")
+        q-tab(name="settings").tab-style
             i.i-settings(:class=" tab === 'settings' ? 'tab-icon-active' : 'tab-icon'")
 </template>
 
@@ -77,4 +78,10 @@ export default {
   display: flex
   flex-direction: column
   padding: 30px
+
+.tab-style
+  border-top-color: #E9EDD9 !important
+  border-top-width: medium !important
+  border: medium
+  color: #E9EDD9
 </style>

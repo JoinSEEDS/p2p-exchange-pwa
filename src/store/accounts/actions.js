@@ -122,7 +122,9 @@ export const getAccountInfo = async function ({ commit }, { entryStatus, offset,
   try {
     commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
-    return this.$accountApi.getAccountInfo({ accountName })
+    const userAccount = await this.$accountApi.getAccountInfo({ accountName })
+    commit('setP2PAccount', userAccount.rows[0])
+    return userAccount
   } catch (e) {
     console.error('An error ocurred while trying to get account info', e)
     commit('general/setErrorMsg', e.message || e, { root: true })
@@ -132,11 +134,13 @@ export const getAccountInfo = async function ({ commit }, { entryStatus, offset,
   }
 }
 
-export const saveAccountData = async function ({ commit }, params) {
+export const saveAccountData = async function ({ commit, dispatch }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
     const response = await this.$accountApi.saveAccountData({ ...params, accountName })
+    // dispatch('accounts/getAccountInfo', true, { root: true })
+    dispatch('getAccountInfo', { })
     return response
   } catch (e) {
     console.error('An error ocurred while trying to save account info', e)

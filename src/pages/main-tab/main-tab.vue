@@ -1,11 +1,13 @@
 <template lang="pug">
   #container.q-gutter-y-md
-    card-balance
+    .row.justify-center
+      .col-xs-12.col-sm-10.col-md-8
+        card-balance
     .row.q-mt-sm.q-col-gutter-lg
         .col
-            custom-sell-btn
+          custom-sell-btn(@click="goToSellScreen")
         .col
-            custom-buy-btn
+          custom-buy-btn
     .activity-component
       recent-activity-view
 </template>
@@ -18,7 +20,13 @@ import RecentActivityView from './components/recent-activity-view'
 
 export default {
   name: 'main-tab',
-  components: { CardBalance, CustomSellBtn, CustomBuyBtn, RecentActivityView }
+  components: { CardBalance, CustomSellBtn, CustomBuyBtn, RecentActivityView },
+  methods: {
+    goToSellScreen () {
+      console.log('goToSellScreen')
+      this.$router.push({ name: 'sell' })
+    }
+  }
 }
 </script>
 

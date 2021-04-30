@@ -137,6 +137,7 @@ export default {
   methods: {
     ...mapActions('accounts', ['saveAccountData']),
     loadProfileData () {
+      console.log('loadProfileData')
       if (!this.isP2PProfileCompleted) {
         this.params.nickname = this.seedsAccount.nickname
         return

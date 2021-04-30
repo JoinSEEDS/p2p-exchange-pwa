@@ -33,7 +33,9 @@ export default {
   },
   menu: {
     transfer: 'Transfer',
-    example: 'Example Dashboard'
+    example: 'Example Dashboard',
+    profile: 'Profile',
+    logout: 'Logout'
   },
   pages: {
     index: {
@@ -72,6 +74,17 @@ export default {
       makeYour: 'Make your',
       firstTransaction: 'First Transaction',
       viewAll: 'View All'
+    },
+    sell: {
+      toSell: 'To Sell',
+      defineTheSaleOffer: 'Define the sale offer',
+      crypto: 'Crypto',
+      seeds: 'Seeds',
+      amountOfCrypto: 'Amount of crypto',
+      afterTransaction: 'After the transaction in your account will be {amount} seeds.',
+      costPerCrypto: 'Cost per crypto',
+      marketCost: 'Market cost {amount}',
+      preferredCurrency: 'Preferred Currency'
     }
   }
 }

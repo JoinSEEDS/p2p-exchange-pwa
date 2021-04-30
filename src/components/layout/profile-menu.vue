@@ -3,7 +3,7 @@
   q-avatar.cursor-pointer(v-ripple icon="user")
     //- img(src='https://cdn.quasar.dev/img/avatar.png')
     q-menu
-      .row.no-wrap.q-pa-md
+      .row.q-pa-md
         .column
           .text-h6.q-mb-md Settings
           q-toggle(v-model='mobileData' label='Use Mobile Data')

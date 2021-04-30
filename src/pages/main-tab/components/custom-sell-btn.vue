@@ -1,5 +1,5 @@
 <template lang="pug">
-  .customBtn.redBtn.relative-position.cursor-pointer(v-ripple)
+  .customBtn.redBtn.relative-position.cursor-pointer(v-ripple @click="$emit('click')")
     .container-icon
       .icon-buyer
     .container-label.noselect
