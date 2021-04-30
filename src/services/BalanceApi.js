@@ -35,6 +35,14 @@ class BalanceApi extends BaseEosApi {
     })
     return balances
   }
+
+  async getBalanceByAccount ({ accountName }) {
+    return this.fetchByIndex({
+      scope: Contracts.CONTRACT_P2P,
+      indexPosition: 1,
+      indexValue: accountName
+    })
+  }
 }
 
 export default BalanceApi
