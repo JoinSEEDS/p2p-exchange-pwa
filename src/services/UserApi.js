@@ -4,7 +4,7 @@ import {
 } from '~/const/Contracts'
 // import User from '../domain/User'
 
-class UserApi extends BaseEosApi {
+class TestApi extends BaseEosApi {
   constructor ({
     eosApi,
     // accountName,
@@ -23,31 +23,6 @@ class UserApi extends BaseEosApi {
     // this.accountName = accountName
   }
 
-  /** *
-     * Parse transfers base
-     */
-  // async _parseRows (rows, modifierProps) {
-  //   const { hydrateRoles } = modifierProps
-  //   return rows.map(async (row) => {
-  //     const {
-  //       account,
-  //       user_name: userName,
-  //       entity_id: entityId,
-  //       type
-  //     } = row
-  //     const parsedRow = {
-  //       account,
-  //       userName,
-  //       entityId,
-  //       type
-  //     }
-  //     if (hydrateRoles) {
-  //       const roles = await this.userRoleApi.fetchActorRoles(account)
-  //       parsedRow.roles = roles
-  //     }
-  //     return parsedRow
-  //   })
-  // }
   /** *
   * Parse transfers base
   */
@@ -69,4 +44,4 @@ class UserApi extends BaseEosApi {
   }
 }
 
-export default UserApi
+export default TestApi

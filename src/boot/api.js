@@ -1,5 +1,14 @@
 import { Api, JsonRpc } from 'eosjs'
-import { UserApi, AccountApi } from '~/services'
+import {
+  UserApi,
+  AccountApi,
+  BalanceApi,
+  BuyOfferApi,
+  BuySellRelApi,
+  ConfigApi,
+  SellOfferApi,
+  TrxStatApi
+} from '~/services'
 
 const signTransaction = async function (actions) {
   actions.forEach(action => {
@@ -59,7 +68,37 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  const balanceApi = new BalanceApi({
+    eosApi: api
+  })
+
+  const buyOfferApi = new BuyOfferApi({
+    eosApi: api
+  })
+
+  const buySellRelApi = new BuySellRelApi({
+    eosApi: api
+  })
+
+  const configApi = new ConfigApi({
+    eosApi: api
+  })
+
+  const sellOfferApi = new SellOfferApi({
+    eosApi: api
+  })
+
+  const trxStatApi = new TrxStatApi({
+    eosApi: api
+  })
+
   store['$api'] = api
   store['$userApi'] = userApi
   store['$accountApi'] = accountApi
+  store['$balanceApi'] = balanceApi
+  store['$buyOfferApi'] = buyOfferApi
+  store['$buySellRelApi'] = buySellRelApi
+  store['$configApi'] = configApi
+  store['$sellOfferApi'] = sellOfferApi
+  store['$trxStatApi'] = trxStatApi
 }

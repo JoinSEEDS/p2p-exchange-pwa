@@ -3,6 +3,12 @@ import Vuex from 'vuex'
 
 import accounts from './accounts'
 import general from './general'
+import balances from './balances'
+import buyOffers from './buyOffers'
+import buySellRels from './buySellRels'
+import configs from './configs'
+import sellOffers from './sellOffers'
+import trxStats from './trxStats'
 
 Vue.use(Vuex)
 
@@ -15,7 +21,13 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       accounts,
-      general
+      general,
+      balances,
+      buyOffers,
+      buySellRels,
+      configs,
+      sellOffers,
+      trxStats
     },
 
     // enable strict mode (adds overhead!)
