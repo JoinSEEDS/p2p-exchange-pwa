@@ -53,6 +53,34 @@ class AccountApi extends BaseEosApi {
 
     return this.eosApi.signTransaction(actions)
   }
+
+  async withDraw ({ accountName, quantity }) {
+    const actions = [{
+      account: Contracts.CONTRACT_P2P,
+      name: 'withdraw',
+      data: {
+        account: accountName,
+        quantity
+      }
+    }]
+
+    return this.eosApi.signTransaction(actions)
+  }
+
+  async deposit ({ accountName, to, quantity, memo }) {
+    const actions = [{
+      account: Contracts.CONTRACT_P2P,
+      name: 'deposit',
+      data: {
+        from: accountName,
+        to,
+        quantity,
+        memo
+      }
+    }]
+
+    return this.eosApi.signTransaction(actions)
+  }
 }
 
 export default AccountApi

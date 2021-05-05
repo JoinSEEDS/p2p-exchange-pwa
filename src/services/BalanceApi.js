@@ -2,12 +2,10 @@ import BaseEosApi from './BaseEosApi'
 import {
   Contracts
 } from '~/const/Contracts'
-// import User from '../domain/User'
 
-class TestApi extends BaseEosApi {
+class BalanceApi extends BaseEosApi {
   constructor ({
     eosApi,
-    // accountName,
     notifier
   }) {
     super(
@@ -15,12 +13,11 @@ class TestApi extends BaseEosApi {
       notifier,
       {
         contractAccount: Contracts.CONTRACT_SEEDS,
-        table: 'users',
-        tableId: 'account',
+        table: 'balances',
+        tableId: 'id',
         defaultSortField: 'account'
       }
     )
-    // this.accountName = accountName
   }
 
   /** *
@@ -30,18 +27,22 @@ class TestApi extends BaseEosApi {
     return rows
   }
 
-  async checkExistUserSeeds ({ accountName }) {
-    const userData = await this.fetchByIndex({
-      scope: Contracts.CONTRACT_SEEDS,
+  async getBalances ({ offset, limit }) {
+    const balances = await this.fetch({
+      scope: Contracts.CONTRACT_P2P,
+      offset,
+      limit
+    })
+    return balances
+  }
+
+  async getBalanceByAccount ({ accountName }) {
+    return this.fetchByIndex({
+      scope: Contracts.CONTRACT_P2P,
       indexPosition: 1,
       indexValue: accountName
     })
-
-    return {
-      userExist: userData.rows.length === 1,
-      userData: userData.rows[0]
-    }
   }
 }
 
-export default TestApi
+export default BalanceApi
