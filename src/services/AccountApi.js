@@ -67,13 +67,13 @@ class AccountApi extends BaseEosApi {
     return this.eosApi.signTransaction(actions)
   }
 
-  async deposit ({ accountName, to, quantity, memo }) {
+  async deposit ({ accountName, quantity, memo }) {
     const actions = [{
       account: Contracts.CONTRACT_P2P,
       name: 'deposit',
       data: {
         from: accountName,
-        to,
+        to: Contracts.CONTRACT_P2P,
         quantity,
         memo
       }

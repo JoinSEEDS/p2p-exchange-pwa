@@ -20,6 +20,8 @@
 
 <script>
 import { validation } from '~/mixins/validation'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'deposit-form',
   mixins: [validation],
@@ -31,8 +33,17 @@ export default {
     }
   },
   methods: {
-    onConfirmDeposit () {
-      console.log('deposit')
+    ...mapActions('accounts', ['deposit']),
+    async onConfirmDeposit () {
+      try {
+        const response = await this.deposit({
+          quantity: `${this.params.amount} SEEDS`,
+          memo: `Deposit for ${this.params.amount} SEEDS`
+        })
+        console.log('response deposit', response)
+      } catch (e) {
+
+      }
     }
   }
 }
