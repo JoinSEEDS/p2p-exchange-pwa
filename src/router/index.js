@@ -32,7 +32,11 @@ export default function ({ store }) {
         console.log('Is authenticated', store.getters['accounts/isP2PProfileCompleted'], to.matched.some(record => record.meta.notProfile))
         // Verify if the user has profile completed
         if (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile)) {
-          next()
+          if (to.matched.some(record => record.meta.notVisitor) && !store.getters['accounts/userCanSell']) {
+            next({ name: 'dashboard' })
+          } else {
+            next()
+          }
         } else {
           console.log('Not profile completed, redirected to account')
           next({ name: 'account' })

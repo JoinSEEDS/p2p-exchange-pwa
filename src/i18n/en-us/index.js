@@ -85,6 +85,10 @@ export default {
       costPerCrypto: 'Cost per crypto',
       marketCost: 'Market cost {amount}',
       preferredCurrency: 'Preferred Currency'
+    },
+    deposit: {
+      deposit: 'Deposit',
+      amount: 'Amount'
     }
   }
 }

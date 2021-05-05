@@ -8,8 +8,13 @@
   .row.q-mt-md
     .text-h6.wallet-label {{ $t('pages.mainTab.walletBalance') }}
   .text-h6.wallet-value 1244.35
-  .text-h6.wallet-fiat $6,43 USD
-
+  .row.justify-between
+    .text-h6.wallet-fiat $6,43 USD
+    q-btn(
+      label="Deposit"
+      dense
+      @click="$emit('clickOnDeposit')"
+    )
 </template>
 
 <script>

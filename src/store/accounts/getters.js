@@ -6,3 +6,6 @@ export const isAutoLoading = ({ autoLogin }) => autoLogin
 export const availableAccounts = ({ availableAccounts }) => availableAccounts.list.data
 export const availableAccountsLoaded = ({ availableAccounts }) => availableAccounts.list.loaded
 export const requestAccount = ({ requestAccount }) => requestAccount
+export const userCanSell = ({ seedsAccount }) => {
+  return (seedsAccount.status === 'citizen' || seedsAccount.status === 'resident')
+}

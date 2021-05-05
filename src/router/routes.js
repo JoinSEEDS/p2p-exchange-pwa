@@ -4,7 +4,7 @@ const routes = [
   { path: '/home', component: () => import('pages/home/home.vue'), name: 'home' },
   { path: '/account', component: () => import('pages/account/accountScreen.vue'), name: 'account', meta: { title: 'pages.login.title', notProfile: true } },
   { path: '/dashboard', component: () => import('pages/dashboard/dashboardScreen.vue'), name: 'dashboard' },
-  { path: '/sell', component: () => import('pages/sell/sellScreen.vue'), name: 'sell' }
+  { path: '/sell', component: () => import('pages/sell/sellScreen.vue'), name: 'sell', meta: { notVisitor: true } }
 ]
 
 // Always leave this as last one
