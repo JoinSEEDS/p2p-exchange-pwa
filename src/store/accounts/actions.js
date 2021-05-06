@@ -37,6 +37,8 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
         commit('setAccount')
         commit('setSeedsAccount')
         commit('setP2PAccount')
+        commit('setCurrentSeedsPerUsd')
+        commit('setP2PBalances')
         return
       }
 
@@ -94,6 +96,8 @@ export const logout = async function ({ commit }) {
   // commit('profiles/setProfile', undefined, { root: true })
   commit('setAccount')
   commit('setSeedsAccount')
+  commit('setCurrentSeedsPerUsd')
+  commit('setP2PBalances')
   localStorage.removeItem('autoLogin')
   this.$api = null
   this.$router.push({ path: '/' })

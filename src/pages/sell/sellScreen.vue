@@ -77,7 +77,10 @@ export default {
   },
   mounted () {
     try {
-      this.availableSeeds = Number.parseFloat(this.userBalances.available_balance.replace(' SEEDS', ''))
+      this.availableSeeds = 0.0000
+      if (this.userBalances) {
+        this.availableSeeds = Number.parseFloat(this.userBalances.available_balance.replace(' SEEDS', '')).toFixed(4)
+      }
       this.params.fiatCurrency = this.currentFiatCurrency.toUpperCase()
       this.getCurrentSeedsPerUsd()
     } catch (e) {

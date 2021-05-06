@@ -7,7 +7,7 @@
         .coin
   .row.q-mt-md
     .text-h6.wallet-label {{ $t('pages.mainTab.walletBalance') }}
-    .info-coin.self-center.q-ml-xs.cursor-pointer(@click="showDetailsBalance = true")
+    .info-coin.self-center.q-ml-xs.cursor-pointer(v-if="userBalances" @click="showDetailsBalance = true")
       q-tooltip {{$t('pages.balance.seeBalancesDetails')}}
   .text-h6.wallet-value(v-if="userBalances") {{ userBalances.available_balance }}
   .row.justify-between
