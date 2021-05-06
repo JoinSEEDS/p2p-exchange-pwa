@@ -15,7 +15,8 @@ export const validation = {
         isToken: val => (val.length >= 2 && val.length <= 6) || this.$t('forms.errors.token'),
         isTokenDecimals: val => (parseInt(val) >= 0 && parseInt(val) <= 9) || this.$t('forms.errors.tokenDecimals'),
         positiveInteger: val => parseInt(val) > 0 || this.$t('forms.errors.positiveInteger'),
-        required: val => !!val || this.$t('forms.errors.required')
+        required: val => !!val || this.$t('forms.errors.required'),
+        minZero: val => val > 0 || this.$t('forms.errors.minZero')
       }
     }
   },

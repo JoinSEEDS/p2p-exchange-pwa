@@ -31,7 +31,7 @@ export default {
       totalBalance += Number.parseFloat(this.userBalances.available_balance.replace('SEEDS', ''))
       totalBalance += Number.parseFloat(this.userBalances.swap_balance.replace('SEEDS', ''))
       totalBalance += Number.parseFloat(this.userBalances.escrow_balance.replace('SEEDS', ''))
-      return `${totalBalance} SEEDS`
+      return `${totalBalance.toFixed(4)} SEEDS`
     }
   }
 }

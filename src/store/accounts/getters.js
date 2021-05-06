@@ -12,3 +12,9 @@ export const userCanSell = ({ seedsAccount }) => {
 export const userBalances = ({ balances }) => {
   return balances
 }
+export const currentFiatCurrency = ({ p2pAccount }) => {
+  return p2pAccount.fiat_currency
+}
+export const pricePerSeedOnUSD = ({ currentSeedsPerUsd }) => {
+  return Number.parseFloat(currentSeedsPerUsd.replace(' SEEDS', '')).toFixed(4)
+}

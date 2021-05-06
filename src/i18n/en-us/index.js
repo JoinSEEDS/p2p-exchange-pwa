@@ -28,7 +28,9 @@ export default {
       positiveInteger: 'The value must be greater than 0',
       required: 'This field is required',
       token: 'The field must contain between 2 and 6 characters',
-      tokenDecimals: 'The decimals must be between 2 and 9'
+      tokenDecimals: 'The decimals must be between 2 and 9',
+      minZero: 'This field must be greater than 0',
+      maxSeedsAvailable: 'This field must be less or equal than {amount}'
     }
   },
   menu: {
@@ -85,7 +87,8 @@ export default {
       afterTransaction: 'After the transaction in your account will be {amount} seeds.',
       costPerCrypto: 'Cost per crypto',
       marketCost: 'Market cost {amount}',
-      preferredCurrency: 'Preferred Currency'
+      preferredCurrency: 'Preferred Currency',
+      successMessage: 'Offer Sell was created success for {amount}.'
     },
     deposit: {
       deposit: 'Deposit',
@@ -101,7 +104,8 @@ export default {
       available: 'Available',
       swap: 'Swap',
       escrow: 'Escrow',
-      total: 'Total'
+      total: 'Total',
+      seeBalancesDetails: 'See balances details'
     }
   }
 }

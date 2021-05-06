@@ -8,6 +8,7 @@
   .row.q-mt-md
     .text-h6.wallet-label {{ $t('pages.mainTab.walletBalance') }}
     .info-coin.self-center.q-ml-xs.cursor-pointer(@click="showDetailsBalance = true")
+      q-tooltip {{$t('pages.balance.seeBalancesDetails')}}
   .text-h6.wallet-value(v-if="userBalances") {{ userBalances.available_balance }}
   .row.justify-between
     .text-h6.wallet-fiat {{equivalentFiat}} USD
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 import DetailsBalance from './details-balance'
 
 export default {
@@ -34,6 +35,9 @@ export default {
     return {
       showDetailsBalance: false
     }
+  },
+  amount () {
+    this.getBalances()
   },
   computed: {
     ...mapGetters('accounts', ['userBalances']),
@@ -47,6 +51,9 @@ export default {
         return 0
       }
     }
+  },
+  methods: {
+    ...mapActions('accounts', ['getBalances'])
   }
 }
 </script>
