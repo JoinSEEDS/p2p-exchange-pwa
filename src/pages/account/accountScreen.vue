@@ -1,5 +1,6 @@
 <template lang="pug">
  #container
+    q-icon.cursor-pointer(v-if="isP2PProfileCompleted" name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
     .row.justify-center
       img.logoImg(src="../../statics/backgrounds/simple_logo.svg")
     .row.justify-center

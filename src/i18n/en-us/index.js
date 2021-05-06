@@ -63,7 +63,7 @@ export default {
       generalInformation: 'General information',
       nickname: 'Nickname',
       timeZone: 'Time Zone',
-      preferredFiatCurrency: 'Time Zone',
+      preferredFiatCurrency: 'Preferred Fiat Currency',
       paypalLink: 'Paypal Link',
       enterPaypalLink: 'Enter your paypal link',
       hintPaypal: 'Open link to confirm you write your profile link correctly'
@@ -88,7 +88,8 @@ export default {
       costPerCrypto: 'Cost per crypto',
       marketCost: 'Market cost {amount}',
       preferredCurrency: 'Preferred Currency',
-      successMessage: 'Offer Sell was created success for {amount}.'
+      successMessage: 'Offer Sell was created success for {amount}.',
+      confirmSale: 'Confirm Sale'
     },
     deposit: {
       deposit: 'Deposit',

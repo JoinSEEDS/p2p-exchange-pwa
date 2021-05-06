@@ -50,17 +50,23 @@
             color="accent"
             type="submit"
         )
+  #modals
+    q-dialog(v-model="showConfirmSell" transition-show="slide-up" transition-hide="slide-down" persistent)
+      confirm-sell.custom-size-modal(:seeds="params.amount" :percentage="params.costPerCrypt" @confirm="onConfirmSell")
 </template>
 
 <script>
 import { validation } from '~/mixins/validation'
 import { mapGetters, mapActions } from 'vuex'
+import ConfirmSell from './components/confirm-sell'
 
 export default {
   name: 'seel-screen',
   mixins: [validation],
+  components: { ConfirmSell },
   data () {
     return {
+      showConfirmSell: false,
       availableSeeds: undefined,
       params: {
         amount: undefined,
@@ -88,7 +94,7 @@ export default {
   methods: {
     ...mapActions('accounts', ['getCurrentSeedsPerUsd', 'getBalances']),
     ...mapActions('sellOffers', ['addSellOffer']),
-    async onSubmitForm () {
+    async onConfirmSell () {
       try {
         const response = await this.addSellOffer({
           totalOffered: this.parseToSeedSymbol(this.params.amount),
@@ -101,6 +107,9 @@ export default {
       } catch (e) {
 
       }
+    },
+    onSubmitForm () {
+      this.showConfirmSell = true
     }
   }
 }
