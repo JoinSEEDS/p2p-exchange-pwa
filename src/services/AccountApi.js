@@ -54,11 +54,12 @@ class AccountApi extends BaseEosApi {
     return this.eosApi.signTransaction(actions)
   }
 
-  async withDraw ({ accountName, quantity }) {
+  async withdraw ({ accountName, quantity }) {
     const actions = [{
       account: Contracts.CONTRACT_P2P,
       name: 'withdraw',
       data: {
+        // to: 'token.seeds',
         account: accountName,
         quantity
       }
@@ -69,8 +70,8 @@ class AccountApi extends BaseEosApi {
 
   async deposit ({ accountName, quantity, memo }) {
     const actions = [{
-      account: Contracts.CONTRACT_P2P,
-      name: 'deposit',
+      account: Contracts.CONTRACT_SEEDS_WALLET,
+      name: 'transfer',
       data: {
         from: accountName,
         to: Contracts.CONTRACT_P2P,

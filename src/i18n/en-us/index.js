@@ -45,6 +45,7 @@ export default {
       }
     },
     general: {
+      close: 'Close',
       search: 'Search',
       confirmActions: 'Do you want confirm this action?',
       noAccountsFound: 'No accounts found'
@@ -67,7 +68,7 @@ export default {
     },
     mainTab: {
       seeds: 'Seeds',
-      walletBalance: 'Wallet Balance',
+      walletBalance: 'Available Balance',
       toSell: 'To Sell',
       toBuy: 'To Buy',
       recentActivity: 'Recent Activity',
@@ -88,7 +89,12 @@ export default {
     },
     deposit: {
       deposit: 'Deposit',
-      amount: 'Amount'
+      withdraw: 'Withdraw',
+      amount: 'Amount',
+      depositWithdraw: 'Deposit / Withdraw',
+      selectTypeAction: 'Select the type of action',
+      successDeposit: 'Success deposit for {amount}',
+      successWithdraw: 'Success withdraw for {amount}'
     }
   }
 }

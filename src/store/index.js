@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 import accounts from './accounts'
 import general from './general'
-import balances from './balances'
+// import balances from './balances'
 import buyOffers from './buyOffers'
 import buySellRels from './buySellRels'
 import configs from './configs'
@@ -22,7 +22,7 @@ export default function (/* { ssrContext } */) {
     modules: {
       accounts,
       general,
-      balances,
+      // balances,
       buyOffers,
       buySellRels,
       configs,

@@ -7,19 +7,25 @@
         .coin
   .row.q-mt-md
     .text-h6.wallet-label {{ $t('pages.mainTab.walletBalance') }}
-  .text-h6.wallet-value 1244.35
+  .text-h6.wallet-value(v-if="userBalances") {{ userBalances.available_balance }}
   .row.justify-between
     .text-h6.wallet-fiat $6,43 USD
-    q-btn(
-      label="Deposit"
+    q-btn.q-px-xs(
+      :label="$t('pages.deposit.depositWithdraw')"
       dense
       @click="$emit('clickOnDeposit')"
+      color="accent"
+      size="sm"
     )
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: 'card-balance'
+  name: 'card-balance',
+  computed: {
+    ...mapGetters('accounts', ['userBalances'])
+  }
 }
 </script>
 

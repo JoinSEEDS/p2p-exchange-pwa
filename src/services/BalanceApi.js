@@ -12,7 +12,7 @@ class BalanceApi extends BaseEosApi {
       eosApi,
       notifier,
       {
-        contractAccount: Contracts.CONTRACT_SEEDS,
+        contractAccount: Contracts.CONTRACT_P2P,
         table: 'balances',
         tableId: 'id',
         defaultSortField: 'account'

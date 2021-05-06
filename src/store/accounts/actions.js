@@ -47,6 +47,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       commit('setAccount', accountName)
       commit('setSeedsAccount', isUserSeeds.userData)
       commit('setP2PAccount', userAccount.rows[0])
+      await dispatch('getBalances')
 
       // const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
@@ -138,9 +139,12 @@ export const getBalances = async function ({ commit }) {
   try {
     // commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
-    const userAccount = await this.$accountApi.getAccountInfo({ accountName })
-    commit('setP2PAccount', userAccount.rows[0])
-    return userAccount
+    const balances = await this.$balanceApi.getBalanceByAccount({ accountName })
+    if (balances && balances.rows[0]) {
+      commit('setP2PBalances', balances.rows[0])
+    }
+    // commit('balances/setBalances', balances.rows, { root: true })
+    // return userAccount
   } catch (e) {
     console.error('An error ocurred while trying to get account info', e)
     commit('general/setErrorMsg', e.message || e, { root: true })
@@ -167,14 +171,14 @@ export const saveAccountData = async function ({ commit, dispatch }, params) {
   }
 }
 
-export const withDraw = async function ({ commit, dispatch }, params) {
+export const withdraw = async function ({ commit }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
-    const response = await this.$accountApi.withDraw({ ...params, accountName })
+    const response = await this.$accountApi.withdraw({ ...params, accountName })
     return response
   } catch (e) {
-    console.error('An error ocurred while trying to save account info', e)
+    console.error('An error ocurred while trying to do a withdraw', e)
     commit('general/setErrorMsg', e.message || e, { root: true })
     throw new Error(e)
   } finally {
@@ -189,7 +193,7 @@ export const deposit = async function ({ commit }, params) {
     const response = await this.$accountApi.deposit({ ...params, accountName })
     return response
   } catch (e) {
-    console.error('An error ocurred while trying to save account info', e)
+    console.error('An error ocurred while trying to do a deposit', e)
     commit('general/setErrorMsg', e.message || e, { root: true })
     throw new Error(e)
   } finally {

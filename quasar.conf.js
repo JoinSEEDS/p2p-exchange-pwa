@@ -126,7 +126,9 @@ module.exports = function (ctx) {
         BLOCKCHAIN_EXPLORER: process.env.BLOCKCHAIN_EXPLORER,
         GOOGLE_ANALYTICS: process.env.GOOGLE_ANALYTICS,
         CONTRACT_SEEDS: process.env.CONTRACT_SEEDS,
-        CONTRACT_P2P: process.env.CONTRACT_P2P
+        CONTRACT_P2P: process.env.CONTRACT_P2P,
+        CONTRACT_SEEDS_WALLET: process.env.CONTRACT_SEEDS_WALLET,
+        CONTRACT_SEEDS_VALUES: process.env.CONTRACT_SEEDS_VALUES
       },
       scopeHoisting: true,
       vueRouterMode: 'history',
