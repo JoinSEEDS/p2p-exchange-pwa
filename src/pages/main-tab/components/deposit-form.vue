@@ -30,11 +30,9 @@
 <script>
 import { validation } from '~/mixins/validation'
 import { mapActions } from 'vuex'
-import GreenFlatBtn from '~/components/green-flat-btn'
 
 export default {
   name: 'deposit-form',
-  components: { GreenFlatBtn },
   mixins: [validation],
   data () {
     return {

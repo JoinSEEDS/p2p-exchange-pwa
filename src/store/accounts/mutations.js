@@ -39,3 +39,7 @@ export const setP2PAccount = (state, p2pAccount) => {
 export const setP2PBalances = (state, balances) => {
   state.balances = balances
 }
+
+export const setCurrentSeedsPerUsd = (state, currentSeedsPerUsd) => {
+  state.currentSeedsPerUsd = currentSeedsPerUsd
+}

@@ -1,5 +1,5 @@
 <template lang="pug">
-#container.q-pa-md
+#container.q-pa-md.custom-bg
   .row
     .col-10
         .text-h5 {{ $t('pages.mainTab.seeds') }}
@@ -7,9 +7,10 @@
         .coin
   .row.q-mt-md
     .text-h6.wallet-label {{ $t('pages.mainTab.walletBalance') }}
+    .info-coin.self-center.q-ml-xs.cursor-pointer(@click="showDetailsBalance = true")
   .text-h6.wallet-value(v-if="userBalances") {{ userBalances.available_balance }}
   .row.justify-between
-    .text-h6.wallet-fiat $6,43 USD
+    .text-h6.wallet-fiat {{equivalentFiat}} USD
     q-btn.q-px-xs(
       :label="$t('pages.deposit.depositWithdraw')"
       dense
@@ -17,24 +18,45 @@
       color="accent"
       size="sm"
     )
+  #modals
+    q-dialog(v-model="showDetailsBalance" transition-show="slide-up" transition-hide="slide-down" persistent)
+      details-balance.custom-size-modal
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
+import DetailsBalance from './details-balance'
+
 export default {
   name: 'card-balance',
+  components: { DetailsBalance },
+  data () {
+    return {
+      showDetailsBalance: false
+    }
+  },
   computed: {
-    ...mapGetters('accounts', ['userBalances'])
+    ...mapGetters('accounts', ['userBalances']),
+    ...mapState('accounts', ['currentSeedsPerUsd']),
+    equivalentFiat () {
+      try {
+        const currentSeedsAmount = this.userBalances.available_balance.replace('SEEDS', '')
+        const currentSeedsValue = this.currentSeedsPerUsd.replace('SEEDS', '')
+        return (currentSeedsAmount / currentSeedsValue).toFixed(4)
+      } catch (e) {
+        return 0
+      }
+    }
   }
 }
 </script>
 
 <style lang="sass" scoped>
-#container
+.custom-bg
   background-image: url('./icons/BG.svg')
   background-repeat: no-repeat
   background-size: cover
-  display: inline-block
+  // display: inline-block
   width: 100%
   min-height: 200px
   border-radius: 25px
@@ -47,6 +69,14 @@ export default {
   display: inline-block
   width: 50px
   height: 50px
+
+.info-coin
+  background-image: url('./icons/info.svg')
+  background-repeat: no-repeat
+  background-size: cover
+  display: inline-block
+  width: 18px
+  height: 18px
 
 .wallet-label
   font-size: 14px

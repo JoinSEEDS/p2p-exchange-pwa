@@ -7,7 +7,8 @@ import {
   BuySellRelApi,
   ConfigApi,
   SellOfferApi,
-  TrxStatApi
+  TrxStatApi,
+  SeedsValueApi
 } from '~/services'
 
 const signTransaction = async function (actions) {
@@ -92,6 +93,10 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  const seedsValueApi = new SeedsValueApi({
+    eosApi: api
+  })
+
   store['$api'] = api
   store['$userApi'] = userApi
   store['$accountApi'] = accountApi
@@ -101,4 +106,5 @@ export default ({ store }) => {
   store['$configApi'] = configApi
   store['$sellOfferApi'] = sellOfferApi
   store['$trxStatApi'] = trxStatApi
+  store['$seedsValueApi'] = seedsValueApi
 }

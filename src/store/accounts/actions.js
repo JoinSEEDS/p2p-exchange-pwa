@@ -48,6 +48,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       commit('setSeedsAccount', isUserSeeds.userData)
       commit('setP2PAccount', userAccount.rows[0])
       await dispatch('getBalances')
+      await dispatch('getCurrentSeedsPerUsd')
 
       // const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
@@ -145,6 +146,19 @@ export const getBalances = async function ({ commit }) {
     }
     // commit('balances/setBalances', balances.rows, { root: true })
     // return userAccount
+  } catch (e) {
+    console.error('An error ocurred while trying to get account info', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    // commit('general/setIsLoading', false, { root: true })
+  }
+}
+
+export const getCurrentSeedsPerUsd = async function ({ commit }) {
+  try {
+    const currentSeedsPerUsd = await this.$seedsValueApi.getCurrentPricePerUSD()
+    commit('setCurrentSeedsPerUsd', currentSeedsPerUsd)
   } catch (e) {
     console.error('An error ocurred while trying to get account info', e)
     commit('general/setErrorMsg', e.message || e, { root: true })

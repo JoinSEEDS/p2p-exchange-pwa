@@ -1,5 +1,8 @@
 import { mapMutations } from 'vuex'
+import GreenFlatBtn from '~/components/green-flat-btn'
+
 export const utils = {
+  components: { GreenFlatBtn },
   methods: {
     ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg', 'setIsLoading']),
     copyToClipboard (str) {

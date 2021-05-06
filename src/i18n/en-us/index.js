@@ -95,6 +95,13 @@ export default {
       selectTypeAction: 'Select the type of action',
       successDeposit: 'Success deposit for {amount}',
       successWithdraw: 'Success withdraw for {amount}'
+    },
+    balance: {
+      balance: 'Balance',
+      available: 'Available',
+      swap: 'Swap',
+      escrow: 'Escrow',
+      total: 'Total'
     }
   }
 }
