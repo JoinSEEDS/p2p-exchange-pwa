@@ -71,16 +71,16 @@ export default {
     mainTab: {
       seeds: 'Seeds',
       walletBalance: 'Available Balance',
-      toSell: 'To Sell',
-      toBuy: 'To Buy',
+      toSell: 'Sell SEEDS for Fiat',
+      toBuy: 'Buy SEEDS with Fiat',
       recentActivity: 'Recent Activity',
       makeYour: 'Make your',
       firstTransaction: 'First Transaction',
       viewAll: 'View All'
     },
     sell: {
-      toSell: 'To Sell',
-      defineTheSaleOffer: 'Define the sale offer',
+      toSell: 'Sell SEEDS for Fiat',
+      defineTheSaleOffer: 'How many seeds would you like to sell?',
       crypto: 'Crypto',
       seeds: 'Seeds',
       amountOfCrypto: 'Amount of crypto',

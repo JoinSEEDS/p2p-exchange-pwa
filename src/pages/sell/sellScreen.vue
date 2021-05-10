@@ -5,10 +5,19 @@
     .subtitle.text-white.q-mt-md {{ $t('pages.sell.toSell') }}
     .text-white {{ $t('pages.sell.defineTheSaleOffer') }}
     .row.justify-center
-        .col-5
+        .col-8
             .text-h4.text-white.text-center {{ availableSeeds }}
+              span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
             q-separator(color="warning")
-            .text-h6.text-white.text-center.text-uppercase {{ $t('pages.sell.seeds') }}
+            .text-h4.text-white.text-center 100
+              span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{params.fiatCurrency}}
+    .row.bg-warning.container-current
+      .q-pa-sm
+        .iconSeeds
+      .col-sm-11.self-center
+        .textLabelCurrent.q-ml-xs Label
+        .textValueCurrent.q-ml-xs Value
+    q-checkbox.text-white(v-model="isSellAll" dark label="Label on Right" color="accent" class="text-white")
     q-input(
         :label="$t('pages.sell.amountOfCrypto')"
         v-model="params.amount"
@@ -68,6 +77,7 @@ export default {
     return {
       showConfirmSell: false,
       availableSeeds: undefined,
+      isSellAll: false,
       params: {
         amount: undefined,
         costPerCrypt: 100
@@ -119,4 +129,21 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.textLabelCurrent
+  color: white
+  font-size: 12px
+.textValueCurrent
+  color: white
+  font-size: 18px
+.iconSeeds
+  background-image: url('./icons/seedsIcon.svg')
+  background-repeat: no-repeat
+  background-size: cover
+  display: inline-block
+  width: 35px
+  height: 35px
+  padding-left: 10px !important
+  padding-right: 10px !important
+.container-current
+  border-radius: 10px
 </style>

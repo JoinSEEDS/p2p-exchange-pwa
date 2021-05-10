@@ -48,4 +48,5 @@ export default {
   line-height: 40px
   font-weight: bold
   user-select: none
+  font-size: 10px
 </style>
