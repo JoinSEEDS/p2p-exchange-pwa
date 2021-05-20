@@ -45,8 +45,14 @@ export const utils = {
     showIsLoading (state) {
       this.setIsLoading(state)
     },
+    parseToSeedsAmount (amount) {
+      return Number.parseFloat(amount).toFixed(4)
+    },
     parseToSeedSymbol (amount) {
       return `${Number.parseFloat(amount).toFixed(4)} SEEDS`
+    },
+    parseSeedSymbolToAmount (seedsAmount) {
+      return Number.parseFloat(seedsAmount.replace(' SEEDS', ''))
     }
   }
 }

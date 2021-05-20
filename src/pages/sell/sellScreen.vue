@@ -6,18 +6,18 @@
     .text-white {{ $t('pages.sell.defineTheSaleOffer') }}
     .row.justify-center
         .col-8
-            .text-h4.text-white.text-center {{ availableSeeds }}
+            .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
             q-separator(color="warning")
-            .text-h4.text-white.text-center 100
+            .text-h4.text-white.text-center {{ fiatToGet.toFixed(2) }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{params.fiatCurrency}}
     .row.bg-warning.container-current
       .q-pa-sm
         .iconSeeds
       .col-sm-11.self-center
-        .textLabelCurrent.q-ml-xs Label
-        .textValueCurrent.q-ml-xs Value
-    q-checkbox.text-white(v-model="isSellAll" dark label="Label on Right" color="accent" class="text-white")
+        .textLabelCurrent.q-ml-xs {{ $t('pages.sell.currentTotal') }}
+        .textValueCurrent.q-ml-xs {{ availableSeeds }}
+    q-checkbox.text-white(v-model="isSellAll" dark :label="$t('pages.sell.sellAllSeeds')" color="accent" class="text-white")
     q-input(
         :label="$t('pages.sell.amountOfCrypto')"
         v-model="params.amount"
@@ -48,11 +48,11 @@
         dark
         standout="text-accent"
         :rules="[rules.required, rules.minZero]"
-        :hint="$t('pages.sell.marketCost', { amount: `${pricePerSeedOnUSD} USD` })"
         type="number"
     )
       template(v-slot:append)
         .text %
+    .hint {{$t('pages.sell.marketCost', { amount: `${pricePerSeedOnUSD} USD` })}}
     .row.bg-primary.btnSave.q-py-sm
         q-btn.full-width(
             :label="$t('pages.sell.toSell')"
@@ -79,10 +79,19 @@ export default {
       availableSeeds: undefined,
       isSellAll: false,
       params: {
-        amount: undefined,
+        amount: Number.parseFloat(0).toFixed(4),
         costPerCrypt: 100
       },
-      customMaxValidation: val => val <= this.availableSeeds || this.$t('forms.errors.maxSeedsAvailable', { amount: this.availableSeeds })
+      customMaxValidation: val => (val <= this.parseSeedSymbolToAmount(this.availableSeeds)) || this.$t('forms.errors.maxSeedsAvailable', { amount: this.availableSeeds })
+    }
+  },
+  watch: {
+    isSellAll (v) {
+      if (v) {
+        this.params.amount = this.availableSeeds
+      } else {
+        this.params.amount = 0
+      }
     }
   },
   mounted () {
@@ -102,6 +111,9 @@ export default {
     afterAmount () {
       const currentAmount = this.params.amount ? Number.parseFloat(this.params.amount) : 0
       return Number.parseFloat(this.availableSeeds - currentAmount).toFixed(4)
+    },
+    fiatToGet () {
+      return this.params.amount * (this.pricePerSeedOnUSD * (this.params.costPerCrypt / 100))
     }
   },
   methods: {
@@ -131,17 +143,18 @@ export default {
 <style lang="sass" scoped>
 .textLabelCurrent
   color: white
-  font-size: 12px
+  font-size: 10px
 .textValueCurrent
   color: white
-  font-size: 18px
+  font-size: 16px
+  font-weight: bolder
 .iconSeeds
   background-image: url('./icons/seedsIcon.svg')
   background-repeat: no-repeat
   background-size: cover
   display: inline-block
-  width: 35px
-  height: 35px
+  width: 30px
+  height: 30px
   padding-left: 10px !important
   padding-right: 10px !important
 .container-current

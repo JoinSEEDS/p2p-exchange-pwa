@@ -3,7 +3,7 @@ import { UAL } from 'universal-authenticator-library'
 // import { KeycatAuthenticator } from '@smontero/ual-keycat'
 // import { Ledger } from 'ual-ledger'
 // import { Lynx } from '@smontero/ual-lynx'
-// import { Scatter } from 'ual-scatter'
+import { Scatter } from 'ual-scatter'
 // import { Sqrl } from '@smontero/ual-sqrl'
 // import { TokenPocket } from '@smontero/ual-token-pocket'
 import { Anchor } from 'ual-anchor'
@@ -23,7 +23,7 @@ export default async ({ Vue, store }) => {
     // new KeycatAuthenticator([mainChain]),
     // new Ledger([mainChain]),
     // new Lynx([mainChain]),
-    // new Scatter([mainChain], { appName: process.env.APP_NAME }),
+    new Scatter([mainChain], { appName: process.env.APP_NAME }),
     // new TokenPocket([mainChain]),
     new Anchor([mainChain], { appName: process.env.APP_NAME })
   ]

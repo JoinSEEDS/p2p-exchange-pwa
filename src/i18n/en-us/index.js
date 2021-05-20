@@ -86,10 +86,12 @@ export default {
       amountOfCrypto: 'Amount of crypto',
       afterTransaction: 'After the transaction in your account will be {amount} seeds.',
       costPerCrypto: 'Cost per crypto',
-      marketCost: 'Market cost {amount}',
+      marketCost: '100% (1 SEED) = {amount}',
       preferredCurrency: 'Preferred Currency',
       successMessage: 'Offer Sell was created success for {amount}.',
-      confirmSale: 'Confirm Sale'
+      confirmSale: 'Confirm Sale',
+      sellAllSeeds: 'Sell all SEEDS',
+      currentTotal: 'Current Total'
     },
     deposit: {
       deposit: 'Deposit',
