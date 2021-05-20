@@ -5,14 +5,21 @@
         .subtitle.text-dark {{ $t('pages.sell.confirmSale') }}
         //- green-flat-btn(:label="$t('pages.general.close')" v-close-popup)
     .row.justify-center.q-mt-md
-        .col-5.q-gutter-y-xs
-            .text-h4.text-dark.text-center {{ formatSeeds }}
-            .text-bold.text-dark.text-center.text-uppercase {{ $t('pages.sell.seeds') }}
+        .col-10.q-gutter-y-xs
+            .text-bold.text-dark.text-center.text-uppercase {{ $t('pages.sell.amountToSell') }}
+            .row.justify-center
+              .text-h4.text-dark.text-center {{ formatSeeds }}
+              .text-bold.text-dark.text-center.text-uppercase.self-end.q-pb-xs.q-ml-xs {{ $t('pages.sell.seeds') }}
             q-separator.q-mb-sm(color="warning")
     .row.justify-center
-        .col-5.q-gutter-y-xs
-            .text-h4.text-dark.text-center {{ fiatValue }}
-            .text-bold.text-dark.text-center.text-uppercase {{ this.currentFiatCurrency.toUpperCase() }}
+        .col-10.q-gutter-y-xs
+            .text-bold.text-dark.text-center.text-uppercase {{ $t('pages.sell.amountToReceive') }}
+            .row.justify-center
+              .text-h4.text-dark.text-center {{ fiatValue }}
+              .text-bold.text-dark.text-center.text-uppercase.self-end.q-pb-xs.q-ml-xs {{ this.currentFiatCurrency.toUpperCase() }}
+    #exRate.q-mt-md
+      .hint.text-dark {{$t('pages.sell.exchangeRate')}}
+      .hint.text-dark {{$t('pages.sell.exchangeRateEqual', { amount: `${pricePerSeedOnUSD} USD` })}}
     .row.q-gutter-y-md.q-mt-xs
         q-btn.full-width(
             :label="$t('common.buttons.confirm')"
@@ -41,10 +48,12 @@ export default {
       return Number.parseFloat(this.seeds).toFixed(4)
     },
     fiatValue () {
-      const fiatValueOnUSD = Number.parseFloat(this.seeds) / this.pricePerSeedOnUSD
-      console.log('fiatValueOnUSD', fiatValueOnUSD)
-      let fiatValue = fiatValueOnUSD * (this.percentage / 100)
-      return fiatValue.toFixed(4)
+      return (this.seeds * (this.pricePerSeedOnUSD * (this.percentage / 100))).toFixed(2)
+
+      // const fiatValueOnUSD = Number.parseFloat(this.seeds) / this.pricePerSeedOnUSD
+      // console.log('fiatValueOnUSD', fiatValueOnUSD)
+      // let fiatValue = fiatValueOnUSD * (this.percentage / 100)
+      // return fiatValue.toFixed(4)
     }
   }
 }

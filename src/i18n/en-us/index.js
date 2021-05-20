@@ -83,15 +83,19 @@ export default {
       defineTheSaleOffer: 'How many seeds would you like to sell?',
       crypto: 'Crypto',
       seeds: 'Seeds',
-      amountOfCrypto: 'Amount of crypto',
+      amountOfCrypto: 'Enter the amount of seeds to sell',
       afterTransaction: 'After the transaction in your account will be {amount} seeds.',
-      costPerCrypto: 'Cost per crypto',
+      costPerCrypto: 'Price ratio in percentage',
       marketCost: '100% (1 SEED) = {amount}',
+      exchangeRateEqual: '1 SEED = {amount}',
       preferredCurrency: 'Preferred Currency',
       successMessage: 'Offer Sell was created success for {amount}.',
       confirmSale: 'Confirm Sale',
       sellAllSeeds: 'Sell all SEEDS',
-      currentTotal: 'Current Total'
+      currentTotal: 'Current Total',
+      amountToReceive: 'Amount to receive',
+      exchangeRate: 'Exchange Rate',
+      amountToSell: 'Amount to sell'
     },
     deposit: {
       deposit: 'Deposit',

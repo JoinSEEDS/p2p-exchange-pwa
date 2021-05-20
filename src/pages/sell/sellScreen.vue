@@ -31,16 +31,16 @@
     )
       template(v-slot:append)
         .text SEEDS
-    q-input(
-        :label="$t('pages.sell.preferredCurrency')"
-        v-model="params.fiatCurrency"
-        outlined
-        dark
-        disable
-        standout="text-accent"
-        :rules="[rules.required]"
-        bg-color="warning"
-    )
+    //- q-input(
+    //-     :label="$t('pages.sell.preferredCurrency')"
+    //-     v-model="params.fiatCurrency"
+    //-     outlined
+    //-     dark
+    //-     disable
+    //-     standout="text-accent"
+    //-     :rules="[rules.required]"
+    //-     bg-color="warning"
+    //- )
     q-input(
         :label="$t('pages.sell.costPerCrypto')"
         v-model="params.costPerCrypt"
@@ -52,6 +52,7 @@
     )
       template(v-slot:append)
         .text %
+    .hint {{$t('pages.sell.exchangeRate')}}
     .hint {{$t('pages.sell.marketCost', { amount: `${pricePerSeedOnUSD} USD` })}}
     .row.bg-primary.btnSave.q-py-sm
         q-btn.full-width(
