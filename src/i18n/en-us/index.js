@@ -9,7 +9,8 @@ export default {
       mint: 'Mint',
       register: 'Register',
       save: 'Save',
-      confirm: 'Confirm'
+      confirm: 'Confirm',
+      filter: 'Filter'
     },
     defaultTitle: 'Title'
   },
@@ -96,6 +97,16 @@ export default {
       amountToReceive: 'Amount to receive',
       exchangeRate: 'Exchange Rate',
       amountToSell: 'Amount to sell'
+    },
+    buy: {
+      buySeeds: 'Buy SEEDS',
+      offerDetail: 'Offer Detail',
+      howManySeedsWillYouBuy: 'How many Seeds will you buy?',
+      seedsAvailable: 'Seeds Available',
+      seller: 'Seller',
+      buyAllSeeds: 'Buy all Seeds',
+      seedsToBuy: 'Seeds amount to buy',
+      sendOffer: 'Send offer'
     },
     deposit: {
       deposit: 'Deposit',

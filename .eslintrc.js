@@ -7,6 +7,7 @@ module.exports = {
   },
 
   env: {
+    // "es2020": true,  // <- activate “es2020” globals
     browser: true
   },
 

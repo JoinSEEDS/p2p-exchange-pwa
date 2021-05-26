@@ -7,7 +7,7 @@
         .col(v-if="userCanSell")
           custom-sell-btn(@click="goToSellScreen")
         .col
-          custom-buy-btn
+          custom-buy-btn(@click="goToBuyScreen")
     .activity-component
       recent-activity-view
     q-dialog(v-model="showDepositForm" transition-show="slide-up" transition-hide="slide-down" persistent)
@@ -37,6 +37,9 @@ export default {
     ...mapActions('accounts', ['getBalances']),
     goToSellScreen () {
       this.$router.push({ name: 'sell' })
+    },
+    goToBuyScreen () {
+      this.$router.push({ name: 'sellOffers' })
     },
     onSuccessUpdateForm () {
       this.getBalances()

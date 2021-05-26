@@ -12,7 +12,7 @@ class BaseEosApi {
     isParsedSortField = false,
     workflowPayloadType
   }) {
-    console.log('Contract account:  ', contractAccount)
+    // console.log('Contract account:  ', contractAccount)
     this.eosApi = eosApi
     this.notifier = notifier
     this.contractAccount = contractAccount
