@@ -10,8 +10,9 @@
         q-tab-panel(name="main").tabContainer
             main-tab
         q-tab-panel(name="transactions").tabContainer
-            .text-h6 Transactions
-            p Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          offers-tab
+            //- .text-h6 Ofer
+            //- p Lorem ipsum dolor sit amet consectetur adipisicing elit.
         q-tab-panel(name="notifications").tabContainer
             .text-h6 Notifications
             p Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -38,9 +39,10 @@
 
 <script>
 import mainTab from '~/pages/main-tab/main-tab'
+import offersTab from '~/pages/offers/offers-tab'
 export default {
   name: 'dashboard-screens',
-  components: { mainTab },
+  components: { mainTab, offersTab },
   data () {
     return {
       tab: 'main'
