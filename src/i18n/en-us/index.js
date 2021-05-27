@@ -110,7 +110,8 @@ export default {
       reputation: 'Reputation Score',
       timeZone: 'Time Zone',
       status: 'Status',
-      pricePerSEED: 'Price per SEED'
+      pricePerSEED: 'Price per SEED',
+      fiatCurrency: 'Fiat Currency'
     },
     deposit: {
       deposit: 'Deposit',

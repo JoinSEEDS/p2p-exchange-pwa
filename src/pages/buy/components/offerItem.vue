@@ -3,10 +3,11 @@
   .row
     img.avatar-icon.self-center(src="../icons/seedIcon.png")
     .col.q-px-md.q-pb-sm
-        .text-weight-bold.text-info Available: {{ offer.quantity_info[0].value }}
-        .text-white Fiat Currency: {{ offer.fiat_currency }}
-        .text-white Percentage Price: {{ offer.price_info[0].value }}%
-        .text-white Time Zone: {{ offer.time_zone }}
+        .text-weight-bold.text-info {{ $t('pages.buy.seedsAvailable') }}: {{ offer.quantity_info[0].value }}
+        .text-white {{ $t('pages.buy.fiatCurrency') }}: {{ offer.fiat_currency }}
+        .text-white {{ $t('pages.buy.pricePerSEED') }}: {{ offer.price_info[0].value }}%
+        .text-white {{ $t('pages.buy.timeZone') }}: {{ offer.time_zone }}
+        //- .text-white Seller: {{ offer.seller }}
   .row
     .col
         q-btn.full-width(

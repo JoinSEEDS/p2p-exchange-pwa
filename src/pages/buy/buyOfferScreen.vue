@@ -9,8 +9,8 @@
             .text-h4.text-white.text-center {{ params.amount }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
             q-separator(color="warning")
-            .text-h4.text-white.text-center ---
-              span.text-h6.text-white.text-center.text-uppercase.q-ml-sm currency
+            .text-h4.text-white.text-center {{ fiatToPay }}
+              span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ currentFiatCurrency }}
         .row.bg-warning.container-current(v-if="availableSeeds")
             .q-pa-sm
               .iconSeeds
@@ -44,6 +44,14 @@
         )
           template(v-slot:append)
             .text SEEDS
+        .hint {{$t('pages.sell.exchangeRate')}}
+        .hint {{$t('pages.sell.marketCost', { amount: `${pricePerSeedOnUSD} USD` })}}
+        .row.bg-primary.btnSave.q-py-sm
+          q-btn.full-width(
+              :label="$t('pages.sell.toSell')"
+              color="accent"
+              type="submit"
+          )
     //- .text-weight-bold.text-white {{ sellerInfo }}
 </template>
 
@@ -55,6 +63,7 @@ export default {
   mixins: [validation],
   mounted () {
     this.getOfferData()
+    this.getCurrentSeedsPerUsd()
   },
   data () {
     return {
@@ -68,7 +77,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('accounts', ['account']),
+    ...mapGetters('accounts', ['account', 'currentFiatCurrency', 'pricePerSeedOnUSD']),
     offerId () {
       return this.$route.params.id
     },
@@ -79,6 +88,10 @@ export default {
     percentageValue () {
       if (!this.sellOffer) return
       return this.sellOffer.price_info.find(v => v.key === 'priceper').value
+    },
+    fiatToPay () {
+      const fiat = this.params.amount * (this.pricePerSeedOnUSD * (this.percentageValue / 100))
+      return fiat.toFixed(2)
     }
   },
   watch: {
@@ -92,6 +105,7 @@ export default {
   },
   methods: {
     ...mapActions('buyOffers', ['getOffer']),
+    ...mapActions('accounts', ['getCurrentSeedsPerUsd']),
     async getOfferData () {
       console.log('Getting data for offer ', this.offerId)
       try {

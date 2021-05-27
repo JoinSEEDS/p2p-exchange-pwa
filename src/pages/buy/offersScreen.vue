@@ -6,11 +6,11 @@
     green-flat-btn(:label="$t('common.buttons.filter')")
   #offers(v-if="offers && offers.rows")
     #items(v-for="offer in offers.rows")
-      offer-item(:offer="offer")
+      offer-item(:offer="offer" v-if="offer.seller !== account")
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import OfferItem from '~/pages/buy/components/offerItem'
 export default {
   name: 'buyScreen',
@@ -22,6 +22,9 @@ export default {
   },
   mounted () {
     this.loadData()
+  },
+  computed: {
+    ...mapGetters('accounts', ['account'])
   },
   methods: {
     ...mapActions('buyOffers', ['getOffers']),
