@@ -27,6 +27,21 @@ class BuyOfferApi extends BaseEosApi {
     return rows
   }
 
+  async addBuyOffer ({ accountName, sellOfferId, quantity, paymentMethod }) {
+    const actions = [{
+      account: Contracts.CONTRACT_P2P,
+      name: 'addbuyoffer',
+      data: {
+        buyer: accountName,
+        sell_offer_id: sellOfferId,
+        quantity,
+        payment_method: paymentMethod
+      }
+    }]
+
+    return this.eosApi.signTransaction(actions)
+  }
+
   async getBuyOffers ({ offset, limit }) {
     const buyOffers = await this.fetch({
       scope: Contracts.CONTRACT_P2P,

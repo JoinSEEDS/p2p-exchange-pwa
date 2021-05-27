@@ -36,16 +36,17 @@ class OffersApi extends BaseEosApi {
     // })
     // let start = BigInt(cycle[0].cycle_id * (2 ** 64)).toString()
     // eslint-disable-next-line no-undef
-    let start = BigInt(parseInt(eosjsAccontName.nameToUint64('active')) * (2 ** 64)).toString()
+    let start = BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
 
-    const sellOffer = await this.fetchByIndex({
+    const sellOffer = await this.getTableRows({
       indexPosition: 11,
       lowerBound: start,
       // upperBound: 'offer.sell',
       keyType: 'i128',
       offset,
       limit,
-      reverse: false
+      reverse: false,
+      table: 'offers'
     })
 
     return sellOffer

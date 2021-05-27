@@ -62,7 +62,7 @@
         )
   #modals
     q-dialog(v-model="showConfirmSell" transition-show="slide-up" transition-hide="slide-down" persistent)
-      confirm-sell.custom-size-modal(:seeds="params.amount" :percentage="params.costPerCrypt" @confirm="onConfirmSell")
+      confirm-sell.custom-size-modal(:seeds="params.amount" :percentage="params.costPerCrypt" :exchange="exchangeRate" @confirm="onConfirmSell")
 </template>
 
 <script>
@@ -115,6 +115,9 @@ export default {
     },
     fiatToGet () {
       return this.params.amount * (this.pricePerSeedOnUSD * (this.params.costPerCrypt / 100))
+    },
+    exchangeRate () {
+      return this.pricePerSeedOnUSD * (this.params.costPerCrypt / 100)
     }
   },
   methods: {

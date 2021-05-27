@@ -1,22 +1,30 @@
 <template lang="pug">
 #container
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace('/offers')")
-    q-form.q-gutter-md.q-mt-sm
+    q-form.q-gutter-md.q-mt-sm(@submit.event="onValidForm")
         .subtitle.text-white.q-mt-md {{ $t('pages.buy.offerDetail') }}
         .text-white {{ $t('pages.buy.howManySeedsWillYouBuy') }}
         .row.justify-center
           .col-9
-            .text-h4.text-white.text-center {{ params.amount }}
+            .text-h4.text-white.text-center {{ Number.parseFloat(params.amount).toFixed(4) }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
             q-separator(color="warning")
             .text-h4.text-white.text-center {{ fiatToPay }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ currentFiatCurrency }}
-        .row.bg-warning.container-current(v-if="availableSeeds")
+        .row.bg-warning.container-current.q-py-sm(v-if="availableSeeds")
             .q-pa-sm
               .iconSeeds
-            .col-sm-11.self-center
+            .col-xs-10.col-sm-11.self-center
               .textLabelCurrent.q-ml-xs {{ $t('pages.buy.seedsAvailable') }}
               .textValueCurrent.text-info.q-ml-xs {{ availableSeeds }}
+              .row
+                .col-xs-12.col-sm-6
+                  .textLabelCurrent.q-ml-xs {{ $t('pages.buy.pricePerSEED') }}
+                  .textValueCurrent.text-info.q-ml-xs {{ percentageValue }} %
+                .col-xs-12.col-sm-6
+                  .textLabelCurrent.q-ml-xs {{ $t('pages.sell.exchangeRate') }}
+                  .textValueCurrent.text-info.q-ml-xs 1 SEED = {{ exchangeRate }} USD
+                  q-separator(dark)
               .text-weight-bold.text-white {{ $t('pages.buy.seller') }}: {{ sellOffer.seller }}
               .row.q-col-gutter-sm(v-if="sellerInfo")
                 .col-6
@@ -28,9 +36,9 @@
                 .col-6
                   .text-weight-bold.text-white.normal {{ $t('pages.buy.status') }}
                   .text-weight-bold.text-white.normal {{ sellerInfo.userData.status }}
-                .col-6
-                  .text-weight-bold.text-white.normal {{ $t('pages.buy.pricePerSEED') }}
-                  .text-weight-bold.text-white.normal {{ percentageValue }} %
+                //- .col-6
+                //-   .text-weight-bold.text-white.normal {{ $t('pages.buy.pricePerSEED') }}
+                //-   .text-weight-bold.text-white.normal {{ percentageValue }} %
         q-checkbox.text-white(v-model="isBuyingAll" dark :label="$t('pages.buy.buyAllSeeds')" color="accent" class="text-white")
         q-input(
             :label="$t('pages.sell.amountOfCrypto')"
@@ -52,21 +60,28 @@
               color="accent"
               type="submit"
           )
+    #modals
+      q-dialog(v-model="showConfirmBuy" transition-show="slide-up" transition-hide="slide-down" persistent)
+        confirm-buy.custom-size-modal(:seeds="params.amount" :percentage="percentageValue" :exchange="exchangeRate" @confirm="onConfirmBuy")
     //- .text-weight-bold.text-white {{ sellerInfo }}
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { validation } from '~/mixins/validation'
+import ConfirmBuy from './components/confirm-buy'
+
 export default {
   name: 'buy-offer-screen',
   mixins: [validation],
+  components: { ConfirmBuy },
   mounted () {
     this.getOfferData()
     this.getCurrentSeedsPerUsd()
   },
   data () {
     return {
+      showConfirmBuy: undefined,
       sellOffer: undefined,
       sellerInfo: undefined,
       isBuyingAll: false,
@@ -92,6 +107,10 @@ export default {
     fiatToPay () {
       const fiat = this.params.amount * (this.pricePerSeedOnUSD * (this.percentageValue / 100))
       return fiat.toFixed(2)
+    },
+    exchangeRate () {
+      const exchange = this.pricePerSeedOnUSD * (this.percentageValue / 100)
+      return exchange.toFixed(4)
     }
   },
   watch: {
@@ -104,15 +123,40 @@ export default {
     }
   },
   methods: {
-    ...mapActions('buyOffers', ['getOffer']),
-    ...mapActions('accounts', ['getCurrentSeedsPerUsd']),
+    ...mapActions('buyOffers', ['getOffer', 'createBuyOffer']),
+    ...mapActions('accounts', ['getCurrentSeedsPerUsd', 'getBalances']),
+    async onConfirmBuy () {
+      this.showConfirmBuy = false
+      try {
+        const response = await this.createBuyOffer({
+          sellOfferId: this.sellOffer.id,
+          quantity: this.parseToSeedSymbol(this.params.amount),
+          paymentMethod: this.sellOffer.payment_methods.find(v => v.key === 'paypal').key
+        })
+        console.log('response', response)
+        this.getBalances()
+        this.showSuccessMsg(this.$t('pages.buy.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
+        this.$router.replace({ name: 'sellOffers' })
+      } catch (e) {
+
+      }
+    },
+    onValidForm () {
+      this.showConfirmBuy = true
+    },
     async getOfferData () {
       console.log('Getting data for offer ', this.offerId)
       try {
+        this.showIsLoading(true)
         this.sellOffer = await this.getOffer(this.offerId)
+        this.showIsLoading(true)
+        await this.getSellerInfo()
         this.checkIsValidOffer()
-        this.getSellerInfo()
-      } catch (e) {}
+      } catch (e) {
+
+      } finally {
+        this.showIsLoading(false)
+      }
     },
     async getSellerInfo () {
       try {
@@ -122,7 +166,7 @@ export default {
     checkIsValidOffer () {
       if (this.sellOffer.current_status !== 's.active' || this.sellOffer.type !== 'offer.sell' || this.sellOffer.seller === this.account) {
         this.$router.replace('/offers')
-        console.warn('Invalid sell offer, redirecting to sell offers list')
+        console.warn('Invalid sell offer, redirecting to sell offers list', this.sellOffer)
       }
     }
   }

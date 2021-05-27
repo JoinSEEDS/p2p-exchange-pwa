@@ -91,7 +91,7 @@ export default {
       marketCost: '100% (1 SEED) = {amount}',
       exchangeRateEqual: '1 SEED = {amount}',
       preferredCurrency: 'Preferred Currency',
-      successMessage: 'Offer Sell was created success for {amount}.',
+      successMessage: 'Sell Offer was created success for {amount}.',
       confirmSale: 'Confirm Sale',
       sellAllSeeds: 'Sell all SEEDS',
       currentTotal: 'Current Total',
@@ -112,7 +112,11 @@ export default {
       timeZone: 'Time Zone',
       status: 'Status',
       pricePerSEED: 'Price per SEED',
-      fiatCurrency: 'Fiat Currency'
+      fiatCurrency: 'Fiat Currency',
+      confirmPurchase: 'Confirm Purchase',
+      amountToBuy: 'Amount to Buy',
+      amountToPay: 'Amount to pay',
+      successMessage: 'Purchase Offer was created success for {amount}.'
     },
     deposit: {
       deposit: 'Deposit',

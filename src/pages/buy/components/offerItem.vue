@@ -1,5 +1,5 @@
 <template lang="pug">
-#container.q-ma-sm.q-pa-sm
+#container.q-ma-sm.q-pa-sm(v-if="offer && offer.type==='offer.sell'")
   .row
     img.avatar-icon.self-center(src="../icons/seedIcon.png")
     .col.q-px-md.q-pb-sm
@@ -7,7 +7,7 @@
         .text-white {{ $t('pages.buy.fiatCurrency') }}: {{ offer.fiat_currency }}
         .text-white {{ $t('pages.buy.pricePerSEED') }}: {{ offer.price_info[0].value }}%
         .text-white {{ $t('pages.buy.timeZone') }}: {{ offer.time_zone }}
-        //- .text-white Seller: {{ offer.seller }}
+        .text-white Seller: {{ offer.seller }}
   .row
     .col
         q-btn.full-width(

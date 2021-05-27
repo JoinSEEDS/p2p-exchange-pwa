@@ -2,18 +2,18 @@
 #container.full-width
   q-card.bg-light.q-pa-md
     .row.justify-between
-        .subtitle.text-dark {{ $t('pages.sell.confirmSale') }}
+        .subtitle.text-dark {{ $t('pages.buy.confirmPurchase') }}
         //- green-flat-btn(:label="$t('pages.general.close')" v-close-popup)
     .row.justify-center.q-mt-md
         .col-10.q-gutter-y-xs
-            .text-bold.text-dark.text-center.text-uppercase {{ $t('pages.sell.amountToSell') }}
+            .text-bold.text-dark.text-center.text-uppercase {{ $t('pages.buy.amountToBuy') }}
             .row.justify-center
               .text-h4.text-dark.text-center {{ formatSeeds }}
               .text-bold.text-dark.text-center.text-uppercase.self-end.q-pb-xs.q-ml-xs {{ $t('pages.sell.seeds') }}
             q-separator.q-mb-sm(color="warning")
     .row.justify-center
         .col-10.q-gutter-y-xs
-            .text-bold.text-dark.text-center.text-uppercase {{ $t('pages.sell.amountToReceive') }}
+            .text-bold.text-dark.text-center.text-uppercase {{ $t('pages.buy.amountToPay') }}
             .row.justify-center
               .text-h4.text-dark.text-center {{ fiatValue }}
               .text-bold.text-dark.text-center.text-uppercase.self-end.q-pb-xs.q-ml-xs {{ this.currentFiatCurrency.toUpperCase() }}
@@ -37,7 +37,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'confirm-sell',
+  name: 'confirm-buy',
   props: {
     seeds: {},
     percentage: {},
