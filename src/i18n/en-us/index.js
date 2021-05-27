@@ -10,7 +10,8 @@ export default {
       register: 'Register',
       save: 'Save',
       confirm: 'Confirm',
-      filter: 'Filter'
+      filter: 'Filter',
+      waiting: 'Waiting...'
     },
     defaultTitle: 'Title'
   },
@@ -124,6 +125,11 @@ export default {
       escrow: 'Escrow',
       total: 'Total',
       seeBalancesDetails: 'See balances details'
+    },
+    offers: {
+      offers: 'Offers',
+      buy: 'Buy',
+      sale: 'Sale'
     }
   }
 }
