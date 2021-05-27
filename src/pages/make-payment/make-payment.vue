@@ -51,7 +51,7 @@ export default {
     // height: 80%
     width: 50px
   .custon-btn
-    height: 40px
+    height: 50px
     border-radius: 5px
   .btn-img-container
     height: 100% !important
