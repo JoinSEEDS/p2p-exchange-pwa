@@ -42,6 +42,27 @@ class TestApi extends BaseEosApi {
       userData: userData.rows[0]
     }
   }
+
+  async getUserSeedsData ({ accountName }) {
+    const userData = await this.fetchOneByIndex({
+      scope: Contracts.CONTRACT_SEEDS,
+      indexPosition: 1,
+      indexValue: accountName
+    })
+    const userRep = await this.getOneTableRow({
+      scope: Contracts.CONTRACT_SEEDS,
+      table: 'rep',
+      indexPosition: 1,
+      lowerBound: accountName,
+      upperBound: accountName,
+      keyType: 'i64'
+    })
+
+    return {
+      userData,
+      userRep
+    }
+  }
 }
 
 export default TestApi

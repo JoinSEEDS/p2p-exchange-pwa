@@ -106,7 +106,11 @@ export default {
       seller: 'Seller',
       buyAllSeeds: 'Buy all Seeds',
       seedsToBuy: 'Seeds amount to buy',
-      sendOffer: 'Send offer'
+      sendOffer: 'Send offer',
+      reputation: 'Reputation Score',
+      timeZone: 'Time Zone',
+      status: 'Status',
+      pricePerSEED: 'Price per SEED'
     },
     deposit: {
       deposit: 'Deposit',

@@ -15,10 +15,23 @@
             .q-pa-sm
               .iconSeeds
             .col-sm-11.self-center
-              .textLabelCurrent.q-ml-xs {{ $t('pages.sell.currentTotal') }}
-              .textValueCurrent.q-ml-xs {{ availableSeeds }}
-              .text-weight-bold.text-info {{ $t('pages.buy.seller') }}: {{ sellOffer.seller }}
-        q-checkbox.text-white(v-model="isBuyingAll" dark :label="$t('pages.sell.sellAllSeeds')" color="accent" class="text-white")
+              .textLabelCurrent.q-ml-xs {{ $t('pages.buy.seedsAvailable') }}
+              .textValueCurrent.text-info.q-ml-xs {{ availableSeeds }}
+              .text-weight-bold.text-white {{ $t('pages.buy.seller') }}: {{ sellOffer.seller }}
+              .row.q-col-gutter-sm(v-if="sellerInfo")
+                .col-6
+                  .text-weight-bold.text-white.normal {{ $t('pages.buy.reputation') }}
+                  .text-weight-bold.text-white.normal {{ sellerInfo.userRep.rank }}
+                .col-6
+                  .text-weight-bold.text-white.normal {{ $t('pages.buy.timeZone') }}
+                  .text-weight-bold.text-white.normal {{ sellOffer.time_zone }}
+                .col-6
+                  .text-weight-bold.text-white.normal {{ $t('pages.buy.status') }}
+                  .text-weight-bold.text-white.normal {{ sellerInfo.userData.status }}
+                .col-6
+                  .text-weight-bold.text-white.normal {{ $t('pages.buy.pricePerSEED') }}
+                  .text-weight-bold.text-white.normal {{ percentageValue }} %
+        q-checkbox.text-white(v-model="isBuyingAll" dark :label="$t('pages.buy.buyAllSeeds')" color="accent" class="text-white")
         q-input(
             :label="$t('pages.sell.amountOfCrypto')"
             v-model="params.amount"
@@ -31,7 +44,7 @@
         )
           template(v-slot:append)
             .text SEEDS
-    //- .text-weight-bold.text-white {{ sellOffer }}
+    //- .text-weight-bold.text-white {{ sellerInfo }}
 </template>
 
 <script>
@@ -45,7 +58,8 @@ export default {
   },
   data () {
     return {
-      sellOffer: 'Getting',
+      sellOffer: undefined,
+      sellerInfo: undefined,
       isBuyingAll: false,
       params: {
         amount: 0
@@ -61,6 +75,10 @@ export default {
     availableSeeds () {
       if (!this.sellOffer || !this.sellOffer.quantity_info) return
       return this.sellOffer.quantity_info.find(v => v.key === 'available').value
+    },
+    percentageValue () {
+      if (!this.sellOffer) return
+      return this.sellOffer.price_info.find(v => v.key === 'priceper').value
     }
   },
   watch: {
@@ -79,6 +97,12 @@ export default {
       try {
         this.sellOffer = await this.getOffer(this.offerId)
         this.checkIsValidOffer()
+        this.getSellerInfo()
+      } catch (e) {}
+    },
+    async getSellerInfo () {
+      try {
+        this.sellerInfo = await this.$store.$userApi.getUserSeedsData({ accountName: this.sellOffer.seller })
       } catch (e) {}
     },
     checkIsValidOffer () {

@@ -84,4 +84,9 @@ export default {
   border-top-width: medium !important
   border: medium
   color: #E9EDD9
+
+@media screen and ( min-width: $breakpoint-mobile )
+  .tabContainer
+    padding: 10px
+
 </style>

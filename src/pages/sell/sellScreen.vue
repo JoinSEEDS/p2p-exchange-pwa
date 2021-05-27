@@ -142,6 +142,8 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+#container
+  padding: 10px
 .textLabelCurrent
   color: white
   font-size: 10px
