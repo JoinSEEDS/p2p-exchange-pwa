@@ -130,6 +130,9 @@ export default {
       offers: 'Offers',
       buy: 'Buy',
       sale: 'Sale'
+    },
+    make_payment: {
+      make_payment: 'Make payment'
     }
   }
 }

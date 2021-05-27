@@ -11,7 +11,7 @@
         q-btn.full-width(
             :label="$t('common.buttons.waiting')"
             color="orange-6"
-            @click="takeOffer"
+            @click="$router.replace({ name: 'make-payment' })"
             size="md"
         ).q-py-sm.full-width
         q-separator.full-width.q-my-md(color="warning")
