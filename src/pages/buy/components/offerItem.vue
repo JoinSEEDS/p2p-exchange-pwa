@@ -40,12 +40,12 @@ export default {
   computed: {
     successFilter () {
       let show = true
-      if ((this.filters.fiatCurrency !== this.offer.fiat_currency) && this.filters.fiatCurrency !== 'all') {
-        show = false
-      }
-      if ((this.filters.timeZone !== this.offer.time_zone) && this.filters.timeZone !== 'all') {
-        show = false
-      }
+      // if ((this.filters.fiatCurrency !== this.offer.fiat_currency) && this.filters.fiatCurrency !== 'all') {
+      //   show = false
+      // }
+      // if ((this.filters.timeZone !== this.offer.time_zone) && this.filters.timeZone !== 'all') {
+      //   show = false
+      // }
       return show
     }
   },

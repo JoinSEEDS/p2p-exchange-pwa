@@ -6,24 +6,24 @@
       green-flat-btn(:label="$t('pages.general.close')" v-close-popup)
     q-form.q-px-xs(@submit.prevent="onSubmitForm")
       q-select(
-        :label="$t('pages.account.timeZone')"
-        v-model="value.timeZone"
+        :label="$t('pages.offers.filterBy')"
+        v-model="selectedFilter.filterLabel"
         outlined
         standout="text-dark"
-        :options="CommonTimeZoneOptions"
-        emit-value
+        :options="filters"
         map-options
         :rules="[rules.required]"
       )
       q-select(
-        :label="$t('pages.account.preferredFiatCurrency')"
-        v-model="value.fiatCurrency"
+        :label="CustomLabel"
+        v-model="selectedFilter.filterValue"
         outlined
         standout="text-dark"
-        :options="commonCurrenciesOptions"
-        emit-value
+        :options="CustomOptions"
         map-options
         :rules="[rules.required]"
+        v-if="showSelectValue"
+        ref="selectValue"
       )
       //- q-input(
       //-     :label="$t('pages.deposit.amount')"
@@ -35,11 +35,11 @@
       //-     min="0"
       //-     step="0.000001"
       //- )
-      //- q-btn.full-width(
-      //-   :label="$t('pages.general.filter')"
-      //-   color="accent"
-      //-   type="submit"
-      //-   )
+      q-btn.full-width(
+        :label="$t('pages.general.filter')"
+        color="accent"
+        type="submit"
+        )
 </template>
 
 <script>
@@ -51,25 +51,75 @@ export default {
   name: 'filter-offer',
   mixins: [validation],
   props: {
-    value: {
-
+    filter: {
+      default: () => {
+        return {
+          filterLabel: {
+            label: 'None',
+            value: 11
+          },
+          filterValue: {
+            label: undefined,
+            value: undefined
+          }
+        }
+      }
     }
   },
   data () {
     return {
-      filters: {
-        timeZone: 'all',
-        fiatCurrency: 'all'
+      firstChange: true,
+      showSelectValue: false,
+      selectedFilter: {
+        filterValue: undefined,
+        filterLabel: undefined
+      },
+      filters: [
+        {
+          label: 'None',
+          value: 11
+        },
+        {
+          label: 'Time Zone',
+          value: 12
+        },
+        {
+          label: 'Fiat Currency',
+          value: 13
+        }
+      ]
+    }
+  },
+  beforeMount () {
+    this.selectedFilter = {
+      ...this.filter
+    }
+  },
+  watch: {
+    async 'selectedFilter.filterLabel' (v) {
+      if (v.value === 11) {
+        this.selectedFilter.filterValue = {
+          label: undefined,
+          value: undefined
+        }
+        this.showSelectValue = false
+      } else {
+        this.showSelectValue = true
+        if (!this.firstChange) {
+          await this.$nextTick()
+          this.$refs.selectValue.showPopup()
+        }
       }
+      this.firstChange = false
     }
   },
   computed: {
-    commonCurrenciesOptions () {
+    CommonCurrenciesOptions () {
       const options = []
-      options.push({
-        label: 'All',
-        value: 'all'
-      })
+      // options.push({
+      //   label: 'All',
+      //   value: 'all'
+      // })
       for (let currency in CommonCurrencies) {
         options.push({
           label: `${CommonCurrencies[currency].name} (${CommonCurrencies[currency].symbol})`,
@@ -79,24 +129,48 @@ export default {
       return options
     },
     CommonTimeZoneOptions () {
-      const options = [{
-        label: 'All',
-        value: 'all'
-      }]
+      // const options = [{
+      //   label: 'All',
+      //   value: 'all'
+      // }]
       const timeZones = CommonTimeZone.map(v => {
         return {
           label: v.text,
           value: v.abbr.toLowerCase()
         }
       })
-      return options.concat(timeZones)
+      return timeZones
+    },
+    CustomOptions () {
+      switch (this.selectedFilter.filterLabel.value) {
+        case 11:
+          return undefined
+        case 12:
+          return this.CommonTimeZoneOptions
+        case 13:
+          return this.CommonCurrenciesOptions
+        default:
+          return undefined
+      }
+    },
+    CustomLabel () {
+      switch (this.selectedFilter.filterLabel.value) {
+        case 11:
+          return undefined
+        case 12:
+          return this.$t('pages.offers.timeZone')
+        case 13:
+          return this.$t('pages.offers.fiatCurrency')
+        default:
+          return undefined
+      }
     }
   },
   methods: {
     ...mapActions('accounts', ['deposit', 'withdraw']),
     async onSubmitForm () {
       try {
-        this.$emit('success', this.filters)
+        this.$emit('success', this.selectedFilter)
       } catch (e) {
 
       }

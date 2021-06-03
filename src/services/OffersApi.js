@@ -27,17 +27,31 @@ class OffersApi extends BaseEosApi {
     return rows
   }
 
-  async getSellOffers ({ nextKey, limit, indexPosition }) {
-    // const index = 5
-    // const buyOffers = await this.fetchByIndex({
-    //   scope: Contracts.CONTRACT_P2P,
-    //   offset,
-    //   limit
-    // })
-    // let start = BigInt(cycle[0].cycle_id * (2 ** 64)).toString()
+  async getSellOffers ({ nextKey, limit, indexPosition, filterValue }) {
     // eslint-disable-next-line no-undef
-    let start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
     // debugger
+    let start
+    switch (indexPosition) {
+      case 11:
+        // eslint-disable-next-line no-undef
+        start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
+        console.log('index 11 ', filterValue, nextKey, start)
+        break
+      case 12:
+        // eslint-disable-next-line no-undef
+        start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64(filterValue)) * (2 ** 64)).toString()
+        break
+      case 13:
+        // eslint-disable-next-line no-undef
+        start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64) + parseInt(eosjsAccontName.nameToUint64(filterValue))).toString()
+        console.log('index 13 ', filterValue, nextKey, start)
+        break
+      default:
+        // eslint-disable-next-line no-undef
+        start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
+        break
+    }
+    // let start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
 
     const sellOffer = await this._getTableRows({
       indexPosition,
@@ -46,7 +60,7 @@ class OffersApi extends BaseEosApi {
       keyType: 'i128',
       // offset,
       limit,
-      reverse: false,
+      // reverse: false,
       table: 'offers'
     })
 

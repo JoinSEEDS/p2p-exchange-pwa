@@ -4,13 +4,16 @@
   .row.justify-between
     .subtitle.text-white.q-mt-md {{ $t('pages.buy.buySeeds') }}
     green-flat-btn(:label="$t('common.buttons.filter')" @click="showFilter = true")
+  .row.justify-start(v-if="filter.filterValue.label")
+    .text-info Filtered by {{ filter.filterLabel.label }} : {{ filter.filterValue.label }}
+    q-icon
   #containerScroll(ref="scrollTarget")
-    q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="510" :scroll-target="$refs.scrollTarget")
+    q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="200" :scroll-target="$refs.scrollTarget" ref="customInfinite")
       #items(v-for="offer in offersList.rows")
-        offer-item(:offer="offer" v-if="offer.seller !== account" :filters="filters")
+        offer-item(:offer="offer" v-if="offer.seller !== account")
   #modals
     q-dialog(v-model="showFilter" transition-show="slide-up" transition-hide="slide-down" persistent)
-      filter-offer(v-model.sync="filters" @success="onFilterChange")
+      filter-offer(:filter="filter" @success="onFilterChange")
 </template>
 
 <script>
@@ -26,16 +29,21 @@ export default {
       showFilter: false,
       scrollTarget: undefined,
       rowsPerLoad: 4,
-      limit: 0,
-      offset: 0,
+      limit: 2,
       offersList: {
         more: true,
         rows: [],
         nextKey: undefined
       },
-      filters: {
-        timeZone: 'all',
-        fiatCurrency: 'all'
+      filter: {
+        filterLabel: {
+          label: 'None',
+          value: 11
+        },
+        filterValue: {
+          label: undefined,
+          value: undefined
+        }
       }
     }
   },
@@ -46,18 +54,35 @@ export default {
     ...mapGetters('accounts', ['account'])
   },
   methods: {
-    ...mapActions('buyOffers', ['getSellOffers']),
-    onFilterChange (filters) {
+    ...mapActions('sellOffers', ['getSellOffers']),
+    async resetPagination () {
+      this.offersList = {
+        more: true,
+        rows: [],
+        nextKey: undefined
+      }
+      console.log('resetPagination')
+      // this.$refs.customInfinite.stop()
+      // this.onLoad()
+      await this.$nextTick()
+      this.$refs.customInfinite.stop()
+      await this.$nextTick()
+      this.$refs.customInfinite.resume()
+      // this.$refs.customInfinite.poll()
+    },
+    onFilterChange (filter) {
       this.showFilter = false
-      // this.filters = filters
+      this.filter = filter
+      this.resetPagination()
     },
     async onLoad (index, done) {
       console.log('onLoad', this.offersList.more)
       if (this.offersList.more) {
         const { rows, more, next_key: nextKey } = await this.getSellOffers({
-          limit: 2,
-          indexPosition: 11,
-          nextKey: this.offersList.nextKey
+          limit: this.limit,
+          indexPosition: this.filter.filterLabel.value,
+          nextKey: this.offersList.nextKey,
+          filterValue: this.filter.filterValue.value
         })
         if (rows) {
           // console.log('rows', rows)
@@ -66,8 +91,10 @@ export default {
         this.offersList.more = more
         this.offersList.nextKey = nextKey
         this.offset = this.limit
-        this.limit = this.limit + this.rowsPerLoad
-        done()
+        // this.limit = this.limit + this.rowsPerLoad
+        if (done) {
+          done()
+        }
       }
     }
   }

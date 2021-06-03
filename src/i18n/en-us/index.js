@@ -140,7 +140,10 @@ export default {
     offers: {
       offers: 'Offers',
       buy: 'Buy',
-      sale: 'Sale'
+      sale: 'Sale',
+      timeZone: 'Time Zone',
+      fiatCurrency: 'Fiat Currency',
+      filterBy: 'Filter By'
     },
     make_payment: {
       make_payment: 'Make payment'
