@@ -6,7 +6,7 @@
     green-flat-btn(:label="$t('common.buttons.filter')" @click="showFilter = true")
   .row.justify-start(v-if="filter.filterValue.label")
     .text-info Filtered by {{ filter.filterLabel.label }} : {{ filter.filterValue.label }}
-    q-icon
+    q-icon.q-ml-sm(name="close" color="white" @click="removeFilter")
   #containerScroll(ref="scrollTarget")
     q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="200" :scroll-target="$refs.scrollTarget" ref="customInfinite")
       #items(v-for="offer in offersList.rows")
@@ -55,6 +55,19 @@ export default {
   },
   methods: {
     ...mapActions('sellOffers', ['getSellOffers']),
+    removeFilter () {
+      this.filter = {
+        filterLabel: {
+          label: 'None',
+          value: 11
+        },
+        filterValue: {
+          label: undefined,
+          value: undefined
+        }
+      }
+      this.resetPagination()
+    },
     async resetPagination () {
       this.offersList = {
         more: true,
