@@ -27,7 +27,7 @@ class OffersApi extends BaseEosApi {
     return rows
   }
 
-  async getOffers ({ offset, limit }) {
+  async getSellOffers ({ nextKey, limit, indexPosition }) {
     // const index = 5
     // const buyOffers = await this.fetchByIndex({
     //   scope: Contracts.CONTRACT_P2P,
@@ -36,14 +36,15 @@ class OffersApi extends BaseEosApi {
     // })
     // let start = BigInt(cycle[0].cycle_id * (2 ** 64)).toString()
     // eslint-disable-next-line no-undef
-    let start = BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
+    let start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
+    // debugger
 
-    const sellOffer = await this.getTableRows({
-      indexPosition: 11,
+    const sellOffer = await this._getTableRows({
+      indexPosition,
       lowerBound: start,
       // upperBound: 'offer.sell',
       keyType: 'i128',
-      offset,
+      // offset,
       limit,
       reverse: false,
       table: 'offers'

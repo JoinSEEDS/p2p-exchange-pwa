@@ -52,7 +52,8 @@ export default {
       close: 'Close',
       search: 'Search',
       confirmActions: 'Do you want confirm this action?',
-      noAccountsFound: 'No accounts found'
+      noAccountsFound: 'No accounts found',
+      filter: 'Filter'
     },
     login: {
       getApp: 'Download the app',
@@ -116,7 +117,8 @@ export default {
       confirmPurchase: 'Confirm Purchase',
       amountToBuy: 'Amount to Buy',
       amountToPay: 'Amount to pay',
-      successMessage: 'Purchase Offer was created success for {amount}.'
+      successMessage: 'Purchase Offer was created success for {amount}.',
+      amountOfCrypto: 'Enter the amount of seeds to buy'
     },
     deposit: {
       deposit: 'Deposit',

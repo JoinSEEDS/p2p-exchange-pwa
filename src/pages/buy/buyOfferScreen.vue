@@ -41,7 +41,7 @@
                 //-   .text-weight-bold.text-white.normal {{ percentageValue }} %
         q-checkbox.text-white(v-model="isBuyingAll" dark :label="$t('pages.buy.buyAllSeeds')" color="accent" class="text-white")
         q-input(
-            :label="$t('pages.sell.amountOfCrypto')"
+            :label="$t('pages.buy.amountOfCrypto')"
             v-model="params.amount"
             outlined
             dark
@@ -52,8 +52,8 @@
         )
           template(v-slot:append)
             .text SEEDS
-        .hint {{$t('pages.sell.exchangeRate')}}
-        .hint {{$t('pages.sell.marketCost', { amount: `${pricePerSeedOnUSD} USD` })}}
+        //- .hint {{$t('pages.sell.exchangeRate')}}
+        //- .hint {{$t('pages.sell.marketCost', { amount: `${pricePerSeedOnUSD} USD` })}}
         .row.bg-primary.btnSave.q-py-sm
           q-btn.full-width(
               :label="$t('pages.sell.toSell')"

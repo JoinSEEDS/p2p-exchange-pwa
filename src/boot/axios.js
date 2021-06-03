@@ -3,8 +3,8 @@ import axios from 'axios'
 export const http = axios.create({
   baseURL: process.env.WEBSERVICES_URL,
   headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': `${process.env.WEBSERVICES_API_KEY}`
+    'Content-Type': 'application/json'
+    // 'x-api-key': `${process.env.WEBSERVICES_API_KEY}`
   }
 })
 

@@ -2,6 +2,7 @@ import BaseEosApi from './BaseEosApi'
 import {
   Contracts
 } from '~/const/Contracts'
+import axios from 'axios'
 
 class BalanceApi extends BaseEosApi {
   constructor ({
@@ -18,6 +19,13 @@ class BalanceApi extends BaseEosApi {
         defaultSortField: 'account'
       }
     )
+    this.axios = axios.create({
+      baseURL: 'https://api-payment.hypha.earth',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log('axios', this.axios)
   }
 
   /** *
@@ -42,6 +50,10 @@ class BalanceApi extends BaseEosApi {
       indexPosition: 1,
       indexValue: accountName
     })
+  }
+
+  async getFiatExchanges () {
+    return this.axios.get('/fiatExchangeRates')
   }
 }
 

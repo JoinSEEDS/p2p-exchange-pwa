@@ -71,7 +71,8 @@ export default ({ store }) => {
   })
 
   const balanceApi = new BalanceApi({
-    eosApi: api
+    eosApi: api,
+    axios: store.$axios
   })
 
   const buyOfferApi = new BuyOfferApi({

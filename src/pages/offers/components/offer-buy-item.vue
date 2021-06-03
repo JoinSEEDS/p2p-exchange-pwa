@@ -30,9 +30,6 @@ export default {
     takeOffer () {
       // this.$router.push({ name: 'buy', params: { id: this.offer.id } })
     }
-  },
-  created () {
-    console.log('offer buy', this.offer)
   }
 }
 </script>

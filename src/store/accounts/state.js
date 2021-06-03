@@ -7,6 +7,7 @@ export default () => ({
   autoLogin: false,
   loading: {}, // Wallets loading status
   requestAccount: false,
+  fiatExchanges: undefined,
   availableAccounts: {
     list: {
       data: [],

@@ -1,10 +1,8 @@
 <template lang="pug">
-//- #container.full-width
-div.full-width
-  q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'home' })")
+#container.full-width
   .row.justify-between
     .subtitle.text-white.q-mt-md {{ $t('pages.offers.offers') }}
-    green-flat-btn(:label="$t('common.buttons.filter')")
+    green-flat-btn.self-center(:label="$t('common.buttons.filter')")
   q-tabs(
     v-model="tab"
     active-color="accent"

@@ -29,13 +29,11 @@ export const getBuyOffers = async function ({ commit }) {
   }
 }
 
-export const getOffers = async function ({ commit }, params) {
+export const getSellOffers = async function ({ commit }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
-    const response = await this.$offersApi.getOffers({
-      ...params,
-      offset: 0,
-      limit: 10
+    const response = await this.$offersApi.getSellOffers({
+      ...params
     })
     return response
   } catch (e) {
