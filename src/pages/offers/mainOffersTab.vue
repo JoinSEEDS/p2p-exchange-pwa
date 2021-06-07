@@ -1,5 +1,5 @@
 <template lang="pug">
-#container.full-width
+#container
   .row.justify-between
     .subtitle.text-white.q-mt-md {{ $t('pages.offers.offers') }}
     green-flat-btn.self-center(:label="$t('common.buttons.filter')")
@@ -10,37 +10,23 @@
   )
     q-tab(name="buy" :label="$t('pages.offers.buy')")
     q-tab(name="sale" :label="$t('pages.offers.sale')")
-
   q-separator
 
   q-tab-panels(v-model="tab" animated).bg-primary
     q-tab-panel(name="buy")
-      //- | Panel to buy
-      #offers(v-if="offers")
-        #items(v-for="offer in offers")
-          offer-buy-item(:offer="offer")
+      my-buy-offers
     q-tab-panel(name="sale")
       | Panel to sell
-  //- #offers(v-if="offers && offers.rows")
-  //-   #items(v-for="offer in offers.rows")
-  //-     offer-item(:offer="offer")
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
-import OfferBuyItem from './components/offer-buy-item'
+import MyBuyOffers from './tabs/myBuyOffers.vue'
+
 export default {
-  name: 'offfers-screen',
-  components: { OfferBuyItem },
+  name: 'main-offers-screen',
+  components: { MyBuyOffers },
   data () {
     return {
-      offers: [
-        {
-          offerer: 'Roman Butt',
-          amount: '16.00 SEEDS',
-          memo: '$13.50 USD'
-        }
-      ],
       tab: 'buy'
     }
   }

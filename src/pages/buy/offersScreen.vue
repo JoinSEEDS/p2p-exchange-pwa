@@ -7,6 +7,8 @@
   .row.justify-start(v-if="filter.filterValue.label")
     .text-info Filtered by {{ filter.filterLabel.label }} : {{ filter.filterValue.label }}
     q-icon.q-ml-sm(name="close" color="white" @click="removeFilter")
+  #offersEmpty(v-if="offersList.rows.length === 0 && loading")
+    skeleton-offer-item
   #containerScroll(ref="scrollTarget")
     q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="200" :scroll-target="$refs.scrollTarget" ref="customInfinite")
       #items(v-for="offer in offersList.rows")
@@ -26,6 +28,7 @@ export default {
   components: { OfferItem, FilterOffer },
   data () {
     return {
+      loading: true,
       showFilter: false,
       scrollTarget: undefined,
       rowsPerLoad: 4,
@@ -90,6 +93,7 @@ export default {
     },
     async onLoad (index, done) {
       console.log('onLoad', this.offersList.more)
+      this.loading = true
       if (this.offersList.more) {
         const { rows, more, next_key: nextKey } = await this.getSellOffers({
           limit: this.limit,
@@ -104,6 +108,7 @@ export default {
         this.offersList.more = more
         this.offersList.nextKey = nextKey
         this.offset = this.limit
+        this.loading = false
         // this.limit = this.limit + this.rowsPerLoad
         if (done) {
           done()

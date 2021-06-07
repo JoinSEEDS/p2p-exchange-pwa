@@ -8,7 +8,7 @@
         class="bg-primary text-white"
     )
         q-tab-panel(name="main").tabContainer
-            main-tab
+          main-tab
         q-tab-panel(name="transactions").tabContainer
           offers-tab
             //- .text-h6 Ofer
@@ -39,7 +39,7 @@
 
 <script>
 import mainTab from '~/pages/main-tab/main-tab'
-import offersTab from '~/pages/offers/offers-tab'
+import offersTab from '~/pages/offers/mainOffersTab'
 export default {
   name: 'dashboard-screens',
   components: { mainTab, offersTab },

@@ -1,8 +1,9 @@
+/* eslint-disable no-undef */
 import BaseEosApi from './BaseEosApi'
 import {
   Contracts
 } from '~/const/Contracts'
-import eosjsAccontName from 'eosjs-account-name'
+import eosjsAccountName from 'eosjs-account-name'
 
 class OffersApi extends BaseEosApi {
   constructor ({
@@ -34,24 +35,25 @@ class OffersApi extends BaseEosApi {
     switch (indexPosition) {
       case 11:
         // eslint-disable-next-line no-undef
-        start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
+        start = nextKey || BigInt(parseInt(eosjsAccountName.nameToUint64('s.active')) * (2 ** 64)).toString()
         console.log('index 11 ', filterValue, nextKey, start)
         break
       case 12:
         // eslint-disable-next-line no-undef
-        start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64(filterValue)) * (2 ** 64)).toString()
+        start = nextKey || (BigInt(eosjsAccountName.nameToUint64('s.active')) * BigInt(2 ** 64) + BigInt(eosjsAccountName.nameToUint64(filterValue))).toString()
         break
       case 13:
         // eslint-disable-next-line no-undef
-        start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64) + parseInt(eosjsAccontName.nameToUint64(filterValue))).toString()
+        start = nextKey || (BigInt(eosjsAccountName.nameToUint64('s.active')) * BigInt(2 ** 64) + BigInt(eosjsAccountName.nameToUint64(filterValue))).toString()
+
         console.log('index 13 ', filterValue, nextKey, start)
         break
       default:
         // eslint-disable-next-line no-undef
-        start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
+        start = nextKey || BigInt(parseInt(eosjsAccountName.nameToUint64('s.active')) * (2 ** 64)).toString()
         break
     }
-    // let start = nextKey || BigInt(parseInt(eosjsAccontName.nameToUint64('s.active')) * (2 ** 64)).toString()
+    // let start = nextKey || BigInt(parseInt(eosjsAccountName.nameToUint64('s.active')) * (2 ** 64)).toString()
 
     const sellOffer = await this._getTableRows({
       indexPosition,
@@ -64,6 +66,21 @@ class OffersApi extends BaseEosApi {
       table: 'offers'
     })
 
+    return sellOffer
+  }
+
+  async getBuyOfferByUser ({ accountName, limit, nextKey }) {
+    let start = nextKey || (BigInt(eosjsAccountName.nameToUint64(accountName)) * BigInt(2 ** 64)).toString()
+    const sellOffer = await this._getTableRows({
+      indexPosition: 6,
+      lowerBound: start,
+      // upperBound: 'offer.sell',
+      keyType: 'i128',
+      // offset,
+      limit,
+      // reverse: false,
+      table: 'offers'
+    })
     return sellOffer
   }
 

@@ -1,29 +1,43 @@
 <template lang="pug">
-#container
+#subContainer
   .row
     img.avatar-icon.self-center(src="../icons/seedIcon.png")
     .col.q-px-md.q-py-md
-        .text-white {{ offer.offerer }}
-        .text-white {{ offer.amount }}
+        .text-white {{ offer.seller }}
+        .text-white {{ quantity }}
         .text-weight-bold.text-info {{ offer.memo }}
-  .row.q-my-md
+  .row
     .col
         q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING"
             :label="$t('common.buttons.waiting')"
             color="orange-6"
             @click="$router.replace({ name: 'make-payment' })"
-            size="md"
-        ).q-py-sm.full-width
-        q-separator.full-width.q-my-md(color="warning")
+        )
+        q-separator.full-width.q-my-sm(color="warning")
 </template>
 
 <script>
+import { OfferStatus } from '~/const/offerStatus'
 export default {
   name: 'offer-buy-item',
   props: {
     offer: {
       type: Object,
       default: () => undefined
+    }
+  },
+  data () {
+    return {
+      OfferStatus
+    }
+  },
+  computed: {
+    quantity () {
+      const buyQuantity = this.offer.quantity_info.find(v => {
+        return v.key === 'buyquantity'
+      })
+      return buyQuantity.value || 'UNKNOWN'
     }
   },
   methods: {

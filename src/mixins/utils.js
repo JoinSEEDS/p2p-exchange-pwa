@@ -1,8 +1,9 @@
 import { mapMutations } from 'vuex'
 import GreenFlatBtn from '~/components/green-flat-btn'
+import SkeletonOfferItem from '~/components/skeleton/skeletonOfferItem'
 
 export const utils = {
-  components: { GreenFlatBtn },
+  components: { GreenFlatBtn, SkeletonOfferItem },
   methods: {
     ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg', 'setIsLoading']),
     copyToClipboard (str) {
