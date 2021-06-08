@@ -1,12 +1,12 @@
 <template lang="pug">
 #containerBuyOffers
-  q-pull-to-refresh(@refresh="refresh")
     #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
-        skeleton-offer-item
-    q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+      skeleton-offer-item
+    q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
+      q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
         #containerScroll(ref="scrollTarget")
-                #items(v-for="offer in myOffers.rows")
-                    offer-buy-item(:offer="offer")
+          #items(v-for="offer in myOffers.rows")
+            offer-buy-item(:offer="offer")
 </template>
 
 <script>
@@ -14,7 +14,7 @@ import { mapActions } from 'vuex'
 import OfferBuyItem from '../components/offer-buy-item'
 
 export default {
-  name: 'my-buy-offers',
+  name: 'my-sell-offers',
   data () {
     return {
       scrollOffset: 1000,
@@ -35,7 +35,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('buyOffers', ['getMyBuyOffers']),
+    ...mapActions('sellOffers', ['getMySellOffers']),
     async refresh (done) {
       this.resetPagination()
       done()
@@ -44,7 +44,7 @@ export default {
       console.log('onLoad', this.myOffers.more)
       this.loading = true
       if (this.myOffers.more) {
-        const { rows, more, next_key: nextKey } = await this.getMyBuyOffers({
+        const { rows, more, next_key: nextKey } = await this.getMySellOffers({
           limit: this.limit
         })
         if (rows) {

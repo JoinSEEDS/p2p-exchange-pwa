@@ -2,7 +2,7 @@
 #container
   .row.justify-between
     .subtitle.text-white.q-mt-md {{ $t('pages.offers.offers') }}
-    green-flat-btn.self-center(:label="$t('common.buttons.filter')")
+    //- green-flat-btn.self-center(:label="$t('common.buttons.filter')")
   q-tabs(
     v-model="tab"
     active-color="accent"
@@ -16,15 +16,16 @@
     q-tab-panel(name="buy")
       my-buy-offers
     q-tab-panel(name="sale")
-      | Panel to sell
+      my-sell-offers
 </template>
 
 <script>
 import MyBuyOffers from './tabs/myBuyOffers.vue'
+import MySellOffers from './tabs/mySellOffers.vue'
 
 export default {
   name: 'main-offers-screen',
-  components: { MyBuyOffers },
+  components: { MyBuyOffers, MySellOffers },
   data () {
     return {
       tab: 'buy'

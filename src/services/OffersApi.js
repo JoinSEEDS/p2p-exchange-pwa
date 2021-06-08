@@ -40,11 +40,15 @@ class OffersApi extends BaseEosApi {
         break
       case 12:
         // eslint-disable-next-line no-undef
-        start = nextKey || (BigInt(eosjsAccountName.nameToUint64('s.active')) * BigInt(2 ** 64) + BigInt(eosjsAccountName.nameToUint64(filterValue))).toString()
+        start = nextKey || (BigInt(eosjsAccountName.nameToUint64('s.active')) * BigInt(2 ** 64) + BigInt(eosjsAccountName.nameToUint64(filterValue)) * BigInt(2 ** 64)).toString()
         break
       case 13:
+        // uint128_t index_high = (uint128_t(current_status.value) << 64) + (uint128_t(time_zone.value) << 64);
         // eslint-disable-next-line no-undef
-        start = nextKey || (BigInt(eosjsAccountName.nameToUint64('s.active')) * BigInt(2 ** 64) + BigInt(eosjsAccountName.nameToUint64(filterValue))).toString()
+        // const a = BigInt(eosjsAccountName.nameToUint64('s.active')) * BigInt(2 ** 64) + BigInt(eosjsAccountName.nameToUint64(filterValue)) * BigInt(2 ** 64)
+        // return index_high + id;
+        // eslint-disable-next-line no-undef
+        start = nextKey || (BigInt(eosjsAccountName.nameToUint64('s.active')) * BigInt(2 ** 64) + BigInt(eosjsAccountName.nameToUint64(filterValue)) * BigInt(2 ** 64)).toString()
 
         console.log('index 13 ', filterValue, nextKey, start)
         break
@@ -73,6 +77,21 @@ class OffersApi extends BaseEosApi {
     let start = nextKey || (BigInt(eosjsAccountName.nameToUint64(accountName)) * BigInt(2 ** 64)).toString()
     const sellOffer = await this._getTableRows({
       indexPosition: 6,
+      lowerBound: start,
+      // upperBound: 'offer.sell',
+      keyType: 'i128',
+      // offset,
+      limit,
+      // reverse: false,
+      table: 'offers'
+    })
+    return sellOffer
+  }
+
+  async getSellOfferByUser ({ accountName, limit, nextKey }) {
+    let start = nextKey || (BigInt(eosjsAccountName.nameToUint64(accountName)) * BigInt(2 ** 64)).toString()
+    const sellOffer = await this._getTableRows({
+      indexPosition: 4,
       lowerBound: start,
       // upperBound: 'offer.sell',
       keyType: 'i128',

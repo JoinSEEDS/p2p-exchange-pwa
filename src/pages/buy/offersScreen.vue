@@ -9,10 +9,11 @@
     q-icon.q-ml-sm(name="close" color="white" @click="removeFilter")
   #offersEmpty(v-if="offersList.rows.length === 0 && loading")
     skeleton-offer-item
-  #containerScroll(ref="scrollTarget")
-    q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="200" :scroll-target="$refs.scrollTarget" ref="customInfinite")
-      #items(v-for="offer in offersList.rows")
-        offer-item(:offer="offer" v-if="offer.seller !== account")
+  q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
+    #containerScroll(ref="scrollTarget")
+      q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="200" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+        #items(v-for="offer in offersList.rows")
+          offer-item(:offer="offer" v-if="offer.seller !== account")
   #modals
     q-dialog(v-model="showFilter" transition-show="slide-up" transition-hide="slide-down" persistent)
       filter-offer(:filter="filter" @success="onFilterChange")
@@ -58,6 +59,10 @@ export default {
   },
   methods: {
     ...mapActions('sellOffers', ['getSellOffers']),
+    async refresh (done) {
+      this.resetPagination()
+      done()
+    },
     removeFilter () {
       this.filter = {
         filterLabel: {
@@ -108,12 +113,12 @@ export default {
         this.offersList.more = more
         this.offersList.nextKey = nextKey
         this.offset = this.limit
-        this.loading = false
         // this.limit = this.limit + this.rowsPerLoad
         if (done) {
           done()
         }
       }
+      this.loading = false
     }
   }
 }
