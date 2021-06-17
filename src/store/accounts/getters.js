@@ -18,9 +18,12 @@ export const currentFiatCurrency = ({ p2pAccount }) => {
 export const pricePerSeedOnUSD = ({ currentSeedsPerUsd }) => {
   return Number.parseFloat(1 / Number.parseFloat(currentSeedsPerUsd.replace(' SEEDS', '')).toFixed(4)).toFixed(4)
 }
-export const pricePerSeedOnEUr = ({ currentSeedsPerUsd, fiatExchanges }) => {
+export const pricePerSeedOnEUR = ({ currentSeedsPerUsd, fiatExchanges }) => {
   const pricePerSeedOnUSD = Number.parseFloat(1 / Number.parseFloat(currentSeedsPerUsd.replace(' SEEDS', '')).toFixed(4)).toFixed(4)
   const pricePerEURonUSD = fiatExchanges.rates['USD']
   const pricePerSeedOnEUR = 1 / pricePerEURonUSD
   return (pricePerSeedOnEUR * pricePerSeedOnUSD).toFixed(4)
+}
+export const fiatExchanges = ({ fiatExchanges }) => {
+  return fiatExchanges
 }

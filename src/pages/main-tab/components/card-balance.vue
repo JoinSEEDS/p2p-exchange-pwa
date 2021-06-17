@@ -11,7 +11,7 @@
       q-tooltip {{$t('pages.balance.seeBalancesDetails')}}
   .text-h6.wallet-value(v-if="userBalances") {{ userBalances.available_balance }}
   .row.justify-between
-    .text-h6.wallet-fiat {{equivalentFiat}} USD
+    .text-h6.wallet-fiat {{equivalentFiat}}
     q-btn.q-px-xs(
       :label="$t('pages.deposit.depositWithdraw')"
       dense
@@ -44,10 +44,12 @@ export default {
     ...mapState('accounts', ['currentSeedsPerUsd']),
     equivalentFiat () {
       try {
-        const currentSeedsAmount = this.userBalances.available_balance.replace('SEEDS', '')
-        const currentSeedsValue = this.currentSeedsPerUsd.replace('SEEDS', '')
-        return (currentSeedsAmount / currentSeedsValue).toFixed(4)
+        // const currentSeedsAmount = this.userBalances.available_balance.replace('SEEDS', '')
+        // const currentSeedsValue = this.currentSeedsPerUsd.replace('SEEDS', '')
+        // return (currentSeedsAmount / currentSeedsValue).toFixed(4)
+        return this.parseSeedsToCurrentFiatWithSymbol(this.userBalances.available_balance.replace('SEEDS', ''))
       } catch (e) {
+        console.error(e)
         return 0
       }
     }

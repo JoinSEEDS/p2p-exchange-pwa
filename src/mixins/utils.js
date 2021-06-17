@@ -1,9 +1,15 @@
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import GreenFlatBtn from '~/components/green-flat-btn'
 import SkeletonOfferItem from '~/components/skeleton/skeletonOfferItem'
 
 export const utils = {
   components: { GreenFlatBtn, SkeletonOfferItem },
+  computed: {
+    ...mapGetters('accounts', ['pricePerSeedOnEUR', 'currentFiatCurrency', 'fiatExchanges']),
+    myFiatExchangeRate () {
+      return Number.parseFloat(this.fiatExchanges.rates[this.currentFiatCurrency.toUpperCase()] * this.pricePerSeedOnEUR).toFixed(4)
+    }
+  },
   methods: {
     ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg', 'setIsLoading']),
     copyToClipboard (str) {
@@ -54,6 +60,24 @@ export const utils = {
     },
     parseSeedSymbolToAmount (seedsAmount) {
       return Number.parseFloat(seedsAmount.replace(' SEEDS', ''))
+    },
+    parseSeedsToCurrentFiatWithSymbol (seedsAmount) {
+      const myExchangeRate = Number.parseFloat(this.fiatExchanges.rates[this.currentFiatCurrency.toUpperCase()])
+      const priceOfSeedsOnEUR = Number.parseFloat(seedsAmount) * this.pricePerSeedOnEUR
+      const priceOfSeedsOnMyFiatCurrency = Number.parseFloat(priceOfSeedsOnEUR * myExchangeRate)
+      return `${priceOfSeedsOnMyFiatCurrency.toFixed(2)} ${this.currentFiatCurrency.toUpperCase()}`
+    },
+    parseSeedsToCurrentFiat (seedsAmount) {
+      const myExchangeRate = Number.parseFloat(this.fiatExchanges.rates[this.currentFiatCurrency.toUpperCase()])
+      const priceOfSeedsOnEUR = Number.parseFloat(seedsAmount) * this.pricePerSeedOnEUR
+      const priceOfSeedsOnMyFiatCurrency = Number.parseFloat(priceOfSeedsOnEUR * myExchangeRate)
+      return priceOfSeedsOnMyFiatCurrency.toFixed(2)
+    },
+    parseSeedsToFiat (seedsAmount, fiatCode) {
+      const myExchangeRate = Number.parseFloat(this.fiatExchanges.rates[fiatCode.toUpperCase()])
+      const priceOfSeedsOnEUR = Number.parseFloat(seedsAmount) * this.pricePerSeedOnEUR
+      const priceOfSeedsOnMyFiatCurrency = Number.parseFloat(priceOfSeedsOnEUR * myExchangeRate)
+      return priceOfSeedsOnMyFiatCurrency.toFixed(2)
     }
   }
 }

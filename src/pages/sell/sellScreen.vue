@@ -53,7 +53,7 @@
       template(v-slot:append)
         .text %
     .hint {{$t('pages.sell.exchangeRate')}}
-    .hint {{$t('pages.sell.marketCost', { amount: `${exchangeRate} USD` })}}
+    .hint {{$t('pages.sell.marketCost', { amount: `${exchangeRate} ${currentFiatCurrency.toUpperCase()}` })}}
     .row.bg-primary.btnSave.q-py-sm
         q-btn.full-width(
             :label="$t('pages.sell.toSell')"
@@ -114,10 +114,12 @@ export default {
       return Number.parseFloat(this.availableSeeds - currentAmount).toFixed(4)
     },
     fiatToGet () {
-      return this.params.amount * (this.pricePerSeedOnUSD * (this.params.costPerCrypt / 100))
+      // return this.params.amount * (this.pricePerSeedOnEUR * (this.params.costPerCrypt / 100))
+      return this.parseSeedsToCurrentFiat(this.params.amount) * ((this.params.costPerCrypt / 100))
     },
     exchangeRate () {
-      return this.pricePerSeedOnUSD * (this.params.costPerCrypt / 100)
+      // return this.pricePerSeedOnUSD * (this.params.costPerCrypt / 100)
+      return this.myFiatExchangeRate
     }
     // exchange () {
     //   return this.exchangeRate

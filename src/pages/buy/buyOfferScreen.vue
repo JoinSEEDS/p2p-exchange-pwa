@@ -23,7 +23,7 @@
                   .textValueCurrent.text-info.q-ml-xs {{ percentageValue }} %
                 .col-xs-12.col-sm-6
                   .textLabelCurrent.q-ml-xs {{ $t('pages.sell.exchangeRate') }}
-                  .textValueCurrent.text-info.q-ml-xs 1 SEED = {{ exchangeRate }} USD
+                  .textValueCurrent.text-info.q-ml-xs 1 SEED = {{ exchangeRate }} {{ currentFiatCurrency.toUpperCase()}}
                   q-separator(dark)
               .text-weight-bold.text-white {{ $t('pages.buy.seller') }}: {{ sellOffer.seller }}
               .row.q-col-gutter-sm(v-if="sellerInfo")
@@ -105,12 +105,14 @@ export default {
       return this.sellOffer.price_info.find(v => v.key === 'priceper').value
     },
     fiatToPay () {
-      const fiat = this.params.amount * (this.pricePerSeedOnUSD * (this.percentageValue / 100))
-      return fiat.toFixed(2)
+      // const fiat = this.params.amount * (this.pricePerSeedOnUSD * (this.percentageValue / 100))
+      // return fiat.toFixed(2)
+      return (this.parseSeedsToCurrentFiat(this.params.amount) * (this.percentageValue / 100)).toFixed(2)
     },
     exchangeRate () {
-      const exchange = this.pricePerSeedOnUSD * (this.percentageValue / 100)
-      return exchange.toFixed(4)
+      // const exchange = this.pricePerSeedOnUSD * (this.percentageValue / 100)
+      // return exchange.toFixed(4)
+      return (this.myFiatExchangeRate * (this.percentageValue / 100)).toFixed(2)
     }
   },
   watch: {
