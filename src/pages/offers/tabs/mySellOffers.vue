@@ -19,6 +19,7 @@ export default {
     return {
       scrollOffset: 1000,
       loading: true,
+      limit: 4,
       myOffers: {
         rows: [],
         nextKey: undefined,
@@ -45,7 +46,8 @@ export default {
       this.loading = true
       if (this.myOffers.more) {
         const { rows, more, next_key: nextKey } = await this.getMySellOffers({
-          limit: this.limit
+          limit: this.limit,
+          nextKey: this.myOffers.nextKey
         })
         if (rows) {
           // console.log('rows', rows)
