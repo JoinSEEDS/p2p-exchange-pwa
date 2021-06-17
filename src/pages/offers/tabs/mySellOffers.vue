@@ -1,17 +1,17 @@
 <template lang="pug">
-#containerBuyOffers
+#containerSellOffers
     #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
       skeleton-offer-item
     q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
       q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
         #containerScroll(ref="scrollTarget")
           #items(v-for="offer in myOffers.rows")
-            offer-buy-item(:offer="offer")
+            offer-sell-item(:offer="offer")
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import OfferBuyItem from '../components/offer-buy-item'
+import OfferSellItem from '../components/offer-sell-item'
 
 export default {
   name: 'my-sell-offers',
@@ -26,7 +26,7 @@ export default {
       }
     }
   },
-  components: { OfferBuyItem },
+  components: { OfferSellItem },
   watch: {
     'myOffers.rows' (v) {
       if (v.length > 1) {
@@ -83,7 +83,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-#containerBuyOffers
+#containerSellOffers
   display: flex
   flex-direction: column
 

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { OfferStatus } from '~/const/offerStatus'
+import { OfferStatus } from '~/const/OfferStatus'
 export default {
   name: 'offer-buy-item',
   props: {

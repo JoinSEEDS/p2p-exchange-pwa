@@ -11,7 +11,8 @@ export default {
       save: 'Save',
       confirm: 'Confirm',
       filter: 'Filter',
-      waiting: 'Waiting...'
+      waiting: 'Waiting...',
+      make_payment: 'Make Payment'
     },
     defaultTitle: 'Title'
   },
