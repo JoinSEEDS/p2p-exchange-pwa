@@ -8,9 +8,14 @@
         .text-weight-bold.text-info {{ price }}
   .row
     .col
+        div.full-width.flex.justify-center.items-center.q-mb-sm
+          q-icon(name="timer" class="text-red" size="xs")
+          .text-caption.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
         q-btn.full-width(
-            :label="$t('common.buttons.make_payment')"
-            color="light-blue-9"
+            :label="$t('common.buttons.view_details')"
+            color="accent"
+            class="text-cap"
+            @click="$router.replace({ name: 'buy-offer' })"
         )
         q-separator.full-width.q-my-sm(color="warning")
 </template>
@@ -54,4 +59,6 @@ export default {
 .avatar-icon
   width: 60px
   height: 60px
+.text-cap
+  text-transform: capitalize
 </style>
