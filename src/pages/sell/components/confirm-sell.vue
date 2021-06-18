@@ -19,7 +19,7 @@
               .text-bold.text-dark.text-center.text-uppercase.self-end.q-pb-xs.q-ml-xs {{ this.currentFiatCurrency.toUpperCase() }}
     #exRate.q-mt-md
       .hint.text-dark {{$t('pages.sell.exchangeRate')}}
-      .hint.text-dark {{$t('pages.sell.exchangeRateEqual', { amount: `${exchange} USD` })}}
+      .hint.text-dark {{$t('pages.sell.exchangeRateEqual', { amount: `${exchangeRatePercentage} ${this.currentFiatCurrency.toUpperCase()}` })}}
     .row.q-gutter-y-md.q-mt-xs
         q-btn.full-width(
             :label="$t('common.buttons.confirm')"
@@ -45,11 +45,15 @@ export default {
   },
   computed: {
     ...mapGetters('accounts', ['currentFiatCurrency', 'pricePerSeedOnUSD']),
+    exchangeRatePercentage () {
+      return (this.myFiatExchangeRate * (this.percentage / 100)).toFixed(4)
+    },
     formatSeeds () {
       return Number.parseFloat(this.seeds).toFixed(4)
     },
     fiatValue () {
-      return (this.seeds * (this.pricePerSeedOnUSD * (this.percentage / 100))).toFixed(2)
+      // return (this.seeds * (this.pricePerSeedOnUSD * (this.percentage / 100))).toFixed(2)
+      return (this.parseSeedsToCurrentFiat(this.seeds) * (this.percentage / 100)).toFixed(2)
 
       // const fiatValueOnUSD = Number.parseFloat(this.seeds) / this.pricePerSeedOnUSD
       // console.log('fiatValueOnUSD', fiatValueOnUSD)

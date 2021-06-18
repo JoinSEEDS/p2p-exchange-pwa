@@ -51,7 +51,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       commit('setP2PAccount', userAccount.rows[0])
       await dispatch('getBalances')
       await dispatch('getCurrentSeedsPerUsd')
-      // await dispatch('getFiatExchanges')
+      await dispatch('getFiatExchanges')
 
       // const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
@@ -163,9 +163,16 @@ export const getBalances = async function ({ commit }) {
 export const getFiatExchanges = async function ({ commit }) {
   try {
     // commit('general/setIsLoading', true, { root: true })
-    const fiatExchanges = await this.$balanceApi.getFiatExchanges()
-    if (fiatExchanges) {
-      commit('setFiatExchanges', fiatExchanges)
+    const { data } = await this.$balanceApi.getFiatExchanges()
+    // Parsing object key to array
+    // const arrayRates = []
+    // Object.keys(data.rates).forEach(function (key) {
+    //   arrayRates.push(data.rates[key])
+    //   // ...
+    // })
+    // data.rates = arrayRates
+    if (data) {
+      commit('setFiatExchanges', data)
     }
   } catch (e) {
     console.error('An error ocurred while trying to get fiat exchange rates', e)
