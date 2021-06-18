@@ -12,7 +12,8 @@ export default {
       confirm: 'Confirm',
       filter: 'Filter',
       waiting: 'Waiting...',
-      make_payment: 'Make Payment'
+      make_payment: 'Make Payment',
+      view_details: 'View Details'
     },
     defaultTitle: 'Title'
   },
@@ -144,10 +145,19 @@ export default {
       sale: 'Sale',
       timeZone: 'Time Zone',
       fiatCurrency: 'Fiat Currency',
-      filterBy: 'Filter By'
+      filterBy: 'Filter By',
+      timeTo: '{time} min. to accept the offer.'
     },
     make_payment: {
       make_payment: 'Make payment'
+    },
+    buy_offer: {
+      buy_offer: 'Buy Offer',
+      buy_token: 'wants to buy you {token}.',
+      reputation: 'Reputation',
+      total_transaction: 'Total Transaction',
+      user: 'User',
+      time_zone: 'Time zone'
     }
   }
 }
