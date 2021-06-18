@@ -7,7 +7,8 @@ const routes = [
   { path: '/sell', component: () => import('pages/sell/sellScreen.vue'), name: 'sell' },
   { path: '/offers', component: () => import('pages/buy/offersScreen.vue'), name: 'sellOffers', meta: { visitorScreen: true } },
   { path: '/buy/:id', component: () => import('pages/buy/buyOfferScreen.vue'), name: 'buy', meta: { visitorScreen: true } },
-  { path: '/make-payment', component: () => import('pages/make-payment/make-payment.vue'), name: 'make-payment' }
+  { path: '/make-payment', component: () => import('pages/make-payment/make-payment.vue'), name: 'make-payment' },
+  { path: '/make-payment', component: () => import('pages/buy-offer/buy-offer.vue'), name: 'buy-offer' }
 ]
 
 // Always leave this as last one
