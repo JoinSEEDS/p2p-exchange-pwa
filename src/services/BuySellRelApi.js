@@ -35,6 +35,19 @@ class BuySellRelApi extends BaseEosApi {
     })
     return buySellRels
   }
+
+  async getBuyOffersBySellOffer ({ offset, limit, sellOfferId }) {
+    console.log('id in service', sellOfferId)
+    const buySellRels = await this.fetch({
+      scope: Contracts.CONTRACT_P2P,
+      indexPosition: 3,
+      keyType: 'i64',
+      indexValue: sellOfferId,
+      offset,
+      limit
+    })
+    return buySellRels
+  }
 }
 
 export default BuySellRelApi

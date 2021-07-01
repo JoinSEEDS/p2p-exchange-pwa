@@ -8,22 +8,27 @@
         .text-weight-bold.text-info {{ price }}
   .row
     .col
-        div.full-width.flex.justify-center.items-center.q-mb-sm
-          q-icon(name="timer" class="text-red" size="xs")
-          .text-caption.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
+        //- div.full-width.flex.justify-center.items-center.q-mb-sm
+        //-   q-icon(name="timer" class="text-red" size="xs")
+        //-   .text-caption.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
         q-btn.full-width(
             :label="$t('common.buttons.view_details')"
             color="accent"
             class="text-cap"
-            @click="$router.replace({ name: 'buy-offer' })"
+            @click="takeOffer()"
         )
         q-separator.full-width.q-my-sm(color="warning")
+  //- #modals
+  //-   q-dialog(v-model="showIncomingOffers" transition-show="slide-up" transition-hide="slide-down")
+  //-     incoming-buy-offers
 </template>
 
 <script>
 import { OfferStatus } from '~/const/OfferStatus'
+import IncomingBuyOffers from '../incomingBuyOffers.vue'
 export default {
   name: 'offer-sell-item',
+  components: { IncomingBuyOffers },
   props: {
     offer: {
       type: Object,
@@ -32,7 +37,8 @@ export default {
   },
   data () {
     return {
-      OfferStatus
+      OfferStatus,
+      showIncomingOffers: false
     }
   },
   computed: {
@@ -49,7 +55,10 @@ export default {
   },
   methods: {
     takeOffer () {
-      // this.$router.push({ name: 'buy', params: { id: this.offer.id } })
+      this.showIncomingOffers = true
+      // console.log(this.offer.id)
+      this.$router.push({ name: 'incoming-buy-offers', params: { id: this.offer.id } })
+      // this.$router.push({ name: 'make-payment', params: { id: this.offer.id } })
     }
   }
 }

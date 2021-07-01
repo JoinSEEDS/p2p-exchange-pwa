@@ -14,6 +14,35 @@ export const createBuyOffer = async function ({ commit }, params) {
   }
 }
 
+export const acceptBuyOffer = async function ({ commit }, params) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const accountName = this.getters['accounts/account']
+    const response = await this.$buyOfferApi.acceptBuyOffer({ accountName, ...params })
+    return response
+  } catch (e) {
+    console.error('An error ocurred while trying to accept buy offer', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}
+export const confirmPayment = async function ({ commit }, params) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const accountName = this.getters['accounts/account']
+    const response = await this.$buyOfferApi.confirmPayment({ accountName, ...params })
+    return response
+  } catch (e) {
+    console.error('An error ocurred while trying to accept buy offer', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}
+
 export const getMyBuyOffers = async function ({ commit }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })

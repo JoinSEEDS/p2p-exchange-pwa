@@ -12,7 +12,7 @@
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING"
             :label="$t('common.buttons.waiting')"
             color="orange-6"
-            @click="$router.replace({ name: 'make-payment' })"
+            @click="$router.push({ name: 'make-payment', params: { id: offer.id } })"
         )
         q-separator.full-width.q-my-sm(color="warning")
 </template>

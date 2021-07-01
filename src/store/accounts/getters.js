@@ -9,6 +9,9 @@ export const requestAccount = ({ requestAccount }) => requestAccount
 export const userCanSell = ({ seedsAccount }) => {
   return (seedsAccount.status === 'citizen' || seedsAccount.status === 'resident')
 }
+export const userCanMoveBalance = ({ seedsAccount }) => {
+  return (seedsAccount.status === 'citizen' || seedsAccount.status === 'resident')
+}
 export const userBalances = ({ balances }) => {
   return balances
 }

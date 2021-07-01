@@ -73,3 +73,17 @@ export const delSellOffer = async function ({ commit }, params) {
     commit('general/setIsLoading', false, { root: true })
   }
 }
+
+export const getSellOfferById = async function ({ commit }, offerId) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const response = await this.$offersApi.getOffer(offerId)
+    return response
+  } catch (e) {
+    console.error('An error ocurred while trying to delete sale offer', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}

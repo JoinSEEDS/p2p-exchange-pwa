@@ -13,6 +13,7 @@
   .row.justify-between
     .text-h6.wallet-fiat {{equivalentFiat}}
     q-btn.q-px-xs(
+      v-if="userCanMoveBalance"
       :label="$t('pages.deposit.depositWithdraw')"
       dense
       @click="$emit('clickOnDeposit')"
@@ -40,7 +41,7 @@ export default {
     this.getBalances()
   },
   computed: {
-    ...mapGetters('accounts', ['userBalances']),
+    ...mapGetters('accounts', ['userBalances', 'userCanMoveBalance']),
     ...mapState('accounts', ['currentSeedsPerUsd']),
     equivalentFiat () {
       try {

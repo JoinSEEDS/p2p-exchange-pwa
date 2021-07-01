@@ -1,35 +1,93 @@
 <template lang="pug">
-  #container.text-white.tab-container
+  #container.text-white.tab-container(v-if="offer")
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
     .row
       .subtitle.text-white.q-mt-md {{ $t('pages.make_payment.make_payment') }}
     .row.q-my-md
       img.avatar-icon.self-center(src="~/assets/seedIcon.png")
       .col.q-px-md.q-py-md
-          .text-white #[strong Roman Butt] has accepted your purchase offer.
+          .text-white #[strong {{ this.offer.seller }}] {{ $t('pages.make_payment.has_accepted') }}
     .row
-      .col-12.text-h4.text-center 16.00
-      .col-12.text-h6.text-center Seeds
+      .col-12.text-h4.text-center {{ quantity }}
+      .col-12.text-h6.text-center {{ currency }}
     hr.custom-separator
     .row
-      .col-12.text-h4.text-center $13.50
-      .col-12.text-h6.text-center USD
+      .col-12.text-h4.text-center ${{ equivalentFiat }}
+      .col-12.text-h6.text-center {{ currentFiatCurrency.toUpperCase() }}
     .row.q-my-xl
-      .text-white To complete the purchase, make the payment through PayPal to the following account.
-      .text-accent.more-info.cursor-pointer More information
-    q-btn(color="blue").full-width.q-my-sm.custon-btn
-      template(v-slot:default).flex-justify-between
+      .text-white {{ $t('pages.make_payment.to_complete') }}
+      .text-accent.more-info.cursor-pointer {{ $t('pages.make_payment.more_info') }}
+    q-btn(color="blue" v-if="hasPypal" @click="copyPaypal()").full-width.q-my-sm.custon-btn
+      template(v-slot:default).flex-justify-between.cursor-pointer
         .col-2.bg-white.flex.align-center.justify-center.btn-img-container
           q-img(src="~/assets/paypal.png").self-center.btn-img
-        label.col-9 https://paypal.me/romanbutt
+        label.col-9.cursor-pointer {{ paypal }}
         q-icon(name="content_copy").col-1
-    q-btn(label="Send payment ticket" color="positive").full-width.q-my-sm.custon-btn
-    q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
+        q-tooltip(:offset="[-30, 30]" self="top middle" anchor="top right").bg-amber.text-black.shadow-4 {{ $t('pages.make_payment.copy') }}
+    q-btn(:label="$t('pages.make_payment.confirm')" color="positive" @click="confirmPaymnt()").full-width.q-my-sm.custon-btn
+    //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
-  name: 'make-payment'
+  name: 'make-payment',
+  data () {
+    return {
+      offer: undefined,
+      copied: true
+    }
+  },
+  computed: {
+    ...mapGetters('accounts', ['currentFiatCurrency']),
+    offerId () {
+      return this.$route.params.id
+    },
+    hasPypal () {
+      return !!this.offer.payment_methods.find(el => el.key === 'paypal')
+    },
+    paypal () {
+      return this.offer.payment_methods.find(el => el.key === 'paypal').value
+    },
+    quantity () {
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[0]
+    },
+    currency () {
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[1]
+    },
+    equivalentFiat () {
+      try {
+        return this.parseSeedsToCurrentFiat(this.quantity)
+      } catch (e) {
+        console.error(e)
+        return 0
+      }
+    }
+  },
+  mounted () {
+    this.getOfferData()
+  },
+  methods: {
+    ...mapActions('buyOffers', ['getOffer', 'confirmPayment']),
+    async getOfferData () {
+      this.offer = await this.getOffer(this.offerId)
+      console.log(this.offer)
+      // console.log('get data of ', this.offerId)
+    },
+    copyPaypal () {
+      // console.log('copied!')
+      this.copied = true
+      navigator.clipboard.writeText(this.paypal)
+      setTimeout(() => {
+        this.copied = false
+      }, 2000)
+    },
+    async confirmPaymnt () {
+      let res = await this.confirmPayment({ buyOfferId: this.offerId })
+      console.log(res)
+    }
+  }
 }
 </script>
 
@@ -45,10 +103,7 @@ export default {
     text-text-decoration-color: $accent
   .q-btn__wrapper
     padding: 0px !important
-    // margin-top: 20px
-    // margin-bottom: 20px
   .btn-img
-    // height: 80%
     width: 50px
   .custon-btn
     height: 50px

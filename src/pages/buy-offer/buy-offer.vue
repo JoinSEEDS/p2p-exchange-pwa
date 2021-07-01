@@ -1,43 +1,73 @@
 <template lang="pug">
-  #container.text-white.tab-container
-    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
-    .row
-      .subtitle.text-white.q-mt-md {{ $t('pages.buy_offer.buy_offer') }}
-    .row.q-my-xs
-      img.avatar-icon.self-center(src="~/assets/seedIcon.png")
-      .col.q-px-md.q-py-md
-          .text-white #[strong Roman Butt] {{ $t('pages.buy_offer.buy_token', {token: 'seed'}) }}
-    .row
-      .col
-        .text-white.text-caption #[strong {{ $t('pages.buy_offer.reputation') + ':' }}]
-        buy-offer-reputation
-      .col
-        .text-white.text-caption #[strong {{ $t('pages.buy_offer.total_transaction') + ':' }}]
-        .text-white.text-caption 1,239.00
-    .row.q-mb-md
-      .col
-        .text-white.text-caption #[strong {{ $t('pages.buy_offer.user') + ':' }}]
-        .text-white.text-caption Resident
-      .col
-        .text-white.text-caption #[strong {{ $t('pages.buy_offer.time_zone') + ':' }}]
-        .text-white.text-caption GMT - 5
-    .row
-      .col-12.text-h4.text-center 16.00
-      .col-12.text-h6.text-center Seeds
-    hr.custom-separator
-    .row.q-mb-sm
-      .col-12.text-h4.text-center $13.50
-      .col-12.text-h6.text-center USD
-    q-btn(label="Accept offer" color="accent").full-width.q-my-sm.custon-btn
-    q-btn(label="Reject offer" color="negative").full-width.q-my-sm.custon-btn
-    q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
+  #container.text-grey3.tab-container
+    q-card.q-pa-md.bg-light.q-gutter-md
+      .row.justify-between.q-mt-none
+        .subtitle.text-grey3 {{ $t('pages.buy_offer.buy_offer') }}
+        green-flat-btn(:label="$t('pages.general.close')" v-close-popup)
+      .row.q-my-xs
+        img.avatar-icon.self-center(src="~/assets/seedIcon.png")
+        .col.q-px-md.q-py-md
+            .text-grey3 #[strong {{ offer.buyer }}] {{ $t('pages.buy_offer.buy_token', {token: 'seed'}) }}
+      .row
+        .col
+          .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.reputation') + ':' }}]
+          buy-offer-reputation
+        .col
+          .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.total_transaction') + ':' }}]
+          .text-grey3.text-caption 1,239.00
+      .row.q-mb-md
+        .col
+          .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.user') + ':' }}]
+          .text-grey3.text-caption Resident
+        .col
+          .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.time_zone') + ':' }}]
+          .text-grey3.text-caption GMT - 5
+      .row
+        .col-12.text-h4.text-center ${{ quantity }}
+        .col-12.text-h6.text-center {{ currency }}
+      hr.custom-separator
+      .row.q-mb-sm
+        .col-12.text-h4.text-center {{ equivalentFiat }}
+        .col-12.text-h6.text-center {{ currentFiatCurrency }}
+      q-btn(label="Accept offer" color="accent" @click="acceptOffer()").full-width.q-my-sm.custon-btn
+      q-btn(label="Reject offer" color="negative").full-width.q-my-sm.custon-btn
+      //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
 
 <script>
 import BuyOfferReputation from './read/buy-offer-reputation'
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'buy-offer',
-  components: { BuyOfferReputation }
+  components: { BuyOfferReputation },
+  props: {
+    offer: Object
+  },
+  computed: {
+    ...mapGetters('accounts', ['currentFiatCurrency']),
+    quantity () {
+      return this.offer.quantity.split(' ')[0]
+    },
+    currency () {
+      return this.offer.quantity.split(' ')[1]
+    },
+    equivalentFiat () {
+      try {
+        return this.parseSeedsToCurrentFiat(this.quantity)
+      } catch (e) {
+        console.error(e)
+        return 0
+      }
+    }
+  },
+  methods: {
+    ...mapActions('buyOffers', ['acceptBuyOffer']),
+    acceptOffer () {
+      console.log(this.offer.id)
+      this.acceptBuyOffer({ buyOfferId: this.offer.id })
+    }
+  }
 }
 </script>
 

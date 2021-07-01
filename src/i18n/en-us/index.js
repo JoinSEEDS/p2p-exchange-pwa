@@ -149,7 +149,12 @@ export default {
       timeTo: '{time} min. to accept the offer.'
     },
     make_payment: {
-      make_payment: 'Make payment'
+      make_payment: 'Make payment',
+      has_accepted: 'has accepted your purchase offer.',
+      to_complete: 'To complete the purchase, make the payment through PayPal to the following account.',
+      more_info: 'More information',
+      confirm: 'Confirm payment',
+      copy: 'Copy!'
     },
     buy_offer: {
       buy_offer: 'Buy Offer',
@@ -158,6 +163,9 @@ export default {
       total_transaction: 'Total Transaction',
       user: 'User',
       time_zone: 'Time zone'
+    },
+    incoming_offers: {
+      incoming_offers: 'Incoming buy offers'
     }
   }
 }
