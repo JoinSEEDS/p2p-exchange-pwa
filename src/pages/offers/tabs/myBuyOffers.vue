@@ -6,11 +6,11 @@
     q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
         #containerScroll(ref="scrollTarget")
                 #items(v-for="offer in myOffers.rows")
-                    offer-buy-item(:offer="offer")
+                    offer-buy-item(:offer="offer" v-if="offer.buyer === account")
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import OfferBuyItem from '../components/offer-buy-item'
 
 export default {
@@ -27,6 +27,9 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters('accounts', ['account'])
+  },
   components: { OfferBuyItem },
   watch: {
     'myOffers.rows' (v) {
@@ -42,7 +45,7 @@ export default {
       done()
     },
     async onLoad (index, done) {
-      console.log('onLoad', this.myOffers.more)
+      // console.log('onLoad', this.myOffers.more)
       this.loading = true
       if (this.myOffers.more) {
         const { rows, more, next_key: nextKey } = await this.getMyBuyOffers({

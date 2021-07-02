@@ -3,7 +3,7 @@
   .row
     img.avatar-icon.self-center(src="../icons/seedIcon.png")
     .col.q-px-md.q-py-md
-        .text-white {{ offer.seller }}
+        .text-white Seller: {{ offer.seller }}
         .text-white {{ quantity }}
         .text-weight-bold.text-info {{ offer.memo }}
   .row

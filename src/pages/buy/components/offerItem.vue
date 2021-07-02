@@ -4,6 +4,7 @@
     img.avatar-icon.self-center(src="../icons/seedIcon.png")
     .col.q-px-md.q-pb-sm
         .text-weight-bold.text-info {{ $t('pages.buy.seedsAvailable') }}: {{ offer.quantity_info[0].value }}
+        .text-white Seller: {{ offer.seller }}
         .text-white {{ $t('pages.buy.fiatCurrency') }}: {{ offer.fiat_currency.toUpperCase() }}
         .text-white {{ $t('pages.buy.pricePerSEED') }}: {{ offer.price_info[0].value }}%
         .text-white {{ $t('pages.buy.timeZone') }}: {{ offer.time_zone.toUpperCase() }}
