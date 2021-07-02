@@ -9,18 +9,29 @@
   .row
     .col
         q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_ACCEPTED"
+            :label="$t('common.buttons.make_payment')"
+            color="blue-9"
+            @click="$router.push({ name: 'make-payment', params: { id: offer.id } })"
+        ).custom-round
+        q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING"
             :label="$t('common.buttons.waiting')"
-            color="orange-6"
-            @click="$router.push({ name: 'make-payment', params: { id: offer.id } })"
-        )
+            color="orange-8"
+            @click="waiting = !waiting"
+        ).custom-round
         q-separator.full-width.q-my-sm(color="warning")
+  #modals
+    q-dialog(v-model="waiting" transition-show="slide-up" transition-hide="slide-down")
+      waiting-approval(:offer="offer").custom-size-modal
 </template>
 
 <script>
 import { OfferStatus } from '~/const/OfferStatus'
+import WaitingApproval from './waiting-approval.vue'
 export default {
   name: 'offer-buy-item',
+  components: { WaitingApproval },
   props: {
     offer: {
       type: Object,
@@ -29,7 +40,8 @@ export default {
   },
   data () {
     return {
-      OfferStatus
+      OfferStatus,
+      waiting: false
     }
   },
   computed: {

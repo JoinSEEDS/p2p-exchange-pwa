@@ -1,6 +1,6 @@
 <template lang="pug">
   #container.text-white.tab-container(v-if="offer")
-    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
+    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions'} })")
     .row
       .subtitle.text-white.q-mt-md {{ $t('pages.make_payment.make_payment') }}
     .row.q-my-md

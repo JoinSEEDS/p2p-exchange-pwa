@@ -23,12 +23,12 @@
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.time_zone') + ':' }}]
           .text-grey3.text-caption GMT - 5
       .row
-        .col-12.text-h4.text-center ${{ quantity }}
-        .col-12.text-h6.text-center {{ currency }}
-      hr.custom-separator
+        .col-12.text-h4.text-center.text-dark ${{ quantity }}
+        .col-12.text-h6.text-center.text-dark {{ currency }}
+      q-separator.text-dark.custom-separator
       .row.q-mb-sm
-        .col-12.text-h4.text-center {{ equivalentFiat }}
-        .col-12.text-h6.text-center {{ currentFiatCurrency }}
+        .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
+        .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency }}
       q-btn(label="Accept offer" color="accent" @click="acceptOffer()").full-width.q-my-sm.custon-btn
       q-btn(label="Reject offer" color="negative").full-width.q-my-sm.custon-btn
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
@@ -75,7 +75,7 @@ export default {
   .tab-container
     padding: 30px 30px !important
   .custom-separator
-    border-color: $warning
+    // border-color: $warning
     width: 50%
     margin: 20px auto
   .more-info

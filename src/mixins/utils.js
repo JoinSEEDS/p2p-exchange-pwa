@@ -1,6 +1,7 @@
 import { mapMutations, mapGetters } from 'vuex'
 import GreenFlatBtn from '~/components/green-flat-btn'
 import SkeletonOfferItem from '~/components/skeleton/skeletonOfferItem'
+import { OfferStatus } from '../const/OfferStatus'
 
 export const utils = {
   components: { GreenFlatBtn, SkeletonOfferItem },
@@ -78,6 +79,12 @@ export const utils = {
       const priceOfSeedsOnEUR = Number.parseFloat(seedsAmount) * this.pricePerSeedOnEUR
       const priceOfSeedsOnMyFiatCurrency = Number.parseFloat(priceOfSeedsOnEUR * myExchangeRate)
       return priceOfSeedsOnMyFiatCurrency.toFixed(2)
+    },
+    parseStatus (status) {
+      let keyStatus = Object.keys(OfferStatus).find(key => OfferStatus[key] === status)
+      let statusPieces = keyStatus.split('_')
+      let statusName = statusPieces[statusPieces.length - 1].toLowerCase()
+      return statusName
     }
   }
 }
