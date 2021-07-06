@@ -29,18 +29,29 @@
       .row.q-mb-sm
         .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
         .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency }}
-      q-btn(label="Accept offer" color="accent" @click="acceptOffer()").full-width.q-my-sm.custon-btn
-      q-btn(label="Reject offer" color="negative").full-width.q-my-sm.custon-btn
+      q-btn(label="Accept offer" color="accent" @click="showConfirmModal(true)").full-width.q-my-sm.custon-btn.custom-round
+      q-btn(label="Reject offer" color="negative" @click="showConfirmModal(false)").full-width.q-my-sm.custon-btn.custom-round
+      #modals
+        q-dialog(v-model="showConfirm" transition-show="slide-up" transition-hide="slide-down")
+          confirm-buy-offer(:offer="offer" :accept="accept")
+
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
 
 <script>
 import BuyOfferReputation from './read/buy-offer-reputation'
 import { mapActions, mapGetters } from 'vuex'
+import ConfirmBuyOffer from './components/confirm-buy-offer.vue'
 
 export default {
   name: 'buy-offer',
-  components: { BuyOfferReputation },
+  components: { BuyOfferReputation, ConfirmBuyOffer },
+  data () {
+    return {
+      showConfirm: false,
+      accept: false
+    }
+  },
   props: {
     offer: Object
   },
@@ -63,9 +74,13 @@ export default {
   },
   methods: {
     ...mapActions('buyOffers', ['acceptBuyOffer']),
-    acceptOffer () {
-      console.log(this.offer.id)
-      this.acceptBuyOffer({ buyOfferId: this.offer.id })
+    // acceptOffer () {
+    //   console.log(this.offer.id)
+    //   this.acceptBuyOffer({ buyOfferId: this.offer.id })
+    // },
+    showConfirmModal (accept) {
+      this.accept = accept
+      this.showConfirm = !this.showConfirm
     }
   }
 }
@@ -90,7 +105,6 @@ export default {
     width: 50px
   .custon-btn
     height: 50px
-    border-radius: 5px
   .btn-img-container
     height: 100% !important
     border-top-left-radius: 5px

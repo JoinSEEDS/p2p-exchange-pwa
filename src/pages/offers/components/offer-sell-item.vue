@@ -1,17 +1,18 @@
 <template lang="pug">
 #subContainer
-  .row.q-mb-sm
-    img.avatar-icon.self-center(src="../icons/seedIcon.png")
+  .row
+    .q-mt-sm(style="position: relative")
+      .yellow-dot
+      img.avatar-icon.self-center(src="../../../statics/app-icons/buyer.svg")
     .col.q-px-md.q-py-md
-        .text-white {{ offer.seller }}
-        .text-white {{ quantity }}
-        .text-weight-bold.text-info {{ price }}
+        .text-white Available: {{ quantity }}
+        //- .text-white Offered: {{ offered }}
+        .text-white Percentage: {{ percentage }}
+        .text-white Sold: {{ sold }}
+          q-icon(name="arrow_upward" color="red").q-ml-sm
   .row
     .col
-        //- div.full-width.flex.justify-center.items-center.q-mb-sm
-        //-   q-icon(name="timer" class="text-red" size="xs")
-        //-   .text-caption.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
-        q-btn.full-width(
+        q-btn.full-width.custom-round(
             :label="$t('common.buttons.view_details')"
             color="accent"
             class="text-cap"
@@ -26,6 +27,7 @@
 <script>
 import { OfferStatus } from '~/const/OfferStatus'
 import IncomingBuyOffers from '../incomingBuyOffers.vue'
+
 export default {
   name: 'offer-sell-item',
   components: { IncomingBuyOffers },
@@ -41,6 +43,9 @@ export default {
       showIncomingOffers: false
     }
   },
+  mounted () {
+    console.log('sas', this.offer)
+  },
   computed: {
     quantity () {
       const buyQuantity = this.offer.quantity_info.find(v => {
@@ -48,9 +53,21 @@ export default {
       })
       return buyQuantity ? buyQuantity.value : 'UNKNOWN'
     },
+    offered () {
+      return this.offer.quantity_info.find(el => el.key === 'totaloffered').value
+    },
     price () {
       const { key, value } = this.offer.price_info[0]
       return `${value} ${key}`
+    },
+    percentage () {
+      return `${this.offer.price_info.find(el => el.key === 'priceper').value}%`
+    },
+    sold () {
+      let available = this.quantity
+      let offered = this.offer.quantity_info.find(el => el.key === 'totaloffered').value
+      // console.log('av', available, 'off', offered)
+      return `${(this.amountOf(offered) - this.amountOf(available)).toFixed(4)} SEEDS`
     }
   },
   methods: {
@@ -59,6 +76,9 @@ export default {
       // console.log(this.offer.id)
       this.$router.push({ name: 'incoming-buy-offers', params: { id: this.offer.id } })
       // this.$router.push({ name: 'make-payment', params: { id: this.offer.id } })
+    },
+    amountOf (asset) {
+      return parseFloat(asset.split(' ')[0])
     }
   }
 }
@@ -68,6 +88,20 @@ export default {
 .avatar-icon
   width: 60px
   height: 60px
+  background-color: $warning
+  border-radius: 50%
+  padding: 20%
+
+.yellow-dot
+  width: 10px
+  height: 10px
+  background-color: #F2994A
+  border-radius: 50%
+  z-index: 2
+  position: absolute
+  right: 5%
+  top: 8%
 .text-cap
   text-transform: capitalize
+
 </style>

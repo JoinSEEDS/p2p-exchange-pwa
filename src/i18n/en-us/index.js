@@ -165,7 +165,8 @@ export default {
       time_zone: 'Time zone'
     },
     incoming_offers: {
-      incoming_offers: 'Incoming buy offers'
+      incoming_offers: 'Buy offers',
+      proposals: 'Purchase proposals'
     }
   }
 }

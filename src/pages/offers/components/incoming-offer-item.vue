@@ -1,14 +1,24 @@
 <template lang="pug">
-#subContainer(@click="showOptions = !showOptions")
+#subContainer
   .row
-    img.avatar-icon.self-center(src="../icons/seedIcon.png")
-    .col.q-px-md.q-py-md
-        .text-white #[strong {{ offer.buyer }}] wants to buy #[strong {{ offer.quantity }}]
-        .text-grey-8 {{ offer.time }}
-        .text-info.text-bold More information
-        //- div.full-width.flex.items-center.q-mb-sm
-        //-   q-icon(name="timer" class="text-red" size="xs")
-        //-   .text-info.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
+    .q-mt-sm(style="position: relative")
+      .yellow-dot
+      img.avatar-icon.self-center(src="../../../statics/app-icons/seller.svg")
+    .col.q-px-md.q-py-sm
+        .text-white #[strong {{ offer.buyer }}]
+        .text-white {{ offer.quantity }}
+        .text-info.text-bold ${{ equivalentFiat}}
+        div.full-width.flex.items-center.q-mt-xs
+          q-icon(name="timer" color="red" size="xs")
+          small.text-white.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
+  .row.justify-center
+    q-btn.custom-width.custom-round(
+      :label="$t('common.buttons.view_details')"
+      color="accent"
+      class="text-cap"
+      @click="showOptions = !showOptions"
+      no-caps
+    )
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
       buy-offer(:offer="offer")
@@ -32,6 +42,16 @@ export default {
     return {
       showOptions: false
     }
+  },
+  computed: {
+    equivalentFiat () {
+      try {
+        return this.parseSeedsToCurrentFiatWithSymbol(this.offer.quantity.split(' ')[0])
+      } catch (e) {
+        console.error(e)
+        return 0
+      }
+    }
   }
   // computed: {
   //   quantity () {
@@ -53,5 +73,21 @@ export default {
 .avatar-icon
   width: 60px
   height: 60px
+  background-color: $warning
+  border-radius: 50%
+  padding: 20%
+
+.yellow-dot
+  width: 10px
+  height: 10px
+  background-color: #F2994A
+  border-radius: 50%
+  z-index: 2
+  position: absolute
+  right: 5%
+  top: 8%
+
+.custom-width
+  width: 95%
 
 </style>
