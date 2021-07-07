@@ -9,8 +9,8 @@
         hr.custom-size.q-my-sm
         .text-white.text-h5 ${{ equivalentFiat }}
       .col
-        .text-white Percentage: 10%
-        .text-white Sold: 432:00 SEEDS
+        .text-white Percentage: {{ priceper }}%
+        .text-white Sold: {{ sold }}
           q-icon(name="arrow_upward" color="red").q-ml-sm
     q-separator(color="warning").q-my-sm
     .subtitle.text-white.q-my-sm {{ $t('pages.incoming_offers.proposals') }}
@@ -29,17 +29,23 @@ export default {
   name: 'incoming-buy-offers',
   components: { incomingOfferItem },
   computed: {
+    status () {
+      return ''
+    },
     offerId () {
       return this.$route.params.id
     },
-    // available () {
-    //   return this.offer.quantity_info.find(el => el.key === 'available').value
-    // },
+    available () {
+      return this.offer.quantity_info.find(el => el.key === 'available').value
+    },
     offered () {
       return this.offer.quantity_info.find(el => el.key === 'totaloffered').value
     },
     priceper () {
       return this.offer.price_info.find(el => el.key === 'priceper').value
+    },
+    sold () {
+      return `${(this.amountOf(this.offered) - this.amountOf(this.available)).toFixed(4)} SEEDS`
     },
     equivalentFiat () {
       try {
@@ -58,49 +64,57 @@ export default {
           id: 0,
           buyer: 'Jhon Doe',
           quantity: '20.0000 SEEDS',
-          time: '10 minutes ago'
+          time: '10 minutes ago',
+          status: 'b.pending'
         },
         {
           id: 1,
           buyer: 'Doe Jhon',
           quantity: '100.0000 SEEDS',
-          time: '2 hours ago'
+          time: '2 hours ago',
+          status: 'b.pending'
         },
         {
           id: 2,
           buyer: 'Jane Doe',
           quantity: '30.0000 SEEDS',
-          time: '3 hours ago'
+          time: '3 hours ago',
+          status: 'b.paid'
         },
         {
           id: 3,
           buyer: 'Richard Roe',
           quantity: '20 SEEDS',
-          time: '20 hours ago'
+          time: '20 hours ago',
+          status: 'b.paid'
         },
         {
           id: 0,
           buyer: 'Jhon Doe',
           quantity: '20.0000 SEEDS',
-          time: '10 minutes ago'
+          time: '10 minutes ago',
+          status: 'b.accepted'
         },
         {
           id: 1,
           buyer: 'Doe Jhon',
           quantity: '100.0000 SEEDS',
-          time: '2 hours ago'
+          time: '2 hours ago',
+          status: 'b.pending'
         },
         {
           id: 2,
           buyer: 'Jane Doe',
           quantity: '30.0000 SEEDS',
-          time: '3 hours ago'
+          time: '3 hours ago',
+          status: 'b.accepted'
         },
         {
           id: 3,
           buyer: 'Richard Roe',
           quantity: '20 SEEDS',
-          time: '20 hours ago'
+          time: '20 hours ago',
+          status: 'b.accepted'
         }
       ]
     }
@@ -117,6 +131,9 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    amountOf (asset) {
+      return parseFloat(asset.split(' ')[0])
     }
   }
 }
@@ -130,11 +147,10 @@ export default {
   #containerScroll
     overflow: auto
     flex: 1
-    max-height: 650px
+    max-height: 50vh
   .custom-size
     color: $warning
     width: 60%
   .custom-font
     font-family: 'SF Pro Display'
-
 </style>

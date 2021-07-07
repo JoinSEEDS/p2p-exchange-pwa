@@ -12,7 +12,7 @@
         .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
         .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency }}
       q-btn(label="Confirm" color="accent" @click="confirmOffer()").full-width.q-my-sm.custon-btn.custom-round
-      q-btn(label="Cancel" color="negative").full-width.q-my-sm.custon-btn.custom-round
+      q-btn(label="Cancel" color="negative" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
 

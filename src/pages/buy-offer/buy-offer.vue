@@ -29,19 +29,21 @@
       .row.q-mb-sm
         .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
         .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency }}
-      q-btn(label="Accept offer" color="accent" @click="showConfirmModal(true)").full-width.q-my-sm.custon-btn.custom-round
-      q-btn(label="Reject offer" color="negative" @click="showConfirmModal(false)").full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="pending" label="Accept offer" color="accent" @click="showConfirmModal(true)").full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="pending" label="Reject offer" color="negative" @click="showConfirmModal(false)").full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="confirmPaym()").full-width.q-my-sm.custon-btn.custom-round
+      //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
       #modals
         q-dialog(v-model="showConfirm" transition-show="slide-up" transition-hide="slide-down")
           confirm-buy-offer(:offer="offer" :accept="accept")
 
-      //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
 
 <script>
 import BuyOfferReputation from './read/buy-offer-reputation'
 import { mapActions, mapGetters } from 'vuex'
 import ConfirmBuyOffer from './components/confirm-buy-offer.vue'
+import { OfferStatus } from '~/const/OfferStatus'
 
 export default {
   name: 'buy-offer',
@@ -49,7 +51,8 @@ export default {
   data () {
     return {
       showConfirm: false,
-      accept: false
+      accept: false,
+      OfferStatus
     }
   },
   props: {
@@ -70,10 +73,19 @@ export default {
         console.error(e)
         return 0
       }
+    },
+    pending () {
+      return this.offer.status === OfferStatus.BUY_OFFER_PENDING
+    },
+    paid () {
+      return this.offer.status === OfferStatus.BUY_OFFER_PAID
+    },
+    accepted () {
+      return this.offer.status === OfferStatus.BUY_OFFER_ACCEPTED
     }
   },
   methods: {
-    ...mapActions('buyOffers', ['acceptBuyOffer']),
+    ...mapActions('buyOffers', ['acceptBuyOffer', 'confirmPayment']),
     // acceptOffer () {
     //   console.log(this.offer.id)
     //   this.acceptBuyOffer({ buyOfferId: this.offer.id })
@@ -81,6 +93,9 @@ export default {
     showConfirmModal (accept) {
       this.accept = accept
       this.showConfirm = !this.showConfirm
+    },
+    confirmPaym () {
+      this.confirmPayment({ buyOfferId: this.offer.id })
     }
   }
 }

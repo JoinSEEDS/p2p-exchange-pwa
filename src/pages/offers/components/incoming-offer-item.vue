@@ -18,6 +18,15 @@
       class="text-cap"
       @click="showOptions = !showOptions"
       no-caps
+      v-if="pending"
+    )
+    q-btn.custom-width.custom-round(
+      :label="$t('common.buttons.confirm_payment')"
+      color="blue"
+      class="text-cap"
+      @click="showOptions = !showOptions"
+      no-caps
+      v-if="paid || accepted"
     )
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
@@ -26,7 +35,7 @@
 </template>
 
 <script>
-// import { OfferStatus } from '~/const/OfferStatus'
+import { OfferStatus } from '~/const/OfferStatus'
 // import acceptDeclineOffer from './accept-decline-offer.vue'
 import buyOffer from '~/pages/buy-offer/buy-offer'
 export default {
@@ -40,10 +49,20 @@ export default {
   },
   data () {
     return {
-      showOptions: false
+      showOptions: false,
+      OfferStatus
     }
   },
   computed: {
+    pending () {
+      return this.offer.status === OfferStatus.BUY_OFFER_PENDING
+    },
+    paid () {
+      return this.offer.status === OfferStatus.BUY_OFFER_PAID
+    },
+    accepted () {
+      return this.offer.status === OfferStatus.BUY_OFFER_ACCEPTED
+    },
     equivalentFiat () {
       try {
         return this.parseSeedsToCurrentFiatWithSymbol(this.offer.quantity.split(' ')[0])

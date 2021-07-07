@@ -13,7 +13,8 @@ export default {
       filter: 'Filter',
       waiting: 'Waiting...',
       make_payment: 'Make Payment',
-      view_details: 'View Details'
+      view_details: 'View Details',
+      confirm_payment: 'Confirm payment'
     },
     defaultTitle: 'Title'
   },

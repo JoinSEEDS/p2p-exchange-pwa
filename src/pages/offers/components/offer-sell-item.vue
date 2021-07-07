@@ -43,9 +43,9 @@ export default {
       showIncomingOffers: false
     }
   },
-  mounted () {
-    console.log('sas', this.offer)
-  },
+  // mounted () {
+  //   console.log('sas', this.offer)
+  // },
   computed: {
     quantity () {
       const buyQuantity = this.offer.quantity_info.find(v => {
