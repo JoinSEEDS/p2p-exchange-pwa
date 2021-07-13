@@ -9,8 +9,10 @@
         hr.custom-size.q-my-sm
         .text-white.text-h5 ${{ equivalentFiat }}
       .col
-        .text-white Percentage: {{ priceper }}%
-        .text-white Sold: {{ sold }}
+        .text-green Percentage:
+          span.text-white  {{ priceper }}%
+        .text-green Sold:
+          span.text-white  {{ sold }}
           q-icon(name="arrow_upward" color="red").q-ml-sm
     q-separator(color="warning").q-my-sm
     .subtitle.text-white.q-my-sm {{ $t('pages.incoming_offers.proposals') }}
@@ -88,6 +90,7 @@ export default {
     },
     async getIncommingBuyOffers () {
       let { rows } = await this.getBuyOffersBySaleOffer({ id: this.offerId })
+      // console.log('rows', rows)
       this.incomingOffers = rows.filter(el => (el.type === OfferStatus.BUY_OFFER && el.sell_id === parseInt(this.offerId)))
     },
     amountOf (asset) {

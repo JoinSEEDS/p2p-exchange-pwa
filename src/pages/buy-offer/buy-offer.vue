@@ -29,25 +29,26 @@
       .row.q-mb-sm
         .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
         .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency.toUpperCase() }}
-      q-btn(v-if="pending" label="Accept offer" color="accent" @click="showConfirmModal(true)").full-width.q-my-sm.custon-btn.custom-round
-      q-btn(v-if="pending" label="Reject offer" color="negative" @click="showConfirmModal(false)").full-width.q-my-sm.custon-btn.custom-round
+      .row.q-my-md
+        small.text-red.text-bold {{ $t('pages.sell.confirm_payment') }}
+      q-btn(v-if="pending" label="Accept offer" color="accent" @click="confOffer()").full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="pending" label="Reject offer" color="negative" ).full-width.q-my-sm.custon-btn.custom-round
       q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
-      #modals
-        q-dialog(v-model="showConfirm" transition-show="slide-up" transition-hide="slide-down")
-          confirm-buy-offer(:offer="offer" :accept="accept")
+      //- #modals
+      //-   q-dialog(v-model="showConfirm" transition-show="slide-up" transition-hide="slide-down")
+      //-     confirm-buy-offer(:offer="offer" :accept="accept")
 
 </template>
 
 <script>
 import BuyOfferReputation from './read/buy-offer-reputation'
 import { mapActions, mapGetters } from 'vuex'
-import ConfirmBuyOffer from './components/confirm-buy-offer.vue'
 import { OfferStatus } from '~/const/OfferStatus'
 
 export default {
   name: 'buy-offer',
-  components: { BuyOfferReputation, ConfirmBuyOffer },
+  components: { BuyOfferReputation },
   mounted () {
     console.log(this.offer)
   },
@@ -92,9 +93,9 @@ export default {
   },
   methods: {
     ...mapActions('buyOffers', ['acceptBuyOffer', 'confirmPayment']),
-    showConfirmModal (accept) {
-      this.accept = accept
-      this.showConfirm = !this.showConfirm
+    confOffer () {
+      console.log('IDD', this.offer.id)
+      this.acceptBuyOffer({ buyOfferId: this.offer.id })
     },
     confirmPaym () {
       this.confirmPayment({ buyOfferId: this.offer.id })

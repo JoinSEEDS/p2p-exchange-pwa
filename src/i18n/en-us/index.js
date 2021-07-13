@@ -101,7 +101,8 @@ export default {
       currentTotal: 'Current Total',
       amountToReceive: 'Amount to receive',
       exchangeRate: 'Exchange Rate',
-      amountToSell: 'Amount to sell'
+      amountToSell: 'Amount to sell',
+      confirm_payment: 'Before confirming the payment, we suggest you verify that the balance of this transaction is in your account.'
     },
     buy: {
       buySeeds: 'Buy SEEDS',

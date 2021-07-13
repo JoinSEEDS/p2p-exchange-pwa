@@ -6,11 +6,11 @@
       img.avatar-icon.self-center(src="../../../statics/app-icons/seller.svg")
     .col.q-px-md.q-py-sm
         .text-white #[strong {{ offer.buyer }}]
-        .text-white {{ quantity }}
-        .text-info.text-bold ${{ equivalentFiat}}
-        div.full-width.flex.items-center.q-mt-xs
-          q-icon(name="timer" color="red" size="xs")
-          small.text-white.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
+        .text-white.q-mt-md {{ quantity }} =
+          span.text-info.text-bold  ${{ equivalentFiat}}
+        //- div.full-width.flex.items-center.q-mt-xs
+        //-   q-icon(name="timer" color="red" size="xs")
+        //-   small.text-white.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
   .row.justify-center
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.view_details')"
@@ -102,8 +102,8 @@ export default {
 
 <style lang="sass" scoped>
 .avatar-icon
-  width: 60px
-  height: 60px
+  width: 55px
+  height: 55px
   background-color: $warning
   border-radius: 50%
   padding: 20%
