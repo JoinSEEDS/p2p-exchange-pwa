@@ -24,7 +24,7 @@
         label.col-9.cursor-pointer {{ paypal }}
         q-icon(name="content_copy").col-1
         q-tooltip(:offset="[-30, 30]" self="top middle" anchor="top right").bg-amber.text-black.shadow-4 {{ $t('pages.make_payment.copy') }}
-    q-btn(:label="$t('pages.make_payment.confirm')" color="positive" @click="confirmPaymnt()").full-width.q-my-sm.custon-btn
+    q-btn(:label="$t('pages.make_payment.make_payment')" color="positive" @click="makePayment()").full-width.q-my-sm.custon-btn
     //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
 
@@ -69,7 +69,7 @@ export default {
     this.getOfferData()
   },
   methods: {
-    ...mapActions('buyOffers', ['getOffer', 'confirmPayment']),
+    ...mapActions('buyOffers', ['getOffer', 'payOffer']),
     async getOfferData () {
       this.offer = await this.getOffer(this.offerId)
       console.log(this.offer)
@@ -83,8 +83,8 @@ export default {
         this.copied = false
       }, 2000)
     },
-    async confirmPaymnt () {
-      let res = await this.confirmPayment({ buyOfferId: this.offerId })
+    async makePayment () {
+      let res = await this.payOffer({ buyOfferId: this.offerId })
       console.log(res)
     }
   }

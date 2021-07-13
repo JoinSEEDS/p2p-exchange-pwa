@@ -14,24 +14,24 @@
           buy-offer-reputation
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.total_transaction') + ':' }}]
-          .text-grey3.text-caption 1,239.00
+          .text-grey3.text-caption {{ equivalentFiat }} {{ currentFiatCurrency.toUpperCase() }}
       .row.q-mb-md
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.user') + ':' }}]
           .text-grey3.text-caption Resident
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.time_zone') + ':' }}]
-          .text-grey3.text-caption GMT - 5
+          .text-grey3.text-caption {{ timezone }}
       .row
         .col-12.text-h4.text-center.text-dark ${{ quantity }}
         .col-12.text-h6.text-center.text-dark {{ currency }}
       q-separator.text-dark.custom-separator
       .row.q-mb-sm
         .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
-        .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency }}
+        .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency.toUpperCase() }}
       q-btn(v-if="pending" label="Accept offer" color="accent" @click="showConfirmModal(true)").full-width.q-my-sm.custon-btn.custom-round
       q-btn(v-if="pending" label="Reject offer" color="negative" @click="showConfirmModal(false)").full-width.q-my-sm.custon-btn.custom-round
-      q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="confirmPaym()").full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
       #modals
         q-dialog(v-model="showConfirm" transition-show="slide-up" transition-hide="slide-down")
@@ -48,6 +48,9 @@ import { OfferStatus } from '~/const/OfferStatus'
 export default {
   name: 'buy-offer',
   components: { BuyOfferReputation, ConfirmBuyOffer },
+  mounted () {
+    console.log(this.offer)
+  },
   data () {
     return {
       showConfirm: false,
@@ -61,10 +64,10 @@ export default {
   computed: {
     ...mapGetters('accounts', ['currentFiatCurrency']),
     quantity () {
-      return this.offer.quantity.split(' ')[0]
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[0]
     },
     currency () {
-      return this.offer.quantity.split(' ')[1]
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[1]
     },
     equivalentFiat () {
       try {
@@ -75,21 +78,20 @@ export default {
       }
     },
     pending () {
-      return this.offer.status === OfferStatus.BUY_OFFER_PENDING
+      return this.offer.current_status === OfferStatus.BUY_OFFER_PENDING
     },
     paid () {
-      return this.offer.status === OfferStatus.BUY_OFFER_PAID
+      return this.offer.current_status === OfferStatus.BUY_OFFER_PAID
     },
     accepted () {
-      return this.offer.status === OfferStatus.BUY_OFFER_ACCEPTED
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ACCEPTED
+    },
+    timezone () {
+      return (this.offer.time_zone).toUpperCase()
     }
   },
   methods: {
     ...mapActions('buyOffers', ['acceptBuyOffer', 'confirmPayment']),
-    // acceptOffer () {
-    //   console.log(this.offer.id)
-    //   this.acceptBuyOffer({ buyOfferId: this.offer.id })
-    // },
     showConfirmModal (accept) {
       this.accept = accept
       this.showConfirm = !this.showConfirm

@@ -3,7 +3,7 @@
     q-card.q-pa-md.bg-light.q-gutter-md
       .subtitle.text-warning(v-if="accept") Accept offer
       .subtitle.text-warning(v-if="!accept") Reject offer
-      .text-info.q-my-none Buyer: Diana Ross
+      .text-info.q-my-none Buyer: {{ offer.buyer }}
       .row
         .col-12.text-h4.text-center.text-dark ${{ quantity }}
         .col-12.text-h6.text-center.text-dark {{ currency }}
@@ -11,13 +11,14 @@
       .row
         .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
         .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency }}
-      q-btn(label="Confirm" color="accent" @click="confirmOffer()").full-width.q-my-sm.custon-btn.custom-round
+      q-btn(label="Confirm" color="accent" @click="confirmOffer()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
       q-btn(label="Cancel" color="negative" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { EventBus } from '~/event-bus'
 
 export default {
   name: 'confirm-buy-offer',
@@ -28,10 +29,10 @@ export default {
   computed: {
     ...mapGetters('accounts', ['currentFiatCurrency']),
     quantity () {
-      return this.offer.quantity.split(' ')[0]
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[0]
     },
     currency () {
-      return this.offer.quantity.split(' ')[1]
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[1]
     },
     equivalentFiat () {
       try {
@@ -44,13 +45,14 @@ export default {
   },
   methods: {
     ...mapActions('buyOffers', ['acceptBuyOffer']),
-    confirmOffer () {
+    async confirmOffer () {
       console.log(this.offer.id)
       if (this.accept) {
-        this.acceptBuyOffer({ buyOfferId: this.offer.id })
+        await this.acceptBuyOffer({ buyOfferId: this.offer.id })
       } else {
         console.log('reject')
       }
+      EventBus.$emit('confirmOffer')
     }
   }
 }

@@ -22,8 +22,10 @@
 </template>
 
 <script>
+import { OfferStatus } from '../../const/OfferStatus'
 import { mapActions } from 'vuex'
 import incomingOfferItem from './components/incoming-offer-item.vue'
+import { EventBus } from '~/event-bus'
 
 export default {
   name: 'incoming-buy-offers',
@@ -58,79 +60,35 @@ export default {
   },
   data () {
     return {
+      OfferStatus,
       offer: undefined,
-      incomingOffers: [
-        {
-          id: 0,
-          buyer: 'Jhon Doe',
-          quantity: '20.0000 SEEDS',
-          time: '10 minutes ago',
-          status: 'b.pending'
-        },
-        {
-          id: 1,
-          buyer: 'Doe Jhon',
-          quantity: '100.0000 SEEDS',
-          time: '2 hours ago',
-          status: 'b.pending'
-        },
-        {
-          id: 2,
-          buyer: 'Jane Doe',
-          quantity: '30.0000 SEEDS',
-          time: '3 hours ago',
-          status: 'b.paid'
-        },
-        {
-          id: 3,
-          buyer: 'Richard Roe',
-          quantity: '20 SEEDS',
-          time: '20 hours ago',
-          status: 'b.paid'
-        },
-        {
-          id: 0,
-          buyer: 'Jhon Doe',
-          quantity: '20.0000 SEEDS',
-          time: '10 minutes ago',
-          status: 'b.accepted'
-        },
-        {
-          id: 1,
-          buyer: 'Doe Jhon',
-          quantity: '100.0000 SEEDS',
-          time: '2 hours ago',
-          status: 'b.pending'
-        },
-        {
-          id: 2,
-          buyer: 'Jane Doe',
-          quantity: '30.0000 SEEDS',
-          time: '3 hours ago',
-          status: 'b.accepted'
-        },
-        {
-          id: 3,
-          buyer: 'Richard Roe',
-          quantity: '20 SEEDS',
-          time: '20 hours ago',
-          status: 'b.accepted'
-        }
-      ]
+      incomingOffers: []
     }
   },
-  created () {
-    this.getBuyOffers()
+  mounted () {
+    this.getOfferInfo()
+    this.getIncommingBuyOffers()
+    EventBus.$on('confirmOffer', async () => {
+      this.showOptions = false
+      this.getIncommingBuyOffers()
+    })
+  },
+  beforeDestroy () {
+    EventBus.$off('confirmOffer')
   },
   methods: {
     ...mapActions('buySellRels', ['getBuyOffersBySellOffer']),
-    ...mapActions('sellOffers', ['getSellOfferById']),
-    async getBuyOffers () {
+    ...mapActions('sellOffers', ['getSellOfferById', 'getBuyOffersBySaleOffer']),
+    async getOfferInfo () {
       try {
         this.offer = await this.getSellOfferById(this.offerId)
       } catch (error) {
         console.log(error)
       }
+    },
+    async getIncommingBuyOffers () {
+      let { rows } = await this.getBuyOffersBySaleOffer({ id: this.offerId })
+      this.incomingOffers = rows.filter(el => (el.type === OfferStatus.BUY_OFFER && el.sell_id === parseInt(this.offerId)))
     },
     amountOf (asset) {
       return parseFloat(asset.split(' ')[0])

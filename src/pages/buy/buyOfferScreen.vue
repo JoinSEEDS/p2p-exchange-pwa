@@ -29,7 +29,7 @@
               .row.q-col-gutter-sm(v-if="sellerInfo")
                 .col-6
                   .text-weight-bold.text-white.normal {{ $t('pages.buy.reputation') }}
-                  .text-weight-bold.text-white.normal {{ sellerInfo.userRep.rank }}
+                  .text-weight-bold.text-white.normal(v-if="sellerInfo.userRep") {{ sellerInfo.userRep.rank }}
                 .col-6
                   .text-weight-bold.text-white.normal {{ $t('pages.buy.timeZone') }}
                   .text-weight-bold.text-white.normal {{ sellOffer.time_zone }}

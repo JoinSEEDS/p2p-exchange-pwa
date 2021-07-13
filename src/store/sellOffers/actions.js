@@ -29,6 +29,20 @@ export const getMySellOffers = async function ({ commit }, params) {
   }
 }
 
+export const getBuyOffersBySaleOffer = async function ({ commit }, params) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    // const accountName = this.getters['accounts/account']
+    return this.$offersApi.getBuyOffersBySaleOffer({ ...params })
+  } catch (e) {
+    console.error('An error ocurred while trying retrieve my sell offers', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}
+
 export const getSellOffersByTimeZone = async function ({ commit }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })

@@ -6,7 +6,7 @@
       img.avatar-icon.self-center(src="../../../statics/app-icons/seller.svg")
     .col.q-px-md.q-py-sm
         .text-white #[strong {{ offer.buyer }}]
-        .text-white {{ offer.quantity }}
+        .text-white {{ quantity }}
         .text-info.text-bold ${{ equivalentFiat}}
         div.full-width.flex.items-center.q-mt-xs
           q-icon(name="timer" color="red" size="xs")
@@ -36,8 +36,9 @@
 
 <script>
 import { OfferStatus } from '~/const/OfferStatus'
-// import acceptDeclineOffer from './accept-decline-offer.vue'
 import buyOffer from '~/pages/buy-offer/buy-offer'
+import { EventBus } from '~/event-bus'
+
 export default {
   name: 'offer-buy-item',
   components: { buyOffer },
@@ -47,6 +48,14 @@ export default {
       default: () => undefined
     }
   },
+  mounted () {
+    EventBus.$on('confirmOffer', async () => {
+      this.showOptions = false
+    })
+  },
+  beforeDestroy () {
+    EventBus.$off('confirmOffer')
+  },
   data () {
     return {
       showOptions: false,
@@ -55,17 +64,20 @@ export default {
   },
   computed: {
     pending () {
-      return this.offer.status === OfferStatus.BUY_OFFER_PENDING
+      return this.offer.current_status === OfferStatus.BUY_OFFER_PENDING
     },
     paid () {
-      return this.offer.status === OfferStatus.BUY_OFFER_PAID
+      return this.offer.current_status === OfferStatus.BUY_OFFER_PAID
     },
     accepted () {
-      return this.offer.status === OfferStatus.BUY_OFFER_ACCEPTED
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ACCEPTED
+    },
+    quantity () {
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value
     },
     equivalentFiat () {
       try {
-        return this.parseSeedsToCurrentFiatWithSymbol(this.offer.quantity.split(' ')[0])
+        return this.parseSeedsToCurrentFiatWithSymbol(this.quantity.split(' ')[0])
       } catch (e) {
         console.error(e)
         return 0

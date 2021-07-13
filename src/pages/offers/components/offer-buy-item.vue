@@ -15,6 +15,16 @@
             @click="$router.push({ name: 'make-payment', params: { id: offer.id } })"
         ).custom-round
         q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID"
+            label="WAITING PAY CONFIRM"
+            color="blue-9"
+        ).custom-round
+        q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_SUCCESS"
+            label="DONE"
+            color="blue"
+        ).custom-round
+        q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING"
             :label="$t('common.buttons.waiting')"
             color="orange-8"

@@ -112,6 +112,23 @@ class OffersApi extends BaseEosApi {
 
     return sellOffer
   }
+
+  async getBuyOffersBySaleOffer ({ id, limit, nextKey }) {
+    // let start = nextKey || (BigInt(eosjsAccountName.nameToUint64(accountName)) * BigInt(2 ** 64)).toString()
+    // eslint-disable-next-line no-undef
+    let start = nextKey || (BigInt(id) * BigInt(2 ** 64)).toString()
+    const buyOffers = await this._getTableRows({
+      indexPosition: 14,
+      lowerBound: start,
+      // upperBound: 'offer.sell',
+      keyType: 'i128',
+      // offset,
+      limit,
+      // reverse: false,
+      table: 'offers'
+    })
+    return buyOffers
+  }
 }
 
 export default OffersApi
