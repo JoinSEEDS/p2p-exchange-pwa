@@ -12,6 +12,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import OfferBuyItem from '../components/offer-buy-item'
+import { EventBus } from '~/event-bus.js'
 
 export default {
   name: 'my-buy-offers',
@@ -26,6 +27,16 @@ export default {
         more: true
       }
     }
+  },
+  mounted () {
+    EventBus.$on('canceled', async () => {
+      // this.onLoad(0, true)
+      this.resetPagination()
+      console.log('refresh offers TODO')
+    })
+  },
+  beforeDestroy () {
+    EventBus.$off('canceled')
   },
   computed: {
     ...mapGetters('accounts', ['account'])
@@ -72,7 +83,7 @@ export default {
         rows: [],
         nextKey: undefined
       }
-      console.log('resetPagination')
+      // console.log('resetPagination')
       // this.$refs.customInfinite.stop()
       // this.onLoad()
       await this.$nextTick()

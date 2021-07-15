@@ -16,10 +16,21 @@
           q-icon(name="arrow_upward" color="red").q-ml-sm
     q-separator(color="warning").q-my-sm
     .subtitle.text-white.q-my-sm {{ $t('pages.incoming_offers.proposals') }}
-    #containerScroll
-      #items(v-for="(offer, index) in incomingOffers")
-        incoming-offer-item(:offer="offer")
-        q-separator.full-width.q-my-sm(color="warning" v-if="index+1 != incomingOffers.length")
+    //- #containerScroll
+    //-   #items(v-for="(offer, index) in incomingOffers")
+    //-     incoming-offer-item(:offer="offer")
+    //-     q-separator.full-width.q-my-sm(color="warning" v-if="index+1 != incomingOffers.length")
+    //- ============================================
+    #containerList
+      q-pull-to-refresh(@refresh="refresh")
+        #offersEmpty(v-if="incomingOffers.length === 0 && loading")
+          skeleton-offer-item
+        q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+          #containerScroll(ref="scrollTarget")
+            #items(v-for="(offer, index) in incomingOffers.rows")
+              incoming-offer-item(:offer="offer")
+              q-separator.full-width.q-my-sm(color="warning" v-if="index + 1 != incomingOffers.length")
+              //- offer-buy-item(:offer="offer" v-if="offer.buyer === account")
 
 </template>
 
@@ -64,15 +75,23 @@ export default {
     return {
       OfferStatus,
       offer: undefined,
-      incomingOffers: []
+      // incomingOffers: [],
+      loading: true,
+      limit: 4,
+      scrollOffset: 1000,
+      incomingOffers: {
+        rows: [],
+        nextKey: undefined,
+        more: true
+      }
     }
   },
   mounted () {
     this.getOfferInfo()
-    this.getIncommingBuyOffers()
+    // this.getIncommingBuyOffers()
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
-      this.getIncommingBuyOffers()
+      // this.getIncommingBuyOffers()
     })
   },
   beforeDestroy () {
@@ -81,17 +100,50 @@ export default {
   methods: {
     ...mapActions('buySellRels', ['getBuyOffersBySellOffer']),
     ...mapActions('sellOffers', ['getSellOfferById', 'getBuyOffersBySaleOffer']),
+    async refresh (done) {
+      this.resetPagination()
+      done()
+    },
+    async onLoad (index, done) {
+      console.log('LOADMORE')
+      this.loading = true
+      if (this.incomingOffers.more) {
+        const { rows, more, next_key: nextKey } = await this.getBuyOffersBySaleOffer({
+          id: this.offerId,
+          limit: this.limit,
+          nextKey: this.incomingOffers.nextKey
+        })
+        if (rows) {
+          let rws = rows.filter(el => (el.type === OfferStatus.BUY_OFFER && el.sell_id === parseInt(this.offerId)))
+          this.incomingOffers.rows = this.incomingOffers.rows.concat(rws)
+        }
+        this.incomingOffers.more = more
+        this.incomingOffers.nextKey = nextKey
+        if (done) {
+          done()
+        }
+      }
+      this.loading = false
+    },
+    async resetPagination () {
+      this.incomingOffers = {
+        more: true,
+        rows: [],
+        nextKey: undefined
+      }
+      await this.$nextTick()
+      this.$refs.customInfinite.stop()
+      await this.$nextTick()
+      this.$refs.customInfinite.resume()
+      await this.$nextTick()
+      this.$refs.customInfinite.trigger()
+    },
     async getOfferInfo () {
       try {
         this.offer = await this.getSellOfferById(this.offerId)
       } catch (error) {
         console.log(error)
       }
-    },
-    async getIncommingBuyOffers () {
-      let { rows } = await this.getBuyOffersBySaleOffer({ id: this.offerId })
-      // console.log('rows', rows)
-      this.incomingOffers = rows.filter(el => (el.type === OfferStatus.BUY_OFFER && el.sell_id === parseInt(this.offerId)))
     },
     amountOf (asset) {
       return parseFloat(asset.split(' ')[0])
