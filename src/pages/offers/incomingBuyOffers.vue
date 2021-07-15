@@ -1,91 +1,152 @@
 <template lang="pug">
   #containerIncomingOffers(v-if="offer")
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })")
+    .subtitle.text-white.q-mt-sm {{ $t('pages.incoming_offers.incoming_offers') }}
     //- .row.full-width
-    #offerData.text-center
-      .text-white {{ offer.seller }}
-      //- .text-white Status: {{ offer.current_status }}
-      //- .text-white Available: {{ available }}
-      .text-white {{ offered }}
-      .text-info.text-bold {{ priceper }} priceper
-        //- div.full-width.flex.justify-center.items-center.q-mb-sm
-          q-icon(name="timer" class="text-red" size="xs")
-          .text-caption.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
-    q-separator(color="white").q-my-md
-    #containerScroll
-      #items(v-for="(offer, index) in incomingOffers")
-        incoming-offer-item(:offer="offer").cursor-pointer
-        q-separator.full-width.q-my-sm(color="warning" v-if="index+1 != incomingOffers.length")
+    #offerData
+      .col.text-center.q-my-md
+        .text-white.text-h5 {{ offered }}
+        hr.custom-size.q-my-sm
+        .text-white.text-h5 ${{ equivalentFiat }}
+      .col
+        .text-green Percentage:
+          span.text-white  {{ priceper }}%
+        .text-green Sold:
+          span.text-white  {{ sold }}
+          q-icon(name="arrow_upward" color="red").q-ml-sm
+    q-separator(color="warning").q-my-sm
+    .subtitle.text-white.q-my-sm {{ $t('pages.incoming_offers.proposals') }}
+    //- #containerScroll
+    //-   #items(v-for="(offer, index) in incomingOffers")
+    //-     incoming-offer-item(:offer="offer")
+    //-     q-separator.full-width.q-my-sm(color="warning" v-if="index+1 != incomingOffers.length")
+    //- ============================================
+    #containerList
+      q-pull-to-refresh(@refresh="refresh")
+        #offersEmpty(v-if="incomingOffers.length === 0 && loading")
+          skeleton-offer-item
+        q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+          #containerScroll(ref="scrollTarget")
+            #items(v-for="(offer, index) in incomingOffers.rows")
+              incoming-offer-item(:offer="offer")
+              q-separator.full-width.q-my-sm(color="warning" v-if="index + 1 != incomingOffers.length")
+              //- offer-buy-item(:offer="offer" v-if="offer.buyer === account")
 
 </template>
 
 <script>
+import { OfferStatus } from '../../const/OfferStatus'
 import { mapActions } from 'vuex'
 import incomingOfferItem from './components/incoming-offer-item.vue'
+import { EventBus } from '~/event-bus'
 
 export default {
   name: 'incoming-buy-offers',
   components: { incomingOfferItem },
   computed: {
+    status () {
+      return ''
+    },
     offerId () {
       return this.$route.params.id
     },
-    // available () {
-    //   return this.offer.quantity_info.find(el => el.key === 'available').value
-    // },
+    available () {
+      return this.offer.quantity_info.find(el => el.key === 'available').value
+    },
     offered () {
       return this.offer.quantity_info.find(el => el.key === 'totaloffered').value
     },
     priceper () {
       return this.offer.price_info.find(el => el.key === 'priceper').value
+    },
+    sold () {
+      return `${(this.amountOf(this.offered) - this.amountOf(this.available)).toFixed(4)} SEEDS`
+    },
+    equivalentFiat () {
+      try {
+        return this.parseSeedsToCurrentFiatWithSymbol(this.offered.split(' ')[0])
+      } catch (e) {
+        console.error(e)
+        return 0
+      }
     }
   },
   data () {
     return {
+      OfferStatus,
       offer: undefined,
-      incomingOffers: [
-        {
-          id: 0,
-          buyer: 'Jhon Doe',
-          quantity: '20 SEEDS',
-          time: '10 minutes ago'
-        },
-        {
-          id: 1,
-          buyer: 'Doe Jhon',
-          quantity: '100 SEEDS',
-          time: '2 hours ago'
-        },
-        {
-          id: 2,
-          buyer: 'Jane Doe',
-          quantity: '30 SEEDS',
-          time: '3 hours ago'
-        },
-        {
-          id: 3,
-          buyer: 'Richard Roe',
-          quantity: '20 SEEDS',
-          time: '20 hours ago'
-        }
-      ]
+      // incomingOffers: [],
+      loading: true,
+      limit: 4,
+      scrollOffset: 1000,
+      incomingOffers: {
+        rows: [],
+        nextKey: undefined,
+        more: true
+      }
     }
   },
-  created () {
-    this.getBuyOffers()
+  mounted () {
+    this.getOfferInfo()
+    // this.getIncommingBuyOffers()
+    EventBus.$on('confirmOffer', async () => {
+      this.showOptions = false
+      // this.getIncommingBuyOffers()
+    })
+  },
+  beforeDestroy () {
+    EventBus.$off('confirmOffer')
   },
   methods: {
     ...mapActions('buySellRels', ['getBuyOffersBySellOffer']),
-    ...mapActions('sellOffers', ['getSellOfferById']),
-    async getBuyOffers () {
+    ...mapActions('sellOffers', ['getSellOfferById', 'getBuyOffersBySaleOffer']),
+    async refresh (done) {
+      this.resetPagination()
+      done()
+    },
+    async onLoad (index, done) {
+      console.log('LOADMORE')
+      this.loading = true
+      if (this.incomingOffers.more) {
+        const { rows, more, next_key: nextKey } = await this.getBuyOffersBySaleOffer({
+          id: this.offerId,
+          limit: this.limit,
+          nextKey: this.incomingOffers.nextKey
+        })
+        if (rows) {
+          let rws = rows.filter(el => (el.type === OfferStatus.BUY_OFFER && el.sell_id === parseInt(this.offerId)))
+          this.incomingOffers.rows = this.incomingOffers.rows.concat(rws)
+        }
+        this.incomingOffers.more = more
+        this.incomingOffers.nextKey = nextKey
+        if (done) {
+          done()
+        }
+      }
+      this.loading = false
+    },
+    async resetPagination () {
+      this.incomingOffers = {
+        more: true,
+        rows: [],
+        nextKey: undefined
+      }
+      await this.$nextTick()
+      this.$refs.customInfinite.stop()
+      await this.$nextTick()
+      this.$refs.customInfinite.resume()
+      await this.$nextTick()
+      this.$refs.customInfinite.trigger()
+    },
+    async getOfferInfo () {
       try {
-        // let incomingBuyOffers = await this.getBuyOffersBySellOffer({ sellOfferId: 4 })
         this.offer = await this.getSellOfferById(this.offerId)
-        // console.log('buyselrell found', incomingBuyOffers)
-        // console.log('sell offer', this.offer)
       } catch (error) {
         console.log(error)
       }
+    },
+    amountOf (asset) {
+      return parseFloat(asset.split(' ')[0])
     }
   }
 }
@@ -99,6 +160,10 @@ export default {
   #containerScroll
     overflow: auto
     flex: 1
-    max-height: 650px
-
+    max-height: 50vh
+  .custom-size
+    color: $warning
+    width: 60%
+  .custom-font
+    font-family: 'SF Pro Display'
 </style>

@@ -14,43 +14,61 @@
           buy-offer-reputation
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.total_transaction') + ':' }}]
-          .text-grey3.text-caption 1,239.00
+          .text-grey3.text-caption {{ equivalentFiat }} {{ currentFiatCurrency.toUpperCase() }}
       .row.q-mb-md
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.user') + ':' }}]
           .text-grey3.text-caption Resident
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.time_zone') + ':' }}]
-          .text-grey3.text-caption GMT - 5
+          .text-grey3.text-caption {{ timezone }}
       .row
         .col-12.text-h4.text-center.text-dark ${{ quantity }}
         .col-12.text-h6.text-center.text-dark {{ currency }}
       q-separator.text-dark.custom-separator
       .row.q-mb-sm
         .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
-        .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency }}
-      q-btn(label="Accept offer" color="accent" @click="acceptOffer()").full-width.q-my-sm.custon-btn
-      q-btn(label="Reject offer" color="negative").full-width.q-my-sm.custon-btn
+        .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency.toUpperCase() }}
+      .row.q-my-md
+        small.text-red.text-bold {{ $t('pages.sell.confirm_payment') }}
+      q-btn(v-if="pending" label="Accept offer" color="accent" @click="confOffer()").full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="pending" label="Reject offer" color="negative" ).full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
+      //- #modals
+      //-   q-dialog(v-model="showConfirm" transition-show="slide-up" transition-hide="slide-down")
+      //-     confirm-buy-offer(:offer="offer" :accept="accept")
+
 </template>
 
 <script>
 import BuyOfferReputation from './read/buy-offer-reputation'
 import { mapActions, mapGetters } from 'vuex'
+import { OfferStatus } from '~/const/OfferStatus'
 
 export default {
   name: 'buy-offer',
   components: { BuyOfferReputation },
+  mounted () {
+    console.log(this.offer)
+  },
+  data () {
+    return {
+      showConfirm: false,
+      accept: false,
+      OfferStatus
+    }
+  },
   props: {
     offer: Object
   },
   computed: {
     ...mapGetters('accounts', ['currentFiatCurrency']),
     quantity () {
-      return this.offer.quantity.split(' ')[0]
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[0]
     },
     currency () {
-      return this.offer.quantity.split(' ')[1]
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[1]
     },
     equivalentFiat () {
       try {
@@ -59,13 +77,28 @@ export default {
         console.error(e)
         return 0
       }
+    },
+    pending () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_PENDING
+    },
+    paid () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_PAID
+    },
+    accepted () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ACCEPTED
+    },
+    timezone () {
+      return (this.offer.time_zone).toUpperCase()
     }
   },
   methods: {
-    ...mapActions('buyOffers', ['acceptBuyOffer']),
-    acceptOffer () {
-      console.log(this.offer.id)
+    ...mapActions('buyOffers', ['acceptBuyOffer', 'confirmPayment']),
+    confOffer () {
+      console.log('IDD', this.offer.id)
       this.acceptBuyOffer({ buyOfferId: this.offer.id })
+    },
+    confirmPaym () {
+      this.confirmPayment({ buyOfferId: this.offer.id })
     }
   }
 }
@@ -90,7 +123,6 @@ export default {
     width: 50px
   .custon-btn
     height: 50px
-    border-radius: 5px
   .btn-img-container
     height: 100% !important
     border-top-left-radius: 5px

@@ -6,12 +6,13 @@
     q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
         #containerScroll(ref="scrollTarget")
                 #items(v-for="offer in myOffers.rows")
-                    offer-buy-item(:offer="offer")
+                    offer-buy-item(:offer="offer" v-if="offer.buyer === account")
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import OfferBuyItem from '../components/offer-buy-item'
+import { EventBus } from '~/event-bus.js'
 
 export default {
   name: 'my-buy-offers',
@@ -26,6 +27,19 @@ export default {
         more: true
       }
     }
+  },
+  mounted () {
+    EventBus.$on('canceled', async () => {
+      // this.onLoad(0, true)
+      this.resetPagination()
+      console.log('refresh offers TODO')
+    })
+  },
+  beforeDestroy () {
+    EventBus.$off('canceled')
+  },
+  computed: {
+    ...mapGetters('accounts', ['account'])
   },
   components: { OfferBuyItem },
   watch: {
@@ -42,7 +56,7 @@ export default {
       done()
     },
     async onLoad (index, done) {
-      console.log('onLoad', this.myOffers.more)
+      // console.log('onLoad', this.myOffers.more)
       this.loading = true
       if (this.myOffers.more) {
         const { rows, more, next_key: nextKey } = await this.getMyBuyOffers({
@@ -69,7 +83,7 @@ export default {
         rows: [],
         nextKey: undefined
       }
-      console.log('resetPagination')
+      // console.log('resetPagination')
       // this.$refs.customInfinite.stop()
       // this.onLoad()
       await this.$nextTick()

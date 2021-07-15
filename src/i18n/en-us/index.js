@@ -13,7 +13,8 @@ export default {
       filter: 'Filter',
       waiting: 'Waiting...',
       make_payment: 'Make Payment',
-      view_details: 'View Details'
+      view_details: 'View Details',
+      confirm_payment: 'Confirm payment'
     },
     defaultTitle: 'Title'
   },
@@ -100,7 +101,8 @@ export default {
       currentTotal: 'Current Total',
       amountToReceive: 'Amount to receive',
       exchangeRate: 'Exchange Rate',
-      amountToSell: 'Amount to sell'
+      amountToSell: 'Amount to sell',
+      confirm_payment: 'Before confirming the payment, we suggest you verify that the balance of this transaction is in your account.'
     },
     buy: {
       buySeeds: 'Buy SEEDS',
@@ -165,7 +167,8 @@ export default {
       time_zone: 'Time zone'
     },
     incoming_offers: {
-      incoming_offers: 'Incoming buy offers'
+      incoming_offers: 'Buy offers',
+      proposals: 'Purchase proposals'
     }
   }
 }

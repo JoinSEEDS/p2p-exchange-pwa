@@ -54,10 +54,34 @@ class BuyOfferApi extends BaseEosApi {
     return this.eosApi.signTransaction(actions)
   }
 
+  async cancelBuyOffer ({ buyOfferId }) {
+    const actions = [{
+      account: Contracts.CONTRACT_P2P,
+      name: 'delbuyoffer',
+      data: {
+        buy_offer_id: buyOfferId
+      }
+    }]
+
+    return this.eosApi.signTransaction(actions)
+  }
+
   async confirmPayment ({ buyOfferId }) {
     const actions = [{
       account: Contracts.CONTRACT_P2P,
       name: 'confrmpaymnt',
+      data: {
+        buy_offer_id: buyOfferId
+      }
+    }]
+
+    return this.eosApi.signTransaction(actions)
+  }
+
+  async payOffer ({ buyOfferId }) {
+    const actions = [{
+      account: Contracts.CONTRACT_P2P,
+      name: 'payoffer',
       data: {
         buy_offer_id: buyOfferId
       }
