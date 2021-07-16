@@ -1,5 +1,5 @@
 <template lang="pug">
-  #container.text-grey3.tab-container
+  #container.text-grey3.tab-container(v-if="offer && buyer")
     q-card.q-pa-md.bg-light.q-gutter-md
       .row.justify-between.q-mt-none
         .subtitle.text-grey3 {{ $t('pages.buy_offer.buy_offer') }}
@@ -18,7 +18,7 @@
       .row.q-mb-md
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.user') + ':' }}]
-          .text-grey3.text-caption Resident
+          .text-grey3.text-caption {{ status }}
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.time_zone') + ':' }}]
           .text-grey3.text-caption {{ timezone }}
@@ -30,7 +30,7 @@
         .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
         .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency.toUpperCase() }}
       .row.q-my-md
-        small.text-red.text-bold {{ $t('pages.sell.confirm_payment') }}
+        small.text-red.text-bold(v-if="paid || accepted") {{ $t('pages.sell.confirm_payment') }}
       q-btn(v-if="pending" label="Accept offer" color="accent" @click="confOffer()").full-width.q-my-sm.custon-btn.custom-round
       q-btn(v-if="pending" label="Reject offer" color="negative" ).full-width.q-my-sm.custon-btn.custom-round
       q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
@@ -45,18 +45,21 @@
 import BuyOfferReputation from './read/buy-offer-reputation'
 import { mapActions, mapGetters } from 'vuex'
 import { OfferStatus } from '~/const/OfferStatus'
+import { EventBus } from '~/event-bus'
 
 export default {
   name: 'buy-offer',
   components: { BuyOfferReputation },
-  mounted () {
-    console.log(this.offer)
+  async mounted () {
+    let { userData } = await this.$store.$userApi.getUserSeedsData({ accountName: this.offer.buyer })
+    this.buyer = userData
   },
   data () {
     return {
       showConfirm: false,
       accept: false,
-      OfferStatus
+      OfferStatus,
+      buyer: ''
     }
   },
   props: {
@@ -89,16 +92,32 @@ export default {
     },
     timezone () {
       return (this.offer.time_zone).toUpperCase()
+    },
+    status () {
+      return this.buyer.status
     }
   },
   methods: {
     ...mapActions('buyOffers', ['acceptBuyOffer', 'confirmPayment']),
-    confOffer () {
-      console.log('IDD', this.offer.id)
-      this.acceptBuyOffer({ buyOfferId: this.offer.id })
+    async confOffer () {
+      try {
+        await this.acceptBuyOffer({ buyOfferId: this.offer.id })
+        EventBus.$emit('confirmOffer')
+        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
+        this.showSuccessMsg(this.$t('pages.offers.accept_buy_offer'))
+      } catch (error) {
+        console.error(error)
+      }
     },
-    confirmPaym () {
-      this.confirmPayment({ buyOfferId: this.offer.id })
+    async confirmPaym () {
+      try {
+        await this.confirmPayment({ buyOfferId: this.offer.id })
+        EventBus.$emit('confirmOffer')
+        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
+        this.showSuccessMsg(this.$t('pages.offers.confirm_payment'))
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 }
@@ -108,7 +127,6 @@ export default {
   .tab-container
     padding: 30px 30px !important
   .custom-separator
-    // border-color: $warning
     width: 50%
     margin: 20px auto
   .more-info
@@ -116,10 +134,7 @@ export default {
     text-text-decoration-color: $accent
   .q-btn__wrapper
     padding: 0px !important
-    // margin-top: 20px
-    // margin-bottom: 20px
   .btn-img
-    // height: 80%
     width: 50px
   .custon-btn
     height: 50px

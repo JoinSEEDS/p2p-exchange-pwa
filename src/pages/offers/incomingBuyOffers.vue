@@ -9,9 +9,9 @@
         hr.custom-size.q-my-sm
         .text-white.text-h5 ${{ equivalentFiat }}
       .col
-        .text-green Percentage:
+        .text-green {{ $t('pages.incoming_offers.percentage') }}:
           span.text-white  {{ priceper }}%
-        .text-green Sold:
+        .text-green {{ $t('pages.incoming_offers.sold') }}:
           span.text-white  {{ sold }}
           q-icon(name="arrow_upward" color="red").q-ml-sm
     q-separator(color="warning").q-my-sm
@@ -105,7 +105,6 @@ export default {
       done()
     },
     async onLoad (index, done) {
-      console.log('LOADMORE')
       this.loading = true
       if (this.incomingOffers.more) {
         const { rows, more, next_key: nextKey } = await this.getBuyOffersBySaleOffer({

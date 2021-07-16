@@ -3,7 +3,7 @@
   .row
     img.avatar-icon.self-center(src="../icons/seedIcon.png")
     .col.q-px-md.q-py-md
-        .text-white Seller: {{ offer.seller }}
+        .text-white {{ $t('pages.buy.seller') }}: {{ offer.seller }}
         .text-white {{ quantity }}
         .text-cancel(v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING" @click="cancel = !cancel") Cancel offer
   .row

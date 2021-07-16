@@ -31,7 +31,6 @@
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
       buy-offer(:offer="offer")
-      //- accept-decline-offer.custom-size-modal
 </template>
 
 <script>
@@ -84,19 +83,6 @@ export default {
       }
     }
   }
-  // computed: {
-  //   quantity () {
-  //     const buyQuantity = this.offer.quantity_info.find(v => {
-  //       return v.key === 'buyquantity'
-  //     })
-  //     return buyQuantity.value || 'UNKNOWN'
-  //   }
-  // },
-  // methods: {
-  //   takeOffer () {
-  //     // this.$router.push({ name: 'buy', params: { id: this.offer.id } })
-  //   }
-  // }
 }
 </script>
 

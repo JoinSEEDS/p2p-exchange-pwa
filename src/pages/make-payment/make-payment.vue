@@ -73,10 +73,8 @@ export default {
     async getOfferData () {
       this.offer = await this.getOffer(this.offerId)
       console.log(this.offer)
-      // console.log('get data of ', this.offerId)
     },
     copyPaypal () {
-      // console.log('copied!')
       this.copied = true
       navigator.clipboard.writeText(this.paypal)
       setTimeout(() => {
@@ -84,8 +82,9 @@ export default {
       }, 2000)
     },
     async makePayment () {
-      let res = await this.payOffer({ buyOfferId: this.offerId })
-      console.log(res)
+      await this.payOffer({ buyOfferId: this.offerId })
+      await this.showSuccessMsg(this.$t('pages.make_payment.success_pay'))
+      this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
     }
   }
 }
