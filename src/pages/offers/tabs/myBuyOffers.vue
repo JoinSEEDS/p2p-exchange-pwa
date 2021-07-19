@@ -65,7 +65,7 @@ export default {
         })
         if (rows) {
           // console.log('rows', rows)
-          this.myOffers.rows = this.myOffers.rows.concat(rows)
+          this.myOffers.rows = this.myOffers.rows.concat(rows.reverse())
         }
         this.myOffers.more = more
         this.myOffers.nextKey = nextKey
