@@ -1,7 +1,7 @@
 <template lang="pug">
 #container
   q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
-  q-form.q-gutter-md.q-mt-sm(@submit.prevent="onSubmitForm")
+  q-form().q-gutter-md.q-mt-sm(@submit.prevent="onSubmitForm")
     .subtitle.text-white.q-mt-md {{ $t('pages.sell.toSell') }}
     .text-white {{ $t('pages.sell.defineTheSaleOffer') }}
     .row.justify-center
@@ -19,6 +19,7 @@
         .textValueCurrent.q-ml-xs {{ availableSeeds }}
     q-checkbox.text-white(v-model="isSellAll" dark :label="$t('pages.sell.sellAllSeeds')" color="accent" class="text-white")
     q-input(
+        autofocus
         :label="$t('pages.sell.amountOfCrypto')"
         v-model="params.amount"
         outlined
@@ -136,7 +137,7 @@ export default {
         })
         console.log('response', response)
         this.getBalances()
-        this.showSuccessMsg(this.$t('pages.sell.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
+        this.showSuccessMsg(this.$root.$t('pages.sell.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
         this.$router.replace({ name: 'dashboard' })
       } catch (e) {
 

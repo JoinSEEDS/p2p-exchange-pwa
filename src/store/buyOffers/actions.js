@@ -62,8 +62,7 @@ export const confirmPayment = async function ({ commit }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
-    const response = await this.$buyOfferApi.confirmPayment({ accountName, ...params })
-    return response
+    await this.$buyOfferApi.confirmPayment({ ...params, accountName })
   } catch (e) {
     console.error('An error ocurred while trying to accept buy offer', e)
     commit('general/setErrorMsg', e.message || e, { root: true })

@@ -83,7 +83,7 @@ export default {
     },
     async makePayment () {
       await this.payOffer({ buyOfferId: this.offerId })
-      await this.showSuccessMsg(this.$t('pages.make_payment.success_pay'))
+      await this.showSuccessMsg(this.$root.$t('pages.make_payment.success_pay'))
       this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
     }
   }

@@ -93,6 +93,7 @@ export default {
 #containerSellOffers
   display: flex
   flex-direction: column
+  // max-height: 460px
 
 #offersEmpty
   flex: 1
@@ -100,6 +101,6 @@ export default {
 #containerScroll
   overflow: auto
   flex: 1
-  max-height: 650px
+  max-height: 500px
 
 </style>

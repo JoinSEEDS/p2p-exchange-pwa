@@ -21,12 +21,19 @@
       v-if="pending"
     )
     q-btn.custom-width.custom-round(
+      :label="$t('common.buttons.waiting_payment')"
+      color="blue"
+      class="text-cap"
+      no-caps
+      v-if="accepted"
+    )
+    q-btn.custom-width.custom-round(
       :label="$t('common.buttons.confirm_payment')"
       color="blue"
       class="text-cap"
       @click="showOptions = !showOptions"
       no-caps
-      v-if="paid || accepted"
+      v-if="paid"
     )
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)

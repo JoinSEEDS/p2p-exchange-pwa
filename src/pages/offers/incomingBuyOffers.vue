@@ -91,6 +91,7 @@ export default {
     // this.getIncommingBuyOffers()
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
+      this.resetPagination()
       // this.getIncommingBuyOffers()
     })
   },

@@ -10,8 +10,9 @@
             .text-grey3 #[strong {{ offer.buyer }}] {{ $t('pages.buy_offer.buy_token', {token: 'seed'}) }}
       .row
         .col
-          .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.reputation') + ':' }}]
-          buy-offer-reputation
+          .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.reputation') }}]:
+          .text-grey3.text-caption {{ reputation }}
+          //- buy-offer-reputation
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.total_transaction') + ':' }}]
           .text-grey3.text-caption {{ equivalentFiat }} {{ currentFiatCurrency.toUpperCase() }}
@@ -23,17 +24,17 @@
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.time_zone') + ':' }}]
           .text-grey3.text-caption {{ timezone }}
       .row
-        .col-12.text-h4.text-center.text-dark ${{ quantity }}
+        .col-12.text-h4.text-center.text-dark {{ quantity }}
         .col-12.text-h6.text-center.text-dark {{ currency }}
       q-separator.text-dark.custom-separator
       .row.q-mb-sm
-        .col-12.text-h4.text-center.text-dark {{ equivalentFiat }}
+        .col-12.text-h4.text-center.text-dark ${{ equivalentFiat }}
         .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency.toUpperCase() }}
       .row.q-my-md
         small.text-red.text-bold(v-if="paid || accepted") {{ $t('pages.sell.confirm_payment') }}
       q-btn(v-if="pending" label="Accept offer" color="accent" @click="confOffer()").full-width.q-my-sm.custon-btn.custom-round
       q-btn(v-if="pending" label="Reject offer" color="negative" ).full-width.q-my-sm.custon-btn.custom-round
-      q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="() => confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
       //- #modals
       //-   q-dialog(v-model="showConfirm" transition-show="slide-up" transition-hide="slide-down")
@@ -95,6 +96,9 @@ export default {
     },
     status () {
       return this.buyer.status
+    },
+    reputation () {
+      return this.buyer.reputation
     }
   },
   methods: {
@@ -103,8 +107,8 @@ export default {
       try {
         await this.acceptBuyOffer({ buyOfferId: this.offer.id })
         EventBus.$emit('confirmOffer')
-        this.showSuccessMsg(this.$t('pages.offers.accept_buy_offer'))
-        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
+        this.showSuccessMsg(this.$root.$t('pages.offers.accept_buy_offer'))
+        // this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
       } catch (error) {
         console.error(error)
       }
@@ -112,11 +116,11 @@ export default {
     async confirmPaym () {
       try {
         await this.confirmPayment({ buyOfferId: this.offer.id })
+        this.showSuccessMsg(this.$root.$t('pages.offers.confirm_payment'))
         EventBus.$emit('confirmOffer')
-        this.showSuccessMsg(this.$t('pages.offers.confirm_payment'))
-        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
+        // this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
       } catch (error) {
-        console.error('error: ', error)
+        console.error('An error occurred while trying to confirm payment: ', error)
       }
     }
   }

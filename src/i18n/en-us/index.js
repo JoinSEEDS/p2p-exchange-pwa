@@ -15,7 +15,8 @@ export default {
       make_payment: 'Make Payment',
       view_details: 'View Details',
       confirm_payment: 'Confirm payment',
-      dismiss: 'Dismiss'
+      dismiss: 'Dismiss',
+      waiting_payment: 'Waiting for payment...'
     },
     defaultTitle: 'Title'
   },
@@ -157,8 +158,8 @@ export default {
       fiatCurrency: 'Fiat Currency',
       filterBy: 'Filter By',
       timeTo: '{time} min. to accept the offer.',
-      confirm_payment: 'Offer payment confirmed succesfully',
-      accept_buy_offer: 'Offer accepted succesfully'
+      accept_buy_offer: 'Offer accepted successfully',
+      confirm_payment: 'Offer payment confirmed successfully'
     },
     make_payment: {
       make_payment: 'Make payment',
