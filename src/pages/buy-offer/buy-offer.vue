@@ -10,7 +10,7 @@
             .text-grey3 #[strong {{ offer.buyer }}] {{ $t('pages.buy_offer.buy_token', {token: 'seed'}) }}
       .row
         .col
-          .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.reputation') + ':' }}]
+          .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.reputation') + ': Test' }}]
           buy-offer-reputation
         .col
           .text-grey3.text-caption #[strong {{ $t('pages.buy_offer.total_transaction') + ':' }}]
@@ -33,7 +33,7 @@
         small.text-red.text-bold(v-if="paid || accepted") {{ $t('pages.sell.confirm_payment') }}
       q-btn(v-if="pending" label="Accept offer" color="accent" @click="confOffer()").full-width.q-my-sm.custon-btn.custom-round
       q-btn(v-if="pending" label="Reject offer" color="negative" ).full-width.q-my-sm.custon-btn.custom-round
-      q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="() => confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
       //- #modals
       //-   q-dialog(v-model="showConfirm" transition-show="slide-up" transition-hide="slide-down")
@@ -111,12 +111,15 @@ export default {
     },
     async confirmPaym () {
       try {
+        // debugger
         await this.confirmPayment({ buyOfferId: this.offer.id })
+        debugger
+        console.log('confirmR', this)
+        this.showSuccessMsg(this.$root.$t('pages.offers.confirm_payment'))
         EventBus.$emit('confirmOffer')
         this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
-        this.showSuccessMsg(this.$t('pages.offers.confirm_payment'))
       } catch (error) {
-        console.error(error)
+        console.error('An error occurred while trying to confirm payment: ', error)
       }
     }
   }

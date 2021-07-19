@@ -157,8 +157,8 @@ export default {
       fiatCurrency: 'Fiat Currency',
       filterBy: 'Filter By',
       timeTo: '{time} min. to accept the offer.',
-      accept_buy_offer: 'Offer accepted succesfully',
-      confirm_payment: 'Offer payment confirmed succesfully'
+      accept_buy_offer: 'Offer accepted successfully',
+      confirm_payment: 'Offer payment confirmed successfully'
     },
     make_payment: {
       make_payment: 'Make payment',
