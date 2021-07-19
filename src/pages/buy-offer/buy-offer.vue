@@ -103,8 +103,8 @@ export default {
       try {
         await this.acceptBuyOffer({ buyOfferId: this.offer.id })
         EventBus.$emit('confirmOffer')
-        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
         this.showSuccessMsg(this.$t('pages.offers.accept_buy_offer'))
+        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
       } catch (error) {
         console.error(error)
       }
@@ -113,10 +113,10 @@ export default {
       try {
         await this.confirmPayment({ buyOfferId: this.offer.id })
         EventBus.$emit('confirmOffer')
-        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
         this.showSuccessMsg(this.$t('pages.offers.confirm_payment'))
+        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
       } catch (error) {
-        console.error(error)
+        console.error('error: ', error)
       }
     }
   }
