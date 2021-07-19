@@ -5,10 +5,11 @@
       .yellow-dot
       img.avatar-icon.self-center(src="../../../statics/app-icons/buyer.svg")
     .col.q-px-md.q-py-md
-        .text-white Available: {{ quantity }}
+        //- .text-white Available: {{ quantity }}
+        .text-white {{  $t('pages.sell.available', { amount: quantity }) }}
         //- .text-white Offered: {{ offered }}
-        .text-white Percentage: {{ percentage }}
-        .text-white Sold: {{ sold }}
+        .text-white {{  $t('pages.sell.percentage', { percentage }) }}
+        .text-white {{  $t('pages.sell.sold', { sold }) }}
           q-icon(name="arrow_upward" color="red").q-ml-sm
   .row
     .col

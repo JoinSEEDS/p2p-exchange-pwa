@@ -2,13 +2,13 @@
   #container.full-width
     q-card.q-pa-md.bg-light.q-gutter-md
       .row.justify-between
-        .subtitle.text-dark Waiting...
+        .subtitle.text-dark {{ $t('common.buttons.waiting') }}
         green-flat-btn(:label="$t('pages.general.close')" v-close-popup)
       .row
         .col-12
-          .text-dark Your offer is pending of approval.
+          .text-dark {{ $t('pages.sell.waiting') }}
         .col-12
-          .text-dark Details:
+          .text-dark {{ $t('pages.sell.details') }}
       .col.text-center
         .text-dark.text-h6 {{ quantity }}
         hr.custom-size

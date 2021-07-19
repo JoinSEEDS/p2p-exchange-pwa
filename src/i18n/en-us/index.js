@@ -14,7 +14,8 @@ export default {
       waiting: 'Waiting...',
       make_payment: 'Make Payment',
       view_details: 'View Details',
-      confirm_payment: 'Confirm payment'
+      confirm_payment: 'Confirm payment',
+      dismiss: 'Dismiss'
     },
     defaultTitle: 'Title'
   },
@@ -95,14 +96,19 @@ export default {
       marketCost: '100% (1 SEED) = {amount}',
       exchangeRateEqual: '1 SEED = {amount}',
       preferredCurrency: 'Preferred Currency',
-      successMessage: 'Sell Offer was created success for {amount}.',
+      successMessage: 'Sell Offer was created successfully for {amount}.',
       confirmSale: 'Confirm Sale',
       sellAllSeeds: 'Sell all SEEDS',
       currentTotal: 'Current Total',
       amountToReceive: 'Amount to receive',
       exchangeRate: 'Exchange Rate',
       amountToSell: 'Amount to sell',
-      confirm_payment: 'Before confirming the payment, we suggest you verify that the balance of this transaction is in your account.'
+      confirm_payment: 'Before confirming the payment, we suggest you verify that the balance of this transaction is in your account.',
+      available: 'Available: {amount}',
+      percentage: 'Percentage: {percentage}',
+      sold: 'Sold: {sold}',
+      waiting: 'Your offer is pending of approval.',
+      details: 'Details:'
     },
     buy: {
       buySeeds: 'Buy SEEDS',
@@ -121,8 +127,10 @@ export default {
       confirmPurchase: 'Confirm Purchase',
       amountToBuy: 'Amount to Buy',
       amountToPay: 'Amount to pay',
-      successMessage: 'Purchase Offer was created success for {amount}.',
-      amountOfCrypto: 'Enter the amount of seeds to buy'
+      successMessage: 'Purchase Offer was created successfully for {amount}.',
+      amountOfCrypto: 'Enter the amount of seeds to buy',
+      cancel: 'Cancel buy offer',
+      confirm_cancel: 'Are you sure of cancel this offer?'
     },
     deposit: {
       deposit: 'Deposit',
@@ -148,7 +156,9 @@ export default {
       timeZone: 'Time Zone',
       fiatCurrency: 'Fiat Currency',
       filterBy: 'Filter By',
-      timeTo: '{time} min. to accept the offer.'
+      timeTo: '{time} min. to accept the offer.',
+      accept_buy_offer: 'Offer accepted succesfully',
+      confirm_payment: 'Offer payment confirmed succesfully'
     },
     make_payment: {
       make_payment: 'Make payment',
@@ -156,6 +166,7 @@ export default {
       to_complete: 'To complete the purchase, make the payment through PayPal to the following account.',
       more_info: 'More information',
       confirm: 'Confirm payment',
+      success_pay: 'Offer paid succesfully',
       copy: 'Copy!'
     },
     buy_offer: {
@@ -168,7 +179,9 @@ export default {
     },
     incoming_offers: {
       incoming_offers: 'Buy offers',
-      proposals: 'Purchase proposals'
+      proposals: 'Purchase proposals',
+      percentage: 'Percentage',
+      sold: 'Sold'
     }
   }
 }

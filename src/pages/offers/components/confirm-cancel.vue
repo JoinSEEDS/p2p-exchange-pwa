@@ -2,16 +2,16 @@
   #cont
     q-card.q-pa-md.bg-light
       .row.justify-between
-        .subtitle.text-dark Cancel buy offer
+        .subtitle.text-dark {{ $t('pages.buy.cancel') }}
         green-flat-btn(:label="$t('pages.general.close')" v-close-popup)
       .row.q-my-sm
         .col-12
-          .text-dark Are you sure of cancel this offer?
+          .text-dark {{ $t('pages.buy.confirm_cancel') }}
       .row.q-my-sm.q-gutter-md
         .col
-          q-btn(color="red" label="Dismiss" v-close-popup).full-width
+          q-btn(color="red" :label="$t('common.buttons.dismiss')" v-close-popup).full-width
         .col
-          q-btn(color="green" label="Accept" @click="cancelOffer()").full-width
+          q-btn(color="green" :label="$t('common.buttons.confirm')" @click="cancelOffer()").full-width
 </template>
 
 <script>
