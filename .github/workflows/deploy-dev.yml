@@ -18,7 +18,6 @@ jobs:
           node-version: '12.x'
       - run: yarn global add @quasar/cli
       - run: yarn install
-      - run: mv src/statics/chain-manifests-dev.json src/statics/chain-manifests.json
       - run: yarn build
         env:
           APP_NAME: '"P2P Exchange Dev"'
@@ -32,6 +31,7 @@ jobs:
           CONTRACT_P2P: "'m1escrowp2px'"
           CONTRACT_SEEDS_WALLET: "'token.seeds'"
           CONTRACT_SEEDS_VALUES: "'tlosto.seeds'"
+          CONTRACT_P2P_SETTINGS: "'m1sttgsp2pex'"
 
       - name: S3 sync
         uses: jakejarvis/s3-sync-action@master
