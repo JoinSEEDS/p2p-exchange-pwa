@@ -49,6 +49,7 @@
             :rules="[rules.required, rules.minZero, customMaxValidation]"
             type="number"
             step="0.0001"
+            autofocus
         )
           template(v-slot:append)
             .text SEEDS

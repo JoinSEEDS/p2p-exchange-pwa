@@ -6,11 +6,11 @@
       img.avatar-icon.self-center(src="../../../statics/app-icons/seller.svg")
     .col.q-px-md.q-py-sm
         .text-white #[strong {{ offer.buyer }}]
-        .text-white.q-mt-md {{ quantity }} =
+        .text-white {{ quantity }} =
           span.text-info.text-bold  ${{ equivalentFiat}}
-        //- div.full-width.flex.items-center.q-mt-xs
-        //-   q-icon(name="timer" color="red" size="xs")
-        //-   small.text-white.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
+          div(v-if="hasRemainingTime").full-width.flex.items-center.q-mt-xs
+            q-icon(name="timer" :color="remainingColor" size="xs")
+            small.text-white.q-ml-sm {{$t('pages.offers.timeTo', { time: remaining })}}
   .row.justify-center
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.view_details')"
@@ -54,7 +54,10 @@ export default {
       default: () => undefined
     }
   },
-  mounted () {
+  async mounted () {
+    let remaining = await this.remainingTimeToAcceptOffer(this.offer.created_date)
+    this.remaining = (remaining > 0) ? this.getHoursAndMinutes(remaining) : ''
+
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
     })
@@ -65,7 +68,25 @@ export default {
   data () {
     return {
       showOptions: false,
-      OfferStatus
+      OfferStatus,
+      remaining: '',
+      hasRemainingTime: false,
+      remainingTime: {
+        hours: 0,
+        minutes: 0
+      }
+    }
+  },
+  methods: {
+    getHoursAndMinutes (minutes) {
+      this.hasRemainingTime = true
+
+      let hours = Math.floor(minutes / 60)
+      let mins = minutes % 60
+      this.remainingTime.hours = hours
+      this.remainingTime.minutes = mins
+
+      return `${hours}h ${mins.toFixed(0)}m`
     }
   },
   computed: {
@@ -88,6 +109,16 @@ export default {
         console.error(e)
         return 0
       }
+    },
+    remainingColor () {
+      let hours = this.remainingTime.hours
+      let mins = this.remainingTime.minutes
+
+      let res = (hours > 1 && mins > 0) ? 'green' : (hours < 0 && mins > 30) ? 'orange' : 'red'
+      console.log(hours, mins, res)
+
+      return (hours >= 1 && mins >= 0) ? 'green' : (hours <= 0 && mins >= 30) ? 'orange' : 'red'
+      // return 'red'
     }
   }
 }

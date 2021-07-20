@@ -30,6 +30,14 @@ export default {
     return {
       tab: 'buy'
     }
+  },
+  mounted () {
+    if (this.subTab) this.tab = this.subTab
+  },
+  computed: {
+    subTab () {
+      return this.$route.params.subTab
+    }
   }
 }
 </script>

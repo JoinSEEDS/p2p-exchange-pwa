@@ -157,7 +157,7 @@ export default {
       timeZone: 'Time Zone',
       fiatCurrency: 'Fiat Currency',
       filterBy: 'Filter By',
-      timeTo: '{time} min. to accept the offer.',
+      timeTo: '{time} remaining to accept the offer.',
       accept_buy_offer: 'Offer accepted successfully',
       confirm_payment: 'Offer payment confirmed successfully'
     },

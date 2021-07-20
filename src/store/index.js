@@ -9,6 +9,7 @@ import buySellRels from './buySellRels'
 import configs from './configs'
 import sellOffers from './sellOffers'
 import trxStats from './trxStats'
+import settings from './settings'
 
 Vue.use(Vuex)
 
@@ -27,7 +28,8 @@ export default function (/* { ssrContext } */) {
       buySellRels,
       configs,
       sellOffers,
-      trxStats
+      trxStats,
+      settings
     },
 
     // enable strict mode (adds overhead!)

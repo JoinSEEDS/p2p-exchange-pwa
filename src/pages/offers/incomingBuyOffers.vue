@@ -1,6 +1,6 @@
 <template lang="pug">
   #containerIncomingOffers(v-if="offer")
-    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })")
+    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions', subTab: 'sale' } })")
     .subtitle.text-white.q-mt-sm {{ $t('pages.incoming_offers.incoming_offers') }}
     //- .row.full-width
     #offerData

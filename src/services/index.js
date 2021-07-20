@@ -8,6 +8,7 @@ import SellOfferApi from './SellOfferApi'
 import TrxStatApi from './TrxStatApi'
 import SeedsValueApi from './SeedsValueApi'
 import OffersApi from './OffersApi'
+import SettingsApi from './SettingsApi'
 
 export {
   UserApi,
@@ -19,5 +20,6 @@ export {
   SellOfferApi,
   TrxStatApi,
   SeedsValueApi,
-  OffersApi
+  OffersApi,
+  SettingsApi
 }

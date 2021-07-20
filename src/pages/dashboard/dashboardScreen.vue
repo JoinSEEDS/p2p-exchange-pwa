@@ -49,7 +49,6 @@ export default {
     }
   },
   mounted () {
-    console.log('param tab', this.paramTab)
     if (this.paramTab) this.tab = this.paramTab
   },
   computed: {

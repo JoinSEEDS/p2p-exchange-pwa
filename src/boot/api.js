@@ -9,7 +9,8 @@ import {
   SellOfferApi,
   TrxStatApi,
   SeedsValueApi,
-  OffersApi
+  OffersApi,
+  SettingsApi
 } from '~/services'
 
 const signTransaction = async function (actions) {
@@ -87,6 +88,10 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  const settingsApi = new SettingsApi({
+    eosApi: api
+  })
+
   const sellOfferApi = new SellOfferApi({
     eosApi: api
   })
@@ -110,6 +115,7 @@ export default ({ store }) => {
   store['$buyOfferApi'] = buyOfferApi
   store['$buySellRelApi'] = buySellRelApi
   store['$configApi'] = configApi
+  store['$settingsApi'] = settingsApi
   store['$sellOfferApi'] = sellOfferApi
   store['$trxStatApi'] = trxStatApi
   store['$seedsValueApi'] = seedsValueApi
