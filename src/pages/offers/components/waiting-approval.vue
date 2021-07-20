@@ -13,11 +13,32 @@
         .text-dark.text-h6 {{ quantity }}
         hr.custom-size
         .text-dark.text-h6 ${{ equivalentFiat }}
+      .row
+        .col-12
+          q-btn(
+            color="red"
+            no-caps
+            :label="$t('pages.sell.cancel')"
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING" @click="cancel = !cancel"
+          ).full-width
+    #dialogs
+      q-dialog(v-model="cancel" transition-show="slide-up" transition-hide="slide-down")
+        confirm-cancel(:id="offer.id" @canceledBtn="cancel = !cancel")
 </template>
 
 <script>
+import { OfferStatus } from '~/const/OfferStatus'
+import ConfirmCancel from './confirm-cancel.vue'
+
 export default {
   name: 'waiwting-approval',
+  components: { ConfirmCancel },
+  data () {
+    return {
+      OfferStatus,
+      cancel: false
+    }
+  },
   props: {
     offer: Object
   },

@@ -16,7 +16,8 @@ export default {
       view_details: 'View Details',
       confirm_payment: 'Confirm payment',
       dismiss: 'Dismiss',
-      waiting_payment: 'Waiting for payment...'
+      waiting_payment: 'Waiting for payment...',
+      rejected: 'Rejected'
     },
     defaultTitle: 'Title'
   },
@@ -109,7 +110,8 @@ export default {
       percentage: 'Percentage: {percentage}',
       sold: 'Sold: {sold}',
       waiting: 'Your offer is pending of approval.',
-      details: 'Details:'
+      details: 'Details:',
+      cancel: 'Cancel'
     },
     buy: {
       buySeeds: 'Buy SEEDS',
@@ -159,7 +161,8 @@ export default {
       filterBy: 'Filter By',
       timeTo: '{time} remaining to accept the offer.',
       accept_buy_offer: 'Offer accepted successfully',
-      confirm_payment: 'Offer payment confirmed successfully'
+      confirm_payment: 'Offer payment confirmed successfully',
+      reject_buy_offer: 'Offer rejected successfully'
     },
     make_payment: {
       make_payment: 'Make payment',
