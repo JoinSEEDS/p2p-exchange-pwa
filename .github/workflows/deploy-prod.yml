@@ -1,0 +1,55 @@
+name: Build and Deploy to Production
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: build-prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: yarn global add @quasar/cli
+      - run: yarn install
+      - run: mv src/statics/chain-manifests-prod.json src/statics/chain-manifests.json
+      - run: yarn build
+        env:
+          APP_NAME: '"Seeds Simulation"'
+          NETWORK_BLOCKCHAIN: '"eos"'
+          NETWORK_CHAIN_ID: '"4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"'
+          NETWORK_HOST: '"telos.caleos.io"'
+          NETWORK_PORT: '443'
+          NETWORK_PROTOCOL: '"https"'
+          WEBSERVICES_URL: '"https://fqbkgjgig0.execute-api.eu-west-1.amazonaws.com/dev"'
+          WEBSERVICES_API_KEY: '"Zo3L4h85H4TxltCRRrJR70SIfVSWQJW15MbwsTzg"'
+          BASE_REPOSITORY_URL: '"https://seeds-simulations-dev.s3-eu-west-1.amazonaws.com"'
+          RETRY_DELAY: '5000'
+          WAKE_DB_TIME: '15'
+
+      - name: S3 sync
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: 'seeds-simulation-prod'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
+          AWS_REGION: 'eu-west-1'   # optional: defaults to us-east-1
+          SOURCE_DIR: 'dist/spa'    # optional: defaults to entire repository
+
+      # Invalidate Cloudfront (this action)
+      - name: invalidate
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: ${{ secrets.AWS_DIST_ID_PROD }}
+          PATHS: '/*'
+          AWS_REGION: 'eu-west-1'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}

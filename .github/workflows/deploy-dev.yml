@@ -1,0 +1,55 @@
+name: Build and Deploy to Staging
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  build:
+    name: build-dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: yarn global add @quasar/cli
+      - run: yarn install
+      - run: mv src/statics/chain-manifests-dev.json src/statics/chain-manifests.json
+      - run: yarn build
+        env:
+          APP_NAME: '"P2P Exchange Dev"'
+          NETWORK_BLOCKCHAIN: '"eos"'
+          NETWORK_CHAIN_ID: '"1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f"'
+          NETWORK_HOST: '"testnet.telos.caleos.io"'
+          NETWORK_PORT: '443'
+          NETWORK_PROTOCOL: '"https"'
+          BLOCKCHAIN_EXPLORER: '"https://telos-test.bloks.io"'
+          CONTRACT_SEEDS: "'accts.seeds'"
+          CONTRACT_P2P: "'m1escrowp2px'"
+          CONTRACT_SEEDS_WALLET: "'token.seeds'"
+          CONTRACT_SEEDS_VALUES: "'tlosto.seeds'"
+
+      - name: S3 sync
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: 'p2p-exchange-dev'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
+          AWS_REGION: 'eu-west-1'   # optional: defaults to us-east-1
+          SOURCE_DIR: 'dist/spa'    # optional: defaults to entire repository
+
+      # Invalidate Cloudfront (this action)
+      - name: invalidate
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: ${{ secrets.AWS_DIST_ID_DEV }}
+          PATHS: '/*'
+          AWS_REGION: 'eu-west-1'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
