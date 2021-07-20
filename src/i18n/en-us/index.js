@@ -131,7 +131,7 @@ export default {
       successMessage: 'Purchase Offer was created successfully for {amount}.',
       amountOfCrypto: 'Enter the amount of seeds to buy',
       cancel: 'Cancel buy offer',
-      confirm_cancel: 'Are you sure of cancel this offer?'
+      confirm_cancel: 'Are you sure of canceling this offer?'
     },
     deposit: {
       deposit: 'Deposit',
