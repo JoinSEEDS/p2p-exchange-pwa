@@ -73,7 +73,6 @@ export default {
     ...mapActions('buyOffers', ['getOffer', 'payOffer']),
     async getOfferData () {
       this.offer = await this.getOffer(this.offerId)
-      console.log(this.offer)
     },
     async makePayment () {
       await this.payOffer({ buyOfferId: this.offerId })

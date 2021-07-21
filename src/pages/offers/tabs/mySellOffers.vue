@@ -1,12 +1,19 @@
 <template lang="pug">
-#containerSellOffers
-    #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
-      skeleton-offer-item
-    q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
-      q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
-        #containerScroll(ref="scrollTarget")
-          #items(v-for="offer in myOffers.rows")
-            offer-sell-item(:offer="offer" v-if="offer.seller === account && offer.type === OfferStatus.SELL_OFFER")
+.container
+  #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
+    skeleton-offer-item
+  .container(v-if="myOffers.rows.length === 0 && !loading")
+    #list.row
+      .empty-list.self-center.col.items-center
+        .row.justify-center.q-mb-md
+          .fiat-icon.text-center
+        .empty-label {{ $t('pages.offers.make_first') }}
+        .empty-label {{ $t('pages.offers.sell_offer').toUpperCase() }}
+  q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
+    q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+      #containerScroll(ref="scrollTarget")
+        #items(v-for="offer in myOffers.rows")
+          offer-sell-item(:offer="offer")
 </template>
 
 <script>
@@ -32,6 +39,9 @@ export default {
   computed: {
     ...mapGetters('accounts', ['account'])
   },
+  mounted () {
+    this.myOffers.rows = []
+  },
   components: { OfferSellItem },
   watch: {
     'myOffers.rows' (v) {
@@ -47,7 +57,6 @@ export default {
       done()
     },
     async onLoad (index, done) {
-      // console.log('onLoad', this.myOffers.more)
       this.loading = true
       if (this.myOffers.more) {
         const { rows, more, next_key: nextKey } = await this.getMySellOffers({
@@ -55,13 +64,14 @@ export default {
           nextKey: this.myOffers.nextKey
         })
         if (rows) {
-          // console.log('rows', rows)
-          this.myOffers.rows = this.myOffers.rows.concat(rows.reverse())
+          for (const row of rows) {
+            if (row.seller === this.account && row.type === OfferStatus.SELL_OFFER) {
+              this.myOffers.rows.push(row)
+            }
+          }
         }
         this.myOffers.more = more
         this.myOffers.nextKey = nextKey
-        // this.offset = this.limit
-        // this.limit = this.limit + this.rowsPerLoad
         if (done) {
           done()
         }
@@ -74,27 +84,18 @@ export default {
         rows: [],
         nextKey: undefined
       }
-      console.log('resetPagination')
-      // this.$refs.customInfinite.stop()
-      // this.onLoad()
       await this.$nextTick()
       this.$refs.customInfinite.stop()
       await this.$nextTick()
       this.$refs.customInfinite.resume()
       await this.$nextTick()
       this.$refs.customInfinite.trigger()
-      // this.$refs.customInfinite.poll()
     }
   }
 }
 </script>
 
 <style lang="sass" scoped>
-#containerSellOffers
-  display: flex
-  flex-direction: column
-  // max-height: 460px
-
 #offersEmpty
   flex: 1
 
@@ -102,5 +103,30 @@ export default {
   overflow: auto
   flex: 1
   max-height: 500px
+
+#list
+  height: 100%
+
+.container-view-btn
+    position: relative
+.empty-label
+    font-family: SF Pro Display
+    font-size: 18px
+    font-style: normal
+    font-weight: 700
+    line-height: 21px
+    letter-spacing: 0em
+    text-align: center
+    color: #E9EDD9
+
+.view-btn
+    font-size: 14px
+    font-style: normal
+    font-weight: 500
+    line-height: 17px
+    letter-spacing: 0em
+    color: #1F992A
+    padding: 5px
+    border-radius: 10px
 
 </style>

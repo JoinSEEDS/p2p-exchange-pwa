@@ -162,7 +162,10 @@ export default {
       timeTo: '{time} remaining to accept the offer.',
       accept_buy_offer: 'Offer accepted successfully',
       confirm_payment: 'Offer payment confirmed successfully',
-      reject_buy_offer: 'Offer rejected successfully'
+      reject_buy_offer: 'Offer rejected successfully',
+      make_first: 'Make your first',
+      sell_offer: 'Sell Offer',
+      buy_offer: 'Buy Offer'
     },
     make_payment: {
       make_payment: 'Make payment',

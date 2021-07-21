@@ -44,9 +44,6 @@ export default {
       showIncomingOffers: false
     }
   },
-  // mounted () {
-  //   console.log('sas', this.offer)
-  // },
   computed: {
     quantity () {
       const buyQuantity = this.offer.quantity_info.find(v => {
@@ -67,16 +64,13 @@ export default {
     sold () {
       let available = this.quantity
       let offered = this.offer.quantity_info.find(el => el.key === 'totaloffered').value
-      // console.log('av', available, 'off', offered)
       return `${(this.amountOf(offered) - this.amountOf(available)).toFixed(4)} SEEDS`
     }
   },
   methods: {
     takeOffer () {
       this.showIncomingOffers = true
-      // console.log(this.offer.id)
       this.$router.push({ name: 'incoming-buy-offers', params: { id: this.offer.id } })
-      // this.$router.push({ name: 'make-payment', params: { id: this.offer.id } })
     },
     amountOf (asset) {
       return parseFloat(asset.split(' ')[0])

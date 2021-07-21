@@ -82,7 +82,7 @@ export default {
         rows: [],
         nextKey: undefined
       }
-      console.log('resetPagination')
+      // console.log('resetPagination')
       // this.$refs.customInfinite.stop()
       // this.onLoad()
       await this.$nextTick()
@@ -97,7 +97,7 @@ export default {
       this.resetPagination()
     },
     async onLoad (index, done) {
-      console.log('onLoad', this.offersList.more)
+      // console.log('onLoad', this.offersList.more)
       this.loading = true
       if (this.offersList.more) {
         const { rows, more, next_key: nextKey } = await this.getSellOffers({

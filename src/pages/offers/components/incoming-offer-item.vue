@@ -124,9 +124,6 @@ export default {
       let hours = this.remainingTime.hours
       let mins = this.remainingTime.minutes
 
-      let res = (hours > 1 && mins > 0) ? 'green' : (hours < 0 && mins > 30) ? 'orange' : 'red'
-      console.log(hours, mins, res)
-
       return (hours >= 1 && mins >= 0) ? 'green' : (hours <= 0 && mins >= 30) ? 'orange' : 'red'
       // return 'red'
     }

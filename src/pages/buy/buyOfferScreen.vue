@@ -148,7 +148,7 @@ export default {
       this.showConfirmBuy = true
     },
     async getOfferData () {
-      console.log('Getting data for offer ', this.offerId)
+      // console.log('Getting data for offer ', this.offerId)
       try {
         this.showIsLoading(true)
         this.sellOffer = await this.getOffer(this.offerId)

@@ -138,7 +138,7 @@ export default {
   methods: {
     ...mapActions('accounts', ['saveAccountData']),
     loadProfileData () {
-      console.log('loadProfileData')
+      // console.log('loadProfileData')
       if (!this.isP2PProfileCompleted) {
         this.params.nickname = this.seedsAccount.nickname
         return
@@ -154,7 +154,7 @@ export default {
       }
     },
     async onSubmitForm () {
-      console.log('onSubmitted', this.params)
+      // console.log('onSubmitted', this.params)
       try {
         await this.saveAccountData({
           contactMethods: [ { 'key': 'signal', 'value': 'testValue' } ],
@@ -162,7 +162,7 @@ export default {
           timeZone: this.params.timeZone,
           fiatCurrency: this.params.fiatCurrency
         })
-        console.log('Account info was saved')
+        // console.log('Account info was saved')
         this.$router.push({ name: 'dashboard' })
       } catch (e) {
 

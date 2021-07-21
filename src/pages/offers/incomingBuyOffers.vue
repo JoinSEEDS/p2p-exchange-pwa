@@ -160,7 +160,7 @@ export default {
   #containerScroll
     overflow: auto
     flex: 1
-    max-height: 50vh
+    max-height: 45vh
   .custom-size
     color: $warning
     width: 60%
