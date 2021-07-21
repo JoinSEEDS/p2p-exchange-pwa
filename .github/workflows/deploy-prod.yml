@@ -18,6 +18,7 @@ jobs:
           node-version: '12.x'
       - run: yarn global add @quasar/cli
       - run: yarn install
+      - run: mv src/statics/chain-manifests-prod.json src/statics/chain-manifests.json
       - run: yarn build
         env:
           APP_NAME: '"P2P Exchange"'
