@@ -93,6 +93,7 @@ export const utils = {
 
       let sinceDate = Date.parse(creationDate)
       let limitMs = this.acceptLim * 1000
+      let limitMins = this.acceptLim / 60
       let nowLocal = new Date()
       var now = new Date(
         nowLocal.getUTCFullYear(),
@@ -107,7 +108,8 @@ export const utils = {
       let remainingTime = limitDate - now
       let remainingMinutes = remainingTime / 60000
 
-      return (remainingMinutes < 0) ? 0 : remainingMinutes
+      let percentage = ((100 / limitMins) * remainingMinutes)
+      return (remainingMinutes < 0) ? 0 : { remainingMinutes, percentage }
 
       // let { hours, minutes } = this.getHoursAndMinutes(remainingMinutes)
       // return `${hours} h ${minutes} m`

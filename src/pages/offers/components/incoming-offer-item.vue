@@ -62,7 +62,8 @@ export default {
     }
   },
   async mounted () {
-    let remaining = await this.remainingTimeToAcceptOffer(this.offer.created_date)
+    let { remainingMinutes: remaining, percentage } = await this.remainingTimeToAcceptOffer(this.offer.created_date)
+    this.percentage = percentage
     this.remaining = (remaining > 0) ? this.getHoursAndMinutes(remaining) : ''
 
     EventBus.$on('confirmOffer', async () => {
@@ -81,7 +82,8 @@ export default {
       remainingTime: {
         hours: 0,
         minutes: 0
-      }
+      },
+      percentage: 0
     }
   },
   methods: {
@@ -121,11 +123,7 @@ export default {
       }
     },
     remainingColor () {
-      let hours = this.remainingTime.hours
-      let mins = this.remainingTime.minutes
-
-      return (hours >= 1 && mins >= 0) ? 'green' : (hours <= 0 && mins >= 30) ? 'orange' : 'red'
-      // return 'red'
+      return (this.percentage > 66) ? 'green' : (this.percentage > 33) ? 'orange' : 'red'
     }
   }
 }
