@@ -188,7 +188,9 @@ export default {
       incoming_offers: 'Buy offers',
       proposals: 'Purchase proposals',
       percentage: 'Percentage',
-      sold: 'Sold'
+      sold: 'Sold',
+      no_offers: 'This sell offer has not',
+      not_yet: 'Purchase offers yet'
     }
   }
 }

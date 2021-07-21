@@ -1,14 +1,10 @@
 <template lang="pug">
-.container
+#containerSellOffers
   #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
     skeleton-offer-item
-  .container(v-if="myOffers.rows.length === 0 && !loading")
-    #list.row
-      .empty-list.self-center.col.items-center
-        .row.justify-center.q-mb-md
-          .fiat-icon.text-center
-        .empty-label {{ $t('pages.offers.make_first') }}
-        .empty-label {{ $t('pages.offers.sell_offer').toUpperCase() }}
+  #noData(v-if="myOffers.rows.length === 0 && !loading")
+    .text-h4.custom-font {{ $t('pages.offers.make_first') }}
+    .text-h5.custom-font {{ $t('pages.offers.sell_offer').toUpperCase() }}
   q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
     q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
       #containerScroll(ref="scrollTarget")
@@ -96,6 +92,11 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+#containerSellOffers
+  display: flex
+  flex-direction: column
+  // padding: 10% 5%
+
 #offersEmpty
   flex: 1
 
@@ -104,29 +105,10 @@ export default {
   flex: 1
   max-height: 500px
 
-#list
-  height: 100%
-
-.container-view-btn
-    position: relative
-.empty-label
-    font-family: SF Pro Display
-    font-size: 18px
-    font-style: normal
-    font-weight: 700
-    line-height: 21px
-    letter-spacing: 0em
-    text-align: center
-    color: #E9EDD9
-
-.view-btn
-    font-size: 14px
-    font-style: normal
-    font-weight: 500
-    line-height: 17px
-    letter-spacing: 0em
-    color: #1F992A
-    padding: 5px
-    border-radius: 10px
-
+#noData
+  height: 60vh !important
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
 </style>
