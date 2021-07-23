@@ -155,7 +155,7 @@ export default {
     offers: {
       offers: 'Offers',
       buy: 'Buy',
-      sale: 'Sale',
+      sale: 'Sales',
       timeZone: 'Time Zone',
       fiatCurrency: 'Fiat Currency',
       filterBy: 'Filter By',
