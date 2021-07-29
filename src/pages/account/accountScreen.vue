@@ -81,7 +81,7 @@
 
 <script>
 import { validation } from '~/mixins/validation'
-import { mapActions, mapState, mapMutations } from 'vuex'
+import { mapActions, mapState, mapMutations, mapGetters } from 'vuex'
 import { CommonCurrencies, CommonTimeZone } from '~/const'
 import { RootFields } from '@smontero/ppp-common'
 import { utils } from '~/mixins/utils'
@@ -96,8 +96,7 @@ export default {
         fiatCurrency: undefined,
         contactMethods: undefined,
         paypalLink: undefined,
-        timeZone: undefined,
-        isP2PProfileCompleted: undefined
+        timeZone: undefined
       },
       options: {
         contactMethods: [
@@ -118,7 +117,7 @@ export default {
   },
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
-    // ...mapGetters('accounts', ['isP2PProfileCompleted']),
+    ...mapGetters('accounts', ['isP2PProfileCompleted']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -143,29 +142,29 @@ export default {
     ...mapActions('profilesppp', ['hasActiveSession', 'signIn', 'getProfile', 'signUp']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
-      let activeSession = await this.hasActiveSession()
-      if (!activeSession) await this.signIn()
+      // let activeSession = await this.hasActiveSession()
+      // if (!activeSession) await this.signIn()
 
-      this.setIsLoading(true)
-      let profile = await this.getProfile()
-      this.setIsLoading(false)
+      // this.setIsLoading(true)
+      // let profile = await this.getProfile()
+      // this.setIsLoading(false)
       // console.log(profile)
 
-      if (!profile) {
+      if (!this.isP2PProfileCompleted) {
         this.params.nickname = this.seedsAccount.nickname
         return
       }
 
-      this.isP2PProfileCompleted = true
+      // this.isP2PProfileCompleted = true
 
-      const paypalPaymentLink = profile.commPref.paypalLink
+      const paypalPaymentLink = this.p2pAccount.commPref.paypalLink
 
       this.params = {
         nickname: this.seedsAccount.nickname,
-        fiatCurrency: profile.commPref.fiatCurrency,
+        fiatCurrency: this.p2pAccount.commPref.fiatCurrency,
         contactMethods: undefined,
         paypalLink: paypalPaymentLink.replace('https://paypal.me/', ''),
-        timeZone: profile.commPref.timeZone
+        timeZone: this.p2pAccount.commPref.timeZone
       }
     },
     async onSubmitForm () {

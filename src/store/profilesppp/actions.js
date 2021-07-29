@@ -66,7 +66,7 @@ export const getProfile = async function ({ commit }) {
   const profileApi = PPP.profileApi()
   try {
     const profile = await profileApi.getProfile()
-    // commit('setProfile', profile)
+    commit('setProfile', profile)
     return profile
   } catch (error) {
     commit('general/setErrorMsg', error.message || error, { root: true })

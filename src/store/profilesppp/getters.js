@@ -20,3 +20,7 @@ export const isPPPLoading = (state) => {
 export const getMyProfile = (state) => {
   return state.myProfile
 }
+
+export const p2pAccountCompleted = (state) => {
+  return !!state.myProfile
+}

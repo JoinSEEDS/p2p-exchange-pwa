@@ -47,9 +47,17 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       // const userAccount = await this.$accountApi.getAccountInfo({ accountName })
       // console.log('userAccount', userAccount)
 
+      // Getting user info
+      PPP.setActiveUser(this.$ualUser)
+      const authApi = PPP.authApi()
+      const validSession = await authApi.hasValidSession()
+      if (!validSession) await authApi.signIn()
+      const profileApi = PPP.profileApi()
+      const profile = await profileApi.getProfile()
+
       commit('setAccount', accountName)
       commit('setSeedsAccount', isUserSeeds.userData)
-      // commit('setP2PAccount', userAccount.rows[0])
+      commit('setP2PAccount', profile)
       await dispatch('getBalances')
       await dispatch('getCurrentSeedsPerUsd')
       await dispatch('getFiatExchanges')

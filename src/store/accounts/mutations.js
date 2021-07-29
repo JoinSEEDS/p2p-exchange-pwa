@@ -33,6 +33,7 @@ export const setSeedsAccount = (state, seedsAccount) => {
 }
 
 export const setP2PAccount = (state, p2pAccount) => {
+  console.log('set p2p account profile', p2pAccount)
   state.p2pAccount = p2pAccount
 }
 

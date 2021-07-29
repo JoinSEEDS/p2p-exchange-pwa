@@ -32,6 +32,7 @@ export default function ({ store }) {
         // console.log('Is authenticated', store.getters['accounts/isP2PProfileCompleted'], to.matched.some(record => record.meta.notProfile))
         // Verify if the user has profile completed
         if (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile)) {
+        // if (store.getters['profilesppp/p2pAccountCompleted'] || to.matched.some(record => record.meta.notProfile)) {
           if (to.matched.some(record => !record.meta.visitorScreen) && !store.getters['accounts/userCanSell']) {
             next({ name: 'dashboard' })
           } else {
