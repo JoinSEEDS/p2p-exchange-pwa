@@ -45,13 +45,6 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
 
       // Getting user info
       // const userAccount = await this.$accountApi.getAccountInfo({ accountName })
-      // PPP.setActiveUser(this.$ualUser)
-      // PPP.setActiveUser(this.$ualUser)
-      // const authApi = PPP.authApi()
-      // const hasValidSession = authApi.hasValidSession()
-      // if (!hasValidSession) {
-      //   await authApi.login(accountName)
-      // }
       // console.log('userAccount', userAccount)
 
       commit('setAccount', accountName)
