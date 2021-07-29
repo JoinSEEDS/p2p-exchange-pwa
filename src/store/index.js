@@ -10,6 +10,7 @@ import configs from './configs'
 import sellOffers from './sellOffers'
 import trxStats from './trxStats'
 import settings from './settings'
+import profilesppp from './profilesppp'
 
 Vue.use(Vuex)
 
@@ -29,7 +30,8 @@ export default function (/* { ssrContext } */) {
       configs,
       sellOffers,
       trxStats,
-      settings
+      settings,
+      profilesppp
     },
 
     // enable strict mode (adds overhead!)

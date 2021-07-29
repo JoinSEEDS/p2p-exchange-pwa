@@ -1,3 +1,4 @@
+import PPP from '@smontero/ppp-client-api'
 
 const getAuthenticator = function (ual, wallet = null) {
   wallet = wallet || localStorage.getItem('autoLogin')
@@ -43,12 +44,19 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       }
 
       // Getting user info
-      const userAccount = await this.$accountApi.getAccountInfo({ accountName })
+      // const userAccount = await this.$accountApi.getAccountInfo({ accountName })
+      // PPP.setActiveUser(this.$ualUser)
+      // PPP.setActiveUser(this.$ualUser)
+      // const authApi = PPP.authApi()
+      // const hasValidSession = authApi.hasValidSession()
+      // if (!hasValidSession) {
+      //   await authApi.login(accountName)
+      // }
       // console.log('userAccount', userAccount)
 
       commit('setAccount', accountName)
       commit('setSeedsAccount', isUserSeeds.userData)
-      commit('setP2PAccount', userAccount.rows[0])
+      // commit('setP2PAccount', userAccount.rows[0])
       await dispatch('getBalances')
       await dispatch('getCurrentSeedsPerUsd')
       await dispatch('getFiatExchanges')
@@ -88,6 +96,9 @@ export const loginToBackend = async function ({ commit }) {
 }
 
 export const logout = async function ({ commit }) {
+  await PPP.authApi().signOut()
+  commit('profiles/setProfile', null, { root: true })
+
   const { authenticator } = getAuthenticator(this.$ual)
   try {
     authenticator && await authenticator.logout()
@@ -100,6 +111,8 @@ export const logout = async function ({ commit }) {
   commit('setCurrentSeedsPerUsd')
   commit('setP2PBalances')
   localStorage.removeItem('autoLogin')
+  localStorage.removeItem('account')
+  localStorage.removeItem('returning')
   this.$api = null
   this.$router.push({ path: '/' })
 }
@@ -200,7 +213,7 @@ export const saveAccountData = async function ({ commit, dispatch }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
-    const response = await this.$accountApi.saveAccountData({ ...params, accountName })
+    const response = await this.$accountApi.saveAccountData({ ...params, accountName }) // <<- HERE
     // dispatch('accounts/getAccountInfo', true, { root: true })
     dispatch('getAccountInfo', { })
     return response

@@ -1,10 +1,8 @@
 
 export const getSettings = async function ({ commit }) {
   try {
-    console.log('STORE')
     commit('general/setIsLoading', true, { root: true })
     const settings = await this.$settingsApi.getSettings({ })
-    console.log('SETTINGS', settings)
     commit('settings/setSettings', settings, { root: true })
     return settings
   } catch (e) {

@@ -16,7 +16,8 @@ module.exports = function (ctx) {
       { path: 'ual', server: false },
       { path: 'api', server: false },
       'mixins',
-      'ga'
+      'ga',
+      'ppp'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -129,7 +130,8 @@ module.exports = function (ctx) {
         CONTRACT_P2P: process.env.CONTRACT_P2P,
         CONTRACT_P2P_SETTINGS: process.env.CONTRACT_P2P_SETTINGS,
         CONTRACT_SEEDS_WALLET: process.env.CONTRACT_SEEDS_WALLET,
-        CONTRACT_SEEDS_VALUES: process.env.CONTRACT_SEEDS_VALUES
+        CONTRACT_SEEDS_VALUES: process.env.CONTRACT_SEEDS_VALUES,
+        PPP_ENV: process.env.PPP_ENV
       },
       scopeHoisting: true,
       vueRouterMode: 'history',

@@ -25,7 +25,7 @@ class BalanceApi extends BaseEosApi {
         'Content-Type': 'application/json'
       }
     })
-    console.log('axios', this.axios)
+    // console.log('axios', this.axios)
   }
 
   /** *

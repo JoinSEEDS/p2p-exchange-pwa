@@ -29,7 +29,7 @@ export default function ({ store }) {
     if (to.matched.some(record => !record.meta.guest)) {
       // Verify if the user is authenticated
       if (store.getters['accounts/isAuthenticated']) {
-        console.log('Is authenticated', store.getters['accounts/isP2PProfileCompleted'], to.matched.some(record => record.meta.notProfile))
+        // console.log('Is authenticated', store.getters['accounts/isP2PProfileCompleted'], to.matched.some(record => record.meta.notProfile))
         // Verify if the user has profile completed
         if (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile)) {
           if (to.matched.some(record => !record.meta.visitorScreen) && !store.getters['accounts/userCanSell']) {
@@ -38,14 +38,14 @@ export default function ({ store }) {
             next()
           }
         } else {
-          console.log('Not profile completed, redirected to account')
+          // console.log('Not profile completed, redirected to account')
           next({ name: 'account' })
         }
         next()
       } else if (to.path === '/login') {
-        console.log('Is send to login')
+        // console.log('Is send to login')
       } else {
-        console.log('Is send to return Url', to.path)
+        // console.log('Is send to return Url', to.path)
         next({ path: `/?returnUrl=${to.path}` })
       }
     } else {

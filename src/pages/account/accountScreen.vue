@@ -81,12 +81,14 @@
 
 <script>
 import { validation } from '~/mixins/validation'
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import { CommonCurrencies, CommonTimeZone } from '~/const'
+import { RootFields } from '@smontero/ppp-common'
+import { utils } from '~/mixins/utils'
 
 export default {
   name: 'account',
-  mixins: [validation],
+  mixins: [validation, utils],
   data () {
     return {
       params: {
@@ -94,7 +96,8 @@ export default {
         fiatCurrency: undefined,
         contactMethods: undefined,
         paypalLink: undefined,
-        timeZone: undefined
+        timeZone: undefined,
+        isP2PProfileCompleted: undefined
       },
       options: {
         contactMethods: [
@@ -115,7 +118,7 @@ export default {
   },
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
-    ...mapGetters('accounts', ['isP2PProfileCompleted']),
+    // ...mapGetters('accounts', ['isP2PProfileCompleted']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -137,36 +140,50 @@ export default {
   },
   methods: {
     ...mapActions('accounts', ['saveAccountData']),
-    loadProfileData () {
-      // console.log('loadProfileData')
-      if (!this.isP2PProfileCompleted) {
+    ...mapActions('profilesppp', ['hasActiveSession', 'signIn', 'getProfile', 'signUp']),
+    ...mapMutations('general', ['setIsLoading']),
+    async loadProfileData () {
+      let activeSession = await this.hasActiveSession()
+      if (!activeSession) await this.signIn()
+
+      this.setIsLoading(true)
+      let profile = await this.getProfile()
+      this.setIsLoading(false)
+      // console.log(profile)
+
+      if (!profile) {
         this.params.nickname = this.seedsAccount.nickname
         return
       }
-      const paypalPaymentLink = this.p2pAccount.payment_methods.find(v => v.key === 'paypal')
+
+      this.isP2PProfileCompleted = true
+
+      const paypalPaymentLink = profile.commPref.paypalLink
 
       this.params = {
         nickname: this.seedsAccount.nickname,
-        fiatCurrency: this.p2pAccount.fiat_currency,
+        fiatCurrency: profile.commPref.fiatCurrency,
         contactMethods: undefined,
-        paypalLink: paypalPaymentLink.value.replace('https://paypal.me/', ''),
-        timeZone: this.p2pAccount.time_zone
+        paypalLink: paypalPaymentLink.replace('https://paypal.me/', ''),
+        timeZone: profile.commPref.timeZone
       }
     },
     async onSubmitForm () {
-      // console.log('onSubmitted', this.params)
+      const mData = {
+        [RootFields.COMM_PREF]: this.params
+      }
+      // console.log(mData)
       try {
-        await this.saveAccountData({
-          contactMethods: [ { 'key': 'signal', 'value': 'testValue' } ],
-          paymentMethods: [ { 'key': 'paypal', 'value': `https://paypal.me/${this.params.paypalLink}` } ],
-          timeZone: this.params.timeZone,
-          fiatCurrency: this.params.fiatCurrency
-        })
-        // console.log('Account info was saved')
-        this.$router.push({ name: 'dashboard' })
-      } catch (e) {
+        this.setIsLoading(true)
+        await this.signUp(mData)
+        this.setIsLoading(false)
+        this.showSuccessMsg(this.$t('pages.account.saved'))
+        this.$router.push('/dashboard')
+      } catch (error) {
 
       }
+
+      // console.log(await this.getProfile())
     },
     openPayPalLink () {
       window.open(`https://paypal.me/${this.params.paypalLink}`)

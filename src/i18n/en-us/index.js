@@ -75,7 +75,8 @@ export default {
       preferredFiatCurrency: 'Preferred Fiat Currency',
       paypalLink: 'Paypal Link',
       enterPaypalLink: 'Enter your paypal link',
-      hintPaypal: 'Open link to confirm you write your profile link correctly'
+      hintPaypal: 'Open link to confirm you write your profile link correctly',
+      saved: 'Account saved succesfully'
     },
     mainTab: {
       seeds: 'Seeds',

@@ -22,6 +22,7 @@
 <script>
 import MyBuyOffers from './tabs/myBuyOffers.vue'
 import MySellOffers from './tabs/mySellOffers.vue'
+// import { PublicFields, RootFields } from '@smontero/ppp-common'
 
 export default {
   name: 'main-offers-screen',
@@ -31,7 +32,7 @@ export default {
       tab: 'buy'
     }
   },
-  mounted () {
+  async mounted () {
     if (this.subTab) this.tab = this.subTab
   },
   computed: {
