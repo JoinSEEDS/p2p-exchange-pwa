@@ -1,6 +1,6 @@
 const routes = [
   // { path: '/', component: () => import('pages/index.vue'), meta: { layout: 'empty', guest: true } },
-  { path: '/', component: () => import('pages/login/login.vue'), meta: { layout: 'guest', title: 'pages.login.title', guest: true } },
+  { path: '/', component: () => import('pages/login/login.vue'), name: 'root', meta: { layout: 'guest', title: 'pages.login.title', guest: true } },
   { path: '/home', component: () => import('pages/home/home.vue'), name: 'home' },
   { path: '/account', component: () => import('pages/account/accountScreen.vue'), name: 'account', meta: { title: 'pages.login.title', notProfile: true, visitorScreen: true } },
   { path: '/dashboard/:tab?/:subTab?', component: () => import('pages/dashboard/dashboardScreen.vue'), name: 'dashboard', meta: { visitorScreen: true } },

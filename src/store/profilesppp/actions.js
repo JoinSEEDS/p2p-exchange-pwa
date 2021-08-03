@@ -45,18 +45,19 @@ export const hasActiveSession = async function ({ state }, mData) {
 //   // this.$router.push({ path: '/' })
 // }
 
-// export const searchProfiles = async function ({ commit }, options = {}) {
-//   const profileApi = PPP.profileApi()
-//   const { search, clean, lastEvaluatedKey, limit } = options
-//   try {
-//     await profileApi.searchProfiles(search, limit, lastEvaluatedKey).then(response => {
-//       if (clean === true) commit('clearProfilesList')
-//       commit('setProfiles', response)
-//     })
-//   } catch (error) {
-//     console.log('Error', error)
-//   }
-// }
+export const searchProfiles = async function ({ commit }, options = {}) {
+  const profileApi = PPP.profileApi()
+  const { search, lastEvaluatedKey, limit } = options
+  try {
+    await profileApi.searchProfiles(search, limit, lastEvaluatedKey).then(response => {
+      console.log('response', response)
+      // if (clean === true) commit('clearProfilesList')
+      // commit('setProfiles', response)
+    })
+  } catch (error) {
+    console.log('Error', error)
+  }
+}
 
 // export const clearProfilesList = function ({ commit }, options = {}) {
 //   commit('clearProfilesList')

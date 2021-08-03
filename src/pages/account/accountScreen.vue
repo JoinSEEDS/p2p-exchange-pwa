@@ -142,20 +142,10 @@ export default {
     ...mapActions('profilesppp', ['hasActiveSession', 'signIn', 'getProfile', 'signUp']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
-      // let activeSession = await this.hasActiveSession()
-      // if (!activeSession) await this.signIn()
-
-      // this.setIsLoading(true)
-      // let profile = await this.getProfile()
-      // this.setIsLoading(false)
-      // console.log(profile)
-
       if (!this.isP2PProfileCompleted) {
         this.params.nickname = this.seedsAccount.nickname
         return
       }
-
-      // this.isP2PProfileCompleted = true
 
       const paypalPaymentLink = this.p2pAccount.commPref.paypalLink
 
@@ -169,20 +159,18 @@ export default {
     },
     async onSubmitForm () {
       const mData = {
+        [RootFields.EMAIL]: 'email@email.com',
         [RootFields.COMM_PREF]: this.params
       }
-      // console.log(mData)
       try {
         this.setIsLoading(true)
         await this.signUp(mData)
         this.setIsLoading(false)
         this.showSuccessMsg(this.$t('pages.account.saved'))
-        this.$router.push('/dashboard')
+        this.$router.push({ path: '/dashboard' })
       } catch (error) {
 
       }
-
-      // console.log(await this.getProfile())
     },
     openPayPalLink () {
       window.open(`https://paypal.me/${this.params.paypalLink}`)

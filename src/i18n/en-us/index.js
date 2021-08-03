@@ -86,7 +86,8 @@ export default {
       recentActivity: 'Recent Activity',
       makeYour: 'Make your',
       firstTransaction: 'First Transaction',
-      viewAll: 'View All'
+      viewAll: 'View All',
+      actions: 'Actions'
     },
     sell: {
       toSell: 'Sell SEEDS for Fiat',

@@ -2,14 +2,9 @@
   #container.q-gutter-y-md
     .row.justify-center
       .col-xs-12.col-sm-10.col-md-8
-        card-balance(@clickOnDeposit="showDepositForm = true")
-    .row.q-mt-sm.q-col-gutter-lg
-        .col(v-if="userCanSell")
-          custom-sell-btn(@click="goToSellScreen")
-        .col
-          custom-buy-btn(@click="goToBuyScreen")
+        card-balance
     .activity-component
-      recent-activity-view
+      recent-activity-view(@clickOnDeposit="showDepositForm = true")
     q-dialog(v-model="showDepositForm" transition-show="slide-up" transition-hide="slide-down" persistent)
       deposit-form.custom-size-modal(@onSuccess="onSuccessUpdateForm")
 </template>

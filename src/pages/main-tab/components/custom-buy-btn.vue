@@ -27,7 +27,7 @@ export default {
   display: flex
   flex-direction: row
   background-color: #1F992A
-  border-radius: 3px
+  border-radius: 8px
 
 .icon-buyer
   background-image: url('./icons/seller.svg')
@@ -41,11 +41,11 @@ export default {
   display: block
   text-align: center
   height: 40px
-  flex: 1
+  flex: 2
   user-select: none
 
 .label
-  line-height: 40px
+  line-height: 45px
   font-weight: bold
   user-select: none
   font-size: 10px

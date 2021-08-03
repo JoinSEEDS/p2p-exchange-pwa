@@ -29,7 +29,6 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       const accountName = await users[0].getAccountName()
 
       const isUserSeeds = await this.$userApi.checkExistUserSeeds({ accountName })
-      // console.log('isUserSeeds', isUserSeeds)
 
       if (!isUserSeeds || !isUserSeeds.userExist) {
         commit('general/setErrorMsg', 'Please login with a seeds account.', { root: true })
@@ -42,10 +41,6 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
         commit('setP2PBalances')
         return
       }
-
-      // Getting user info
-      // const userAccount = await this.$accountApi.getAccountInfo({ accountName })
-      // console.log('userAccount', userAccount)
 
       // Getting user info
       PPP.setActiveUser(this.$ualUser)
@@ -62,17 +57,12 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       await dispatch('getCurrentSeedsPerUsd')
       await dispatch('getFiatExchanges')
 
-      // const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)
       localStorage.setItem('returning', true)
-      const userExist = false
-      const ru = userExist ? returnUrl : '/dashboard'
-      // console.log('returnUrl', returnUrl)
-      // console.log('defaultReturnUrl', defaultReturnUrl)
-      console.log('ru', ru)
-      // this.$router.push({ path: '/home' })
-      this.$router.push({ path: returnUrl || 'dashboard' })
+
+      this.$router.push({ path: returnUrl || '/dashboard' })
+
       return this.$ualUser
     }
   } catch (e) {
@@ -98,7 +88,7 @@ export const loginToBackend = async function ({ commit }) {
 
 export const logout = async function ({ commit }) {
   await PPP.authApi().signOut()
-  commit('profiles/setProfile', null, { root: true })
+  // commit('profiles/setProfile', null, { root: true })
 
   const { authenticator } = getAuthenticator(this.$ual)
   try {
