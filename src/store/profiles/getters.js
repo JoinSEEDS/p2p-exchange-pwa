@@ -40,5 +40,6 @@ export const privateKey = async (state) => {
 export const paypal = async (state) => {
   const profileApi = PPP.profileApi()
   const profile = await profileApi.getProfile()
+  console.log('profile ppp', profile)
   return profile.appData.privateData.paypal
 }

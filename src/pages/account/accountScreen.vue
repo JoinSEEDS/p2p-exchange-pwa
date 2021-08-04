@@ -119,7 +119,7 @@ export default {
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
     ...mapGetters('accounts', ['isP2PProfileCompleted']),
-    ...mapGetters('profiles', ['isRegistered', 'isLoggedIn', 'paypal', 'privateKey', 'publicKey']),
+    ...mapGetters('profiles', ['isRegistered', 'isLoggedIn', 'paypal', 'privateKey']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -147,12 +147,15 @@ export default {
     async loadProfileData () {
       if (!this.isP2PProfileCompleted) {
         this.params.nickname = this.seedsAccount.nickname
+        if (!(await this.isLoggedIn)) { await this.signIn() }
         return
       }
 
+      if (!(await this.isLoggedIn)) { await this.signIn() }
+
       // let loggedIn = await this.isLoggedIn
       // console.log('L<ogged in', !(await this.isLoggedIn))
-      if (!(await this.isLoggedIn)) { await this.signIn() }
+      // if (!(await this.isLoggedIn)) { await this.signIn() }
       // await this.signIn()
 
       // if (await !this.isLoggedIn) { console.log('not logged in', loggedIn) }
@@ -195,7 +198,7 @@ export default {
         // if (pu) this.params.privateKey = privateKey
 
         const mData = {
-          [RootFields.EMAIL]: 'email@email.com',
+          [RootFields.NAME]: this.params.nickname,
           appData: {
             privateData: {
               privateKey,
