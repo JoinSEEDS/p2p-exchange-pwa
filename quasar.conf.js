@@ -128,7 +128,6 @@ module.exports = function (ctx) {
         GOOGLE_ANALYTICS: process.env.GOOGLE_ANALYTICS,
         CONTRACT_SEEDS: process.env.CONTRACT_SEEDS,
         CONTRACT_P2P: process.env.CONTRACT_P2P,
-        CONTRACT_P2P_SETTINGS: process.env.CONTRACT_P2P_SETTINGS,
         CONTRACT_SEEDS_WALLET: process.env.CONTRACT_SEEDS_WALLET,
         CONTRACT_SEEDS_VALUES: process.env.CONTRACT_SEEDS_VALUES,
         PPP_ENV: process.env.PPP_ENV

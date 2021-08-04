@@ -45,10 +45,7 @@ export default {
     ...mapState('accounts', ['currentSeedsPerUsd']),
     equivalentFiat () {
       try {
-        // const currentSeedsAmount = this.userBalances.available_balance.replace('SEEDS', '')
-        // const currentSeedsValue = this.currentSeedsPerUsd.replace('SEEDS', '')
-        // return (currentSeedsAmount / currentSeedsValue).toFixed(4)
-        return this.parseSeedsToCurrentFiatWithSymbol(this.userBalances.available_balance.replace('SEEDS', ''))
+        return this.userBalances ? this.parseSeedsToCurrentFiatWithSymbol(this.userBalances.available_balance.replace('SEEDS', '')) : 0
       } catch (e) {
         console.error(e)
         return 0

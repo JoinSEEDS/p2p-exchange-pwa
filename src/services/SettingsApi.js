@@ -4,7 +4,7 @@ import { Contracts } from '../const/Contracts'
 class SettingsApi extends BaseEosApi {
   constructor ({ eosApi, notifier }) {
     super(eosApi, notifier, {
-      contractAccount: Contracts.CONTRACT_P2P_SETTINGS,
+      contractAccount: Contracts.CONTRACT_P2P,
       table: 'config',
       tableId: 'key',
       defaultSortField: 'key'
@@ -17,7 +17,7 @@ class SettingsApi extends BaseEosApi {
 
   async getSettings ({ offset, limit }) {
     const settings = await this.fetch({
-      scope: Contracts.CONTRACT_P2P_SETTINGS,
+      scope: Contracts.CONTRACT_P2P,
       offset,
       limit
     })

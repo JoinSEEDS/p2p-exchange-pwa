@@ -42,14 +42,36 @@ class BuyOfferApi extends BaseEosApi {
     return this.eosApi.signTransaction(actions)
   }
 
-  async acceptBuyOffer ({ buyOfferId }) {
-    const actions = [{
-      account: Contracts.CONTRACT_P2P,
-      name: 'accptbuyoffr',
-      data: {
-        buy_offer_id: buyOfferId
+  async acceptBuyOffer ({ buyOfferId, messageData }) {
+    console.log('message data service', messageData)
+    const actions = [
+      {
+        account: Contracts.CONTRACT_P2P,
+        name: 'accptbuyoffr',
+        data: {
+          buy_offer_id: buyOfferId
+        }
+      },
+      {
+        account: Contracts.CONTRACT_P2P,
+        name: 'addoffermsg',
+        data: {
+          ...messageData
+        }
       }
-    }]
+    ]
+    console.log('actions', actions)
+    // const actions = [{
+    //   account: Contracts.CONTRACT_P2P,
+    //   name: 'addoffermsg',
+    //   data: {
+    //     buy_offer_id: buyOfferId,
+    //     iv: iv.toString('hex'),
+    //     ephem_key: ephemPublicKey.toString(),
+    //     message: ciphertext.toString('hex'),
+    //     mac: mac.toString('hex')
+    //   }
+    // }]
 
     return this.eosApi.signTransaction(actions)
   }

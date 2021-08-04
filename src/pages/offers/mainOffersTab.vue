@@ -22,8 +22,6 @@
 <script>
 import MyBuyOffers from './tabs/myBuyOffers.vue'
 import MySellOffers from './tabs/mySellOffers.vue'
-// import { PublicFields, RootFields } from '@smontero/ppp-common'
-import { mapActions } from 'vuex'
 
 export default {
   name: 'main-offers-screen',
@@ -35,16 +33,11 @@ export default {
   },
   async mounted () {
     if (this.subTab) this.tab = this.subTab
-    let res = await this.searchProfiles({ search: 'edwintestne1', lastEvaluatedKey: 0, limit: 100 })
-    console.log(res)
   },
   computed: {
     subTab () {
       return this.$route.params.subTab
     }
-  },
-  methods: {
-    ...mapActions('profilesppp', ['searchProfiles'])
   }
 }
 </script>

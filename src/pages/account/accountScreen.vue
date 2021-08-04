@@ -139,7 +139,8 @@ export default {
   },
   methods: {
     ...mapActions('accounts', ['saveAccountData']),
-    ...mapActions('profilesppp', ['hasActiveSession', 'signIn', 'getProfile', 'signUp']),
+    ...mapActions('encryption', ['signUpPPP']),
+    ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
       if (!this.isP2PProfileCompleted) {
@@ -148,7 +149,7 @@ export default {
       }
 
       const paypalPaymentLink = this.p2pAccount.commPref.paypalLink
-
+      // console.log('p2pacc', this.p2pAccount)
       this.params = {
         nickname: this.seedsAccount.nickname,
         fiatCurrency: this.p2pAccount.commPref.fiatCurrency,
@@ -158,16 +159,45 @@ export default {
       }
     },
     async onSubmitForm () {
-      const mData = {
-        [RootFields.EMAIL]: 'email@email.com',
-        [RootFields.COMM_PREF]: this.params
-      }
       try {
         this.setIsLoading(true)
-        await this.signUp(mData)
-        this.setIsLoading(false)
-        this.showSuccessMsg(this.$t('pages.account.saved'))
-        this.$router.push({ path: '/dashboard' })
+
+        // Genereate keys
+        let publicKey
+        let privateKey
+        if (!this.isP2PProfileCompleted) {
+          const keys = await this.generateKeys()
+          publicKey = keys.publicKey
+          privateKey = keys.privateKey
+        } else {
+          this.params.privateKey = this.p2pAccount.commPref.privateKey
+        }
+
+        // Setting private key to data OBJ
+        if (privateKey) this.params.privateKey = privateKey
+        privateKey = null
+
+        // console.log('params', this.params)
+
+        const mData = {
+          [RootFields.EMAIL]: 'email@email.com',
+          [RootFields.COMM_PREF]: this.params
+        }
+
+        await this.saveAccountData({
+          contactMethods: [ { 'key': 'signal', 'value': '' } ],
+          paymentMethods: [ { 'key': 'paypal', 'value': '' } ],
+          timeZone: this.params.timeZone,
+          fiatCurrency: this.params.fiatCurrency,
+          publicKey
+        })
+        publicKey = null // Delete publicKey after save
+
+        await this.signUpPPP(mData) // Save private key in PPP service
+        await this.setIsLoading(false)
+        await this.showSuccessMsg(this.$t('pages.account.saved'))
+        await this.$router.push({ path: '/dashboard' })
+        this.params = undefined
       } catch (error) {
 
       }

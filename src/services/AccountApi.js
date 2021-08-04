@@ -38,18 +38,37 @@ class AccountApi extends BaseEosApi {
     // return accountInfo
   }
 
-  async saveAccountData ({ accountName, contactMethods, paymentMethods, timeZone, fiatCurrency }) {
-    const actions = [{
-      account: Contracts.CONTRACT_P2P,
-      name: 'upsertuser',
-      data: {
-        account: accountName,
-        contact_methods: contactMethods,
-        payment_methods: paymentMethods,
-        time_zone: timeZone,
-        fiat_currency: fiatCurrency
+  async saveAccountData ({ accountName, contactMethods, paymentMethods, timeZone, fiatCurrency, publicKey }) {
+    const actions = [
+      {
+        account: Contracts.CONTRACT_P2P,
+        name: 'upsertuser',
+        data: {
+          account: accountName,
+          contact_methods: contactMethods,
+          payment_methods: paymentMethods,
+          time_zone: timeZone,
+          fiat_currency: fiatCurrency
+        }
+      },
+      {
+        account: Contracts.CONTRACT_P2P,
+        name: 'addpublickey',
+        data: {
+          account: accountName,
+          public_key: publicKey
+        }
       }
-    }]
+    ]
+
+    // const actions = [{
+    //   account: Contracts.CONTRACT_P2P,
+    //   name: 'addpublickey',
+    //   data: {
+    //     account: account,
+    //     public_key: publicKey
+    //   }
+    // }]
 
     return this.eosApi.signTransaction(actions)
   }

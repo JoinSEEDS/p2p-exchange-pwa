@@ -9,6 +9,7 @@ import TrxStatApi from './TrxStatApi'
 import SeedsValueApi from './SeedsValueApi'
 import OffersApi from './OffersApi'
 import SettingsApi from './SettingsApi'
+import EncryptionApi from './EncryptionApi'
 
 export {
   UserApi,
@@ -21,5 +22,6 @@ export {
   TrxStatApi,
   SeedsValueApi,
   OffersApi,
-  SettingsApi
+  SettingsApi,
+  EncryptionApi
 }
