@@ -10,14 +10,15 @@ export const generateKeys = async function ({ commit }) {
     commit('general/setErrorMsg', e.message || e, { root: true })
     throw new Error(e)
   } finally {
-    commit('general/setIsLoading', false, { root: true })
   }
 }
 
 export const createMessage = async function ({ commit }, { message, recipientAccount, buyOfferId }) {
   try {
     commit('general/setIsLoading', true, { root: true })
-    const privateKey = this.getters['accounts/privateKey']
+    const privateKey = await this.getters['profiles/privateKey']
+
+    console.log('private key', privateKey)
     const response = await this.$encrypionApi.createMessage({ privateKey, recipientAccount, message, buyOfferId })
     return response
   } catch (e) {
@@ -33,7 +34,7 @@ export const receiveMessage = async function ({ commit }, { buyOfferId }) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const recipientPrivateKey = this.getters['accounts/privateKey']
-    const response = await this.$encrypionApi.receiveMessage({ recipientPrivateKey, messageId: 2, buyOfferId })
+    const response = await this.$encrypionApi.receiveMessage({ recipientPrivateKey, buyOfferId })
     return response
   } catch (e) {
     console.error('An error ocurred while trying to do a deposit', e)

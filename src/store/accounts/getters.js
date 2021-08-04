@@ -16,7 +16,7 @@ export const userBalances = ({ balances }) => {
   return balances
 }
 export const currentFiatCurrency = ({ p2pAccount }) => {
-  return p2pAccount.commPref.fiatCurrency
+  return p2pAccount.fiat_currency
 }
 export const pricePerSeedOnUSD = ({ currentSeedsPerUsd }) => {
   return Number.parseFloat(1 / Number.parseFloat(currentSeedsPerUsd.replace(' SEEDS', '')).toFixed(4)).toFixed(4)
@@ -30,10 +30,10 @@ export const pricePerSeedOnEUR = ({ currentSeedsPerUsd, fiatExchanges }) => {
 export const fiatExchanges = ({ fiatExchanges }) => {
   return fiatExchanges
 }
-export const privateKey = ({ p2pAccount }) => {
-  return p2pAccount.commPref.privateKey
-}
+// export const privateKey = ({ p2pAccount }) => {
+//   return p2pAccount.commPref.privateKey
+// }
 
-export const paypal = ({ p2pAccount }) => {
-  return `https://paypal.me/${p2pAccount.commPref.paypalLink}`
-}
+// export const paypal = ({ p2pAccount }) => {
+//   return `https://paypal.me/${p2pAccount.commPref.paypalLink}`
+// }

@@ -67,7 +67,8 @@ export default {
     offer: Object
   },
   computed: {
-    ...mapGetters('accounts', ['currentFiatCurrency', 'paypal']),
+    ...mapGetters('accounts', ['currentFiatCurrency']),
+    ...mapGetters('profiles', ['paypal']),
     quantity () {
       return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[0]
     },
@@ -106,12 +107,10 @@ export default {
     ...mapActions('encryption', ['createMessage']),
     async confOffer () {
       try {
-        // console.log('BUYER', this.buyer)
-        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: this.paypal, recipientAccount: this.buyer.account })
-        console.log('message data', messageData)
+        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.paypal, recipientAccount: this.buyer.account })
         await this.acceptBuyOffer({ buyOfferId: this.offer.id, messageData })
         EventBus.$emit('confirmOffer')
-        this.showSuccessMsg(this.$root.$t('pages.offers.accept_buy_offer'))
+        // this.showSuccessMsg(this.$root.$t('pages.offers.accept_buy_offer'))
       } catch (error) {
         console.error(error)
       }

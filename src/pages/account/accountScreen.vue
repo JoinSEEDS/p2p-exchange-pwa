@@ -63,6 +63,7 @@
             standout="text-accent"
             :rules="[rules.required]"
             prefix="https://paypal.me/"
+            lazy-rules
             :hint="$t('pages.account.hintPaypal')"
           )
               template(v-slot:append)
@@ -118,6 +119,7 @@ export default {
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
     ...mapGetters('accounts', ['isP2PProfileCompleted']),
+    ...mapGetters('profiles', ['isRegistered', 'isLoggedIn', 'paypal', 'privateKey', 'publicKey']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -138,8 +140,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('accounts', ['saveAccountData']),
-    ...mapActions('encryption', ['signUpPPP']),
+    ...mapActions('accounts', ['saveAccountData', 'getPublicKey']),
+    ...mapActions('profiles', ['signUp', 'signIn']),
     ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
@@ -148,14 +150,25 @@ export default {
         return
       }
 
-      const paypalPaymentLink = this.p2pAccount.commPref.paypalLink
+      // let loggedIn = await this.isLoggedIn
+      // console.log('L<ogged in', !(await this.isLoggedIn))
+      if (!(await this.isLoggedIn)) { await this.signIn() }
+      // await this.signIn()
+
+      // if (await !this.isLoggedIn) { console.log('not logged in', loggedIn) }
+
+      // if ()
+
+      // console.log(this.p2pAccount)
+
+      // const paypalPaymentLink = this.p2pAccount.commPref.paypalLink
       // console.log('p2pacc', this.p2pAccount)
       this.params = {
         nickname: this.seedsAccount.nickname,
-        fiatCurrency: this.p2pAccount.commPref.fiatCurrency,
+        fiatCurrency: this.p2pAccount.fiat_currency,
         contactMethods: undefined,
-        paypalLink: paypalPaymentLink.replace('https://paypal.me/', ''),
-        timeZone: this.p2pAccount.commPref.timeZone
+        paypalLink: await this.paypal || '',
+        timeZone: this.p2pAccount.time_zone
       }
     },
     async onSubmitForm () {
@@ -165,23 +178,30 @@ export default {
         // Genereate keys
         let publicKey
         let privateKey
+
         if (!this.isP2PProfileCompleted) {
           const keys = await this.generateKeys()
           publicKey = keys.publicKey
           privateKey = keys.privateKey
         } else {
-          this.params.privateKey = this.p2pAccount.commPref.privateKey
+          publicKey = await this.getPublicKey()
+          privateKey = await this.privateKey
         }
 
-        // Setting private key to data OBJ
-        if (privateKey) this.params.privateKey = privateKey
-        privateKey = null
+        // console.log('private', privateKey, 'public', publicKey)
 
-        // console.log('params', this.params)
+        // Setting private key to data OBJ
+        // if (privateKey) this.params.privateKey = privateKey
+        // if (pu) this.params.privateKey = privateKey
 
         const mData = {
           [RootFields.EMAIL]: 'email@email.com',
-          [RootFields.COMM_PREF]: this.params
+          appData: {
+            privateData: {
+              privateKey,
+              paypal: this.params.paypalLink
+            }
+          }
         }
 
         await this.saveAccountData({
@@ -193,7 +213,8 @@ export default {
         })
         publicKey = null // Delete publicKey after save
 
-        await this.signUpPPP(mData) // Save private key in PPP service
+        await this.signUp(mData) // Save private key in PPP service
+        privateKey = null
         await this.setIsLoading(false)
         await this.showSuccessMsg(this.$t('pages.account.saved'))
         await this.$router.push({ path: '/dashboard' })

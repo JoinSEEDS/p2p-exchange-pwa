@@ -42,17 +42,11 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
         return
       }
 
-      // Getting user info
-      PPP.setActiveUser(this.$ualUser)
-      const authApi = PPP.authApi()
-      const validSession = await authApi.hasValidSession()
-      if (!validSession) await authApi.signIn()
-      const profileApi = PPP.profileApi()
-      const profile = await profileApi.getProfile()
+      const userAccount = await this.$accountApi.getAccountInfo({ accountName })
 
       commit('setAccount', accountName)
       commit('setSeedsAccount', isUserSeeds.userData)
-      commit('setP2PAccount', profile)
+      commit('setP2PAccount', userAccount.rows[0])
       await dispatch('getBalances')
       await dispatch('getCurrentSeedsPerUsd')
       await dispatch('getFiatExchanges')
@@ -244,5 +238,20 @@ export const deposit = async function ({ commit }, params) {
     throw new Error(e)
   } finally {
     commit('general/setIsLoading', false, { root: true })
+  }
+}
+
+export const getPublicKey = async function ({ commit }) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const accountName = this.getters['accounts/account']
+    const response = await this.$encrypionApi.getPublicKey({ accountName })
+    return response
+  } catch (e) {
+    console.error('An error ocurred while trying to do a deposit', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    // commit('general/setIsLoading', false, { root: true })
   }
 }

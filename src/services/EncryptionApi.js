@@ -42,6 +42,18 @@ class EncryptionApi extends BaseEosApi {
     return { privateKey: priv, publicKey: ephemPublicKey }
   }
 
+  async getPublicKey ({ accountName }) {
+    const { rows } = await this.fetchByIndex({
+      scope: Contracts.CONTRACT_P2P,
+      indexPosition: 1,
+      indexValue: accountName
+    })
+
+    console.log('rows', rows)
+
+    return rows[0].public_key
+  }
+
   async createMessage ({
     privateKey,
     recipientAccount,
@@ -49,6 +61,8 @@ class EncryptionApi extends BaseEosApi {
     buyOfferId
   }) {
     let rcptKey = null
+
+    console.log('privasdasd', privateKey, recipientAccount, message, 'hey', buyOfferId)
 
     privateKey = PrivateKey.fromString(privateKey).toElliptic() // <<- Eliptic from string of sender private key
 
@@ -102,6 +116,8 @@ class EncryptionApi extends BaseEosApi {
   }) {
     // eslint-disable-next-line no-undef
     let idxValue = BigInt(BigInt(buyOfferId) * BigInt(2 ** 64)).toString()
+    // eslint-disable-next-line no-undef
+    let idxValueU = BigInt(BigInt(buyOfferId + 1) * BigInt(2 ** 64)).toString()
     const messagesTable = await this._getTableRows({
       code: escrow,
       scope: escrow,
@@ -109,7 +125,8 @@ class EncryptionApi extends BaseEosApi {
       indexPosition: 2,
       keyType: 'i128',
       lowerBound: idxValue,
-      limit: 100
+      upperBound: idxValueU,
+      limit: 1
     })
 
     if (messagesTable.rows.length === 0) return 'No paypal'
