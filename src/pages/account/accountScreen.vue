@@ -123,7 +123,7 @@ export default {
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
     ...mapGetters('accounts', ['isP2PProfileCompleted']),
-    ...mapGetters('profiles', ['isRegistered', 'isLoggedIn', 'paypal', 'privateKey']),
+    ...mapGetters('profiles', ['isRegistered', 'isLoggedIn', 'privateKey']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
