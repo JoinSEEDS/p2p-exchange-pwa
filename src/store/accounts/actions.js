@@ -55,6 +55,8 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       localStorage.setItem('account', accountName)
       localStorage.setItem('returning', true)
 
+      await dispatch('profiles/signIn', {}, { root: true })
+
       this.$router.push({ path: returnUrl || '/dashboard' })
 
       return this.$ualUser

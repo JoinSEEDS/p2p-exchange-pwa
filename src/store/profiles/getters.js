@@ -27,7 +27,10 @@ export const getMyProfile = (state) => {
 //   return state.myProfile
 // }
 export const isLoggedIn = async (state) => {
+  // PPP.setActiveUser(this.$ualUser)
   const authApi = PPP.authApi()
+  const validSession = await authApi.hasValidSession()
+  if (!validSession) await authApi.signIn()
   return authApi.hasValidSession()
 }
 

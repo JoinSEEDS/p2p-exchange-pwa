@@ -145,13 +145,15 @@ export default {
     ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
+      this.setIsLoading(true)
+      // await this.signIn()
       if (!this.isP2PProfileCompleted) {
         this.params.nickname = this.seedsAccount.nickname
-        if (!(await this.isLoggedIn)) { await this.signIn() }
+        // if (!(await this.isLoggedIn)) { await this.signIn() }
         return
       }
 
-      if (!(await this.isLoggedIn)) { await this.signIn() }
+      // if (!(await this.isLoggedIn)) { await this.signIn() }
 
       // let loggedIn = await this.isLoggedIn
       // console.log('L<ogged in', !(await this.isLoggedIn))
@@ -173,6 +175,7 @@ export default {
         paypalLink: await this.paypal || '',
         timeZone: this.p2pAccount.time_zone
       }
+      this.setIsLoading(false)
     },
     async onSubmitForm () {
       try {
@@ -190,6 +193,7 @@ export default {
           publicKey = await this.getPublicKey()
           privateKey = await this.privateKey
         }
+        this.setIsLoading(true)
 
         // console.log('private', privateKey, 'public', publicKey)
 
@@ -214,9 +218,11 @@ export default {
           fiatCurrency: this.params.fiatCurrency,
           publicKey
         })
+        this.setIsLoading(true)
         publicKey = null // Delete publicKey after save
 
         await this.signUp(mData) // Save private key in PPP service
+        this.setIsLoading(true)
         privateKey = null
         await this.setIsLoading(false)
         await this.showSuccessMsg(this.$t('pages.account.saved'))
