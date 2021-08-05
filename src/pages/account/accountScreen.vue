@@ -123,7 +123,7 @@ export default {
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
     ...mapGetters('accounts', ['isP2PProfileCompleted']),
-    ...mapGetters('profiles', ['isRegistered', 'isLoggedIn', 'privateKey']),
+    ...mapGetters('profiles', ['isLoggedIn', 'privateKey']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -145,15 +145,15 @@ export default {
   },
   methods: {
     ...mapActions('accounts', ['saveAccountData', 'getPublicKey']),
-    ...mapActions('profiles', ['signUp', 'signIn', 'getPaypal']),
+    ...mapActions('profiles', ['signUp', 'signIn', 'getPaypal', 'isRegistered']),
     ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
       this.setIsLoading(true)
-      let isRegistered = await this.isRegistered // <<- PPP registered
+      let isRegistered = await this.isRegistered() // <<- PPP registered
 
       if (!this.isP2PProfileCompleted) { // <<- Registered in P2P validation
-        // console.log('seeds account', this.seedsAccount)
+        console.log('seeds account', this.seedsAccount)
         this.params.nickname = this.seedsAccount.nickname
         this.setIsLoading(false)
         return
@@ -174,7 +174,7 @@ export default {
     async onSubmitForm () {
       try {
         this.setIsLoading(true)
-        let isRegistered = await this.isRegistered // <<- PPP registered
+        let isRegistered = await this.isRegistered() // <<- PPP registered
 
         let publicKey
         let privateKey
@@ -214,9 +214,9 @@ export default {
         this.setIsLoading(false)
         this.showSuccessMsg(this.$t('pages.account.saved'))
         this.$router.push({ path: '/dashboard' })
-        delete this.params.publicKey
-        delete this.params.paypalLink
-        this.params = {}
+        // delete this.params.publicKey
+        // delete this.params.paypalLink
+        // this.params = {}
         console.log(await this.getPaypal())
       } catch (error) {
 

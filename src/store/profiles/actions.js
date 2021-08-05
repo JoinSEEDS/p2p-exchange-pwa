@@ -22,6 +22,14 @@ export const getPaypal = async function ({ state }) {
   return (profile && profile.appData && profile.appData.privateData) ? profile.appData.privateData.paypal : ''
 }
 
+export const isRegistered = async function ({ state }) {
+  const profileApi = PPP.profileApi()
+  const profile = await profileApi.getProfile()
+  // console.log('is registered', (!!profile && !!profile.appData && !!profile.appData.privateData))
+  // console.log('profile', !!profile, 'profile app data', !!profile.appData, 'private data', !!profile.appData.privateData)
+  return (!!profile && !!profile.appData && !!profile.appData.privateData)
+}
+
 export const searchProfiles = async function ({ commit }, options = {}) {
   const profileApi = PPP.profileApi()
   const { search, clean, lastEvaluatedKey, limit } = options

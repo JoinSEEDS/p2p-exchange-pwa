@@ -19,13 +19,13 @@ export const isPPPLoading = (state) => {
   return state.isPPPLoading
 }
 
-export const isRegistered = async (state) => {
-  const profileApi = PPP.profileApi()
-  const profile = await profileApi.getProfile()
-  console.log('is registered', (!!profile && !!profile.appData && !!profile.appData.privateData))
-  console.log('profile', !!profile, 'profile app data', !!profile.appData, 'private data', !!profile.appData.privateData)
-  return (!!profile && !!profile.appData && !!profile.appData.privateData)
-}
+// export const isRegistered = async (state) => {
+//   const profileApi = PPP.profileApi()
+//   const profile = await profileApi.getProfile()
+//   console.log('is registered', (!!profile && !!profile.appData && !!profile.appData.privateData))
+//   console.log('profile', !!profile, 'profile app data', !!profile.appData, 'private data', !!profile.appData.privateData)
+//   return (!!profile && !!profile.appData && !!profile.appData.privateData)
+// }
 
 // export const isLoggedIn = (state) => {
 //   return state.myProfile
