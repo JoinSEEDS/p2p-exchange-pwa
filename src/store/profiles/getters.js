@@ -37,12 +37,12 @@ export const isLoggedIn = async (state) => {
 export const privateKey = async (state) => {
   const profileApi = PPP.profileApi()
   const profile = await profileApi.getProfile()
-  return profile.appData.privateData.privateKey ?? ''
+  return profile.appData.privateData.privateKey || ''
 }
 
 export const paypal = async (state) => {
   const profileApi = PPP.profileApi()
   const profile = await profileApi.getProfile()
   console.log('profile ppp', profile)
-  return profile.appData.privateData.paypal ?? ''
+  return profile.appData.privateData.paypal || ''
 }
