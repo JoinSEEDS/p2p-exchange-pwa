@@ -15,6 +15,13 @@ export const signIn = async function ({ state }) {
   // await profileApi.getProfile()
 }
 
+export const getPaypal = async function ({ state }) {
+  console.log('getter paypal')
+  const profileApi = PPP.profileApi()
+  const profile = await profileApi.getProfile()
+  return (profile && profile.appData && profile.appData.privateData) ? profile.appData.privateData.paypal : ''
+}
+
 export const searchProfiles = async function ({ commit }, options = {}) {
   const profileApi = PPP.profileApi()
   const { search, clean, lastEvaluatedKey, limit } = options

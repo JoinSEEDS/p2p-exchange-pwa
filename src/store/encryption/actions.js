@@ -18,7 +18,7 @@ export const createMessage = async function ({ commit }, { message, recipientAcc
     commit('general/setIsLoading', true, { root: true })
     const privateKey = await this.getters['profiles/privateKey']
 
-    console.log('private key', privateKey)
+    console.log('private key', privateKey, recipientAccount, buyOfferId)
     const response = await this.$encrypionApi.createMessage({ privateKey, recipientAccount, message, buyOfferId })
     return response
   } catch (e) {
@@ -33,7 +33,8 @@ export const createMessage = async function ({ commit }, { message, recipientAcc
 export const receiveMessage = async function ({ commit }, { buyOfferId }) {
   try {
     commit('general/setIsLoading', true, { root: true })
-    const recipientPrivateKey = this.getters['accounts/privateKey']
+    const recipientPrivateKey = await this.getters['profiles/privateKey']
+    console.log('my private key', recipientPrivateKey)
     const response = await this.$encrypionApi.receiveMessage({ recipientPrivateKey, buyOfferId })
     return response
   } catch (e) {
