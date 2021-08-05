@@ -68,7 +68,6 @@ export default {
   },
   computed: {
     ...mapGetters('accounts', ['currentFiatCurrency']),
-    ...mapGetters('profiles', ['paypal']),
     quantity () {
       return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[0]
     },

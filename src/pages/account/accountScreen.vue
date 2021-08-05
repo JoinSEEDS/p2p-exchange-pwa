@@ -153,7 +153,7 @@ export default {
       let isRegistered = await this.isRegistered // <<- PPP registered
 
       if (!this.isP2PProfileCompleted) { // <<- Registered in P2P validation
-        console.log('seeds account', this.seedsAccount)
+        // console.log('seeds account', this.seedsAccount)
         this.params.nickname = this.seedsAccount.nickname
         this.setIsLoading(false)
         return
