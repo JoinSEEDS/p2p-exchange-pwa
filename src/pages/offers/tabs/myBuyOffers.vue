@@ -106,7 +106,6 @@ export default {
 #containerBuyOffers
   display: flex
   flex-direction: column
-  // max-height: 460px
 
 #offersEmpty
   flex: 1

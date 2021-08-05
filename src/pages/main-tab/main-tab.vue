@@ -46,7 +46,6 @@ export default {
 
 <style lang="sass" scoped>
 #container
-  // background: $accent
   flex: 1
   display: flex
   flex-direction: column

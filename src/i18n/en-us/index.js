@@ -140,7 +140,7 @@ export default {
     },
     deposit: {
       deposit: 'Deposit',
-      withdraw: 'Withdraw',
+      withdraw: 'Remove',
       amount: 'Amount',
       depositWithdraw: 'Deposit / Withdraw',
       selectTypeAction: 'Select the type of action',

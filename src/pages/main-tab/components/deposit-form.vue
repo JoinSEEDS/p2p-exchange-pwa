@@ -1,6 +1,6 @@
 <template lang="pug">
 #container
- q-card.q-pa-md.bg-light
+ q-card.q-pa-md.bg-light.custom-round
     .row.justify-between
         .subtitle.text-dark.q-mb-xs {{$t('pages.deposit.depositWithdraw')}}
         green-flat-btn(:label="$t('pages.general.close')" v-close-popup)
@@ -24,7 +24,7 @@
           :label="params.typeTransaction"
           color="accent"
           type="submit"
-        )
+        ).custom-round
 </template>
 
 <script>

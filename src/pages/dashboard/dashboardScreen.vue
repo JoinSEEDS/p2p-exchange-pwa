@@ -33,8 +33,6 @@
             i.i-transactions(:class=" tab === 'transactions' ? 'tab-icon-active' : 'tab-icon'")
         q-tab(name="notifications").tab-style
             i.i-notification(:class=" tab === 'notifications' ? 'tab-icon-active' : 'tab-icon'")
-        q-tab(name="settings").tab-style
-            i.i-settings(:class=" tab === 'settings' ? 'tab-icon-active' : 'tab-icon'")
 </template>
 
 <script>
@@ -63,7 +61,6 @@ export default {
 #container
     display: flex
     flex-direction: column
-    // height: 50vh !important
     padding: 0px
 
 .panelContainer

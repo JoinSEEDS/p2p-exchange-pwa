@@ -70,7 +70,6 @@ export default {
     return {
       OfferStatus,
       offer: undefined,
-      // incomingOffers: [],
       loading: true,
       limit: 4,
       scrollOffset: 1000,
@@ -83,11 +82,9 @@ export default {
   },
   mounted () {
     this.getOfferInfo()
-    // this.getIncommingBuyOffers()
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
       this.resetPagination()
-      // this.getIncommingBuyOffers()
     })
   },
   beforeDestroy () {

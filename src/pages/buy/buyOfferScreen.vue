@@ -106,13 +106,9 @@ export default {
       return this.sellOffer.price_info.find(v => v.key === 'priceper').value
     },
     fiatToPay () {
-      // const fiat = this.params.amount * (this.pricePerSeedOnUSD * (this.percentageValue / 100))
-      // return fiat.toFixed(2)
       return (this.parseSeedsToCurrentFiat(this.params.amount) * (this.percentageValue / 100)).toFixed(2)
     },
     exchangeRate () {
-      // const exchange = this.pricePerSeedOnUSD * (this.percentageValue / 100)
-      // return exchange.toFixed(4)
       return (this.myFiatExchangeRate * (this.percentageValue / 100)).toFixed(2)
     }
   },
@@ -167,8 +163,6 @@ export default {
     async checkIsValidOffer () {
       let { rows } = await this.getMyBuyOffers()
       let existingOffer = rows.find(off => off.sell_id === this.sellOffer.id)
-      // let availableSeeds = this.sellOffer.quantity_info.find(v => v.key === 'available').value.split(' ')[0]
-      // availableSeeds = parseInt(availableSeeds) **** If the are avaialble seeds we can offer again?
       if (existingOffer) {
         this.$router.replace('/offers')
         this.showSuccessMsg(this.$t('pages.buy.existing_offer'))

@@ -95,7 +95,6 @@ export default {
 #containerSellOffers
   display: flex
   flex-direction: column
-  // padding: 10% 5%
 
 #offersEmpty
   flex: 1

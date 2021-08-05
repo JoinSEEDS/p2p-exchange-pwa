@@ -52,40 +52,4 @@ export default {
 <style lang="sass" scoped>
 .custom-btn
   height: 45px
-// .view-btn
-//     font-size: 14px
-//     font-style: normal
-//     font-weight: 500
-//     line-height: 17px
-//     letter-spacing: 0em
-//     color: #1F992A
-//     padding: 5px
-//     border-radius: 10px
-// .container-view-btn
-//     position: relative
-// .empty-label
-//     font-family: SF Pro Display
-//     font-size: 18px
-//     font-style: normal
-//     font-weight: 700
-//     line-height: 21px
-//     letter-spacing: 0em
-//     text-align: center
-//     color: #E9EDD9
-// #container
-//     display: flex
-//     flex-direction: column
-//     height: 100%
-// #list
-//     // background-color: $accent
-//     height: 100%
-
-// .fiat-icon
-//   background-image: url('./icons/fiat.svg')
-//   background-repeat: no-repeat
-//   background-size: contain
-//   display: inline-block
-//   width: 40px
-//   height: 70px
-//   text-align: center
 </style>

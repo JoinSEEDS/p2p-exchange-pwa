@@ -18,7 +18,7 @@ export default {
 .q-px-xs
   q-avatar.cursor-pointer(v-ripple icon="account_circle" size="xl")
     //- img(src='https://cdn.quasar.dev/img/avatar.png')
-    q-menu
+    q-menu.custom-round
       .row.bg-light
         .col.q-pt-sm
           .text-h6.q-px-md.text-dark  {{ account }}

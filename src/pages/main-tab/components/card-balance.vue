@@ -12,17 +12,9 @@
   .text-h6.wallet-value(v-if="userBalances") {{ userBalances.available_balance.split(' ')[0] }}
   .row
     .text-h6.wallet-fiat {{equivalentFiat}}
-    //- q-btn.q-px-xs(
-    //-   v-if="userCanMoveBalance"
-    //-   :label="$t('pages.deposit.depositWithdraw')"
-    //-   dense
-    //-   @click="$emit('clickOnDeposit')"
-    //-   color="accent"
-    //-   size="sm"
-    //- )
   #modals
     q-dialog(v-model="showDetailsBalance" transition-show="slide-up" transition-hide="slide-down" persistent)
-      details-balance.custom-size-modal
+      details-balance.custom-round
 </template>
 
 <script>
@@ -64,7 +56,6 @@ export default {
   background-color: $accent
   background-repeat: no-repeat
   background-size: cover
-  // display: inline-block
   width: 100%
   min-height: 200px
   border-radius: 25px
@@ -94,6 +85,4 @@ export default {
 
 .wallet-fiat
   font-size: 12px
-//   width: 600px
-//   height: 300px
 </style>

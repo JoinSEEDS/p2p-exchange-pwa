@@ -127,7 +127,6 @@ export default {
 .logo-background
   background-color: rgba(0, 0 , 0 , 0.5)
 .logo-wallet-container
-  // display: contents
   width: 40px
   padding: 5px 30px 5px 30px
   border-radius: 10px 0px 0px 10px
@@ -149,8 +148,6 @@ export default {
   background-color: $primary
   background-repeat: no-repeat
   background-size: cover
-  // display: flex
-  // flex: 1
 .cm
   display: flex
   flex-direction: column
@@ -158,11 +155,6 @@ export default {
   height: 97vh
 .c1
   flex: 1.5
-  // background-color: blue
 .wallets-container
   flex: 1
-  // position: static
-  // position: sticky
-  // bottom: 10px
-  // background-image: url("../../backgrounds.svg")
 </style>
