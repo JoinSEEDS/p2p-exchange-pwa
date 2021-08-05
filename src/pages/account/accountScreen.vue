@@ -204,6 +204,7 @@ export default {
 
         const mData = {
           [RootFields.NAME]: this.params.nickname,
+          [RootFields.EMAIL]: 'email@email.com',
           appData: {
             privateData: {
               privateKey,
