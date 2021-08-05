@@ -11,16 +11,18 @@ export const needVerifyComm = (state) => {
   // }
 }
 
-export const isRegistered = (state) => {
-  return !!state.myProfile
-}
+// export const isRegistered = (state) => {
+//   return !!state.myProfile
+// }
 
 export const isPPPLoading = (state) => {
   return state.isPPPLoading
 }
 
-export const getMyProfile = (state) => {
-  return state.myProfile
+export const isRegistered = async (state) => {
+  const profileApi = PPP.profileApi()
+  const profile = await profileApi.getProfile()
+  return !!profile && !!profile.appData && !!profile.appData.privateData
 }
 
 // export const isLoggedIn = (state) => {

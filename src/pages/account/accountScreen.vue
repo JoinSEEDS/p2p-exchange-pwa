@@ -169,11 +169,12 @@ export default {
 
       // const paypalPaymentLink = this.p2pAccount.commPref.paypalLink
       // console.log('p2pacc', this.p2pAccount)
+      let paypal = (this.isRegistered) ? await this.paypal : ''
       this.params = {
         nickname: this.seedsAccount.nickname,
         fiatCurrency: this.p2pAccount.fiat_currency,
         contactMethods: undefined,
-        paypalLink: await this.paypal || '',
+        paypalLink: paypal,
         timeZone: this.p2pAccount.time_zone
       }
       this.setIsLoading(false)
