@@ -149,6 +149,7 @@ export default {
       // await this.signIn()
       if (!this.isP2PProfileCompleted) {
         this.params.nickname = this.seedsAccount.nickname
+        this.setIsLoading(false)
         // if (!(await this.isLoggedIn)) { await this.signIn() }
         return
       }
