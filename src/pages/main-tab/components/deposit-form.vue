@@ -48,22 +48,20 @@ export default {
       try {
         const quantity = `${Number.parseFloat(this.params.amount).toFixed(4)} SEEDS`
         if (this.params.typeTransaction === 'deposit') {
-          const response = await this.deposit({
+          await this.deposit({
             quantity,
             memo: `Deposit for ${quantity} SEEDS`
           })
-          console.log('response deposit', response)
           this.$q.notify({
             type: 'positive',
             message: this.$t('pages.deposit.successDeposit', { amount: quantity })
           })
           this.$emit('onSuccess')
         } else if (this.params.typeTransaction === 'withdraw') {
-          const response = await this.withdraw({
+          await this.withdraw({
             quantity,
             memo: `Deposit for ${quantity} SEEDS`
           })
-          console.log('response withdraw', response)
           this.$q.notify({
             type: 'positive',
             message: this.$t('pages.deposit.successWithdraw', { amount: quantity })

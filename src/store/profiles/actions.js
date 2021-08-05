@@ -16,7 +16,6 @@ export const signIn = async function ({ state }) {
 }
 
 export const getPaypal = async function ({ state }) {
-  console.log('getter paypal')
   const profileApi = PPP.profileApi()
   const profile = await profileApi.getProfile()
   return (profile && profile.appData && profile.appData.privateData) ? profile.appData.privateData.paypal : ''
@@ -25,8 +24,6 @@ export const getPaypal = async function ({ state }) {
 export const isRegistered = async function ({ state }) {
   const profileApi = PPP.profileApi()
   const profile = await profileApi.getProfile()
-  // console.log('is registered', (!!profile && !!profile.appData && !!profile.appData.privateData))
-  // console.log('profile', !!profile, 'profile app data', !!profile.appData, 'private data', !!profile.appData.privateData)
   return (!!profile && !!profile.appData && !!profile.appData.privateData)
 }
 
@@ -39,7 +36,6 @@ export const searchProfiles = async function ({ commit }, options = {}) {
       commit('setProfiles', response)
     })
   } catch (error) {
-    console.log('Error', error)
   }
 }
 

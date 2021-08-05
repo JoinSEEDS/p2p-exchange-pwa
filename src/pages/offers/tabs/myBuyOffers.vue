@@ -67,7 +67,12 @@ export default {
         })
         if (rows) {
           for (const row of rows) {
-            if (row.buyer === this.account && row.type === OfferStatus.BUY_OFFER && row.current_status !== OfferStatus.BUY_OFFER_REJECTED) {
+            if (
+              row.buyer === this.account &&
+              row.type === OfferStatus.BUY_OFFER &&
+              row.current_status !== OfferStatus.BUY_OFFER_REJECTED &&
+              row.current_status !== OfferStatus.BUY_OFFER_SUCCESS
+            ) {
               this.myOffers.rows.push(row)
             }
           }

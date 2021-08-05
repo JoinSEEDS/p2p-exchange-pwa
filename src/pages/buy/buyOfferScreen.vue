@@ -126,17 +126,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions('buyOffers', ['getOffer', 'createBuyOffer']),
+    ...mapActions('buyOffers', ['getOffer', 'createBuyOffer', 'getMyBuyOffers']),
     ...mapActions('accounts', ['getCurrentSeedsPerUsd', 'getBalances']),
     async onConfirmBuy () {
       this.showConfirmBuy = false
       try {
-        const response = await this.createBuyOffer({
+        await this.createBuyOffer({
           sellOfferId: this.sellOffer.id,
           quantity: this.parseToSeedSymbol(this.params.amount),
           paymentMethod: this.sellOffer.payment_methods.find(v => v.key === 'paypal').key
         })
-        console.log('response', response)
         this.getBalances()
         this.showSuccessMsg(this.$root.$t('pages.buy.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
         this.$router.replace({ name: 'sellOffers' })
@@ -148,7 +147,6 @@ export default {
       this.showConfirmBuy = true
     },
     async getOfferData () {
-      // console.log('Getting data for offer ', this.offerId)
       try {
         this.showIsLoading(true)
         this.sellOffer = await this.getOffer(this.offerId)
@@ -166,10 +164,18 @@ export default {
         this.sellerInfo = await this.$store.$userApi.getUserSeedsData({ accountName: this.sellOffer.seller })
       } catch (e) {}
     },
-    checkIsValidOffer () {
+    async checkIsValidOffer () {
+      let { rows } = await this.getMyBuyOffers()
+      let existingOffer = rows.find(off => off.sell_id === this.sellOffer.id)
+      // let availableSeeds = this.sellOffer.quantity_info.find(v => v.key === 'available').value.split(' ')[0]
+      // availableSeeds = parseInt(availableSeeds) **** If the are avaialble seeds we can offer again?
+      if (existingOffer) {
+        this.$router.replace('/offers')
+        this.showSuccessMsg(this.$t('pages.buy.existing_offer'))
+      }
+
       if (this.sellOffer.current_status !== 's.active' || this.sellOffer.type !== 'offer.sell' || this.sellOffer.seller === this.account) {
         this.$router.replace('/offers')
-        console.warn('Invalid sell offer, redirecting to sell offers list', this.sellOffer)
       }
     }
   }

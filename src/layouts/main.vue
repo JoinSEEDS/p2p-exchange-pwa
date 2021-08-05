@@ -19,9 +19,6 @@ export default {
   },
   computed: {
     ...mapGetters('accounts', ['isAuthenticated'])
-  },
-  methods: {
-    // ...mapActions('accounts', ['autoLogin'])
   }
 }
 </script>
@@ -31,25 +28,8 @@ export default {
     q-header(elevated)
       q-toolbar
         q-icon(name="app:title" class="title-icon")
-        //- q-btn(
-        //-   flat
-        //-   dense
-        //-   round
-        //-   @click="menu = !menu"
-        //-   icon="fas fa-bars"
-        //-   aria-label="Menu"
-        //- )
         q-toolbar-title.flex.items-center
-          //- img.logo(src="statics/telos-logo-white.svg")
         right-menu-authenticated(v-if="isAuthenticated")
-        //- right-menu-guest(v-if="!isAuthenticated")
-    //- q-drawer(
-    //-   show-if-above
-    //-   v-model="menu"
-    //-   side="left"
-    //-   bordered
-    //- )
-    //-   left-menu
     q-page-container
       .row.justify-center.bg-accent
         .col-5.col-xs-12.col-sm-10.col-md-5.col-lg-6

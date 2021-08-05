@@ -20,11 +20,6 @@
             color="blue-9"
         ).custom-round
         q-btn.full-width(
-            v-if="offer.current_status === OfferStatus.BUY_OFFER_SUCCESS"
-            label="DONE"
-            color="blue"
-        ).custom-round
-        q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING"
             :label="$t('common.buttons.waiting')"
             color="orange-8"
@@ -34,15 +29,12 @@
   #modals
     q-dialog(v-model="waiting" transition-show="slide-up" transition-hide="slzide-down")
       waiting-approval(:offer="offer").custom-size-modal
-    //- q-dialog(v-model="cancel" transition-show="slide-up" transition-hide="slide-down")
-    //-   confirm-cancel(:id="offer.id" @canceledBtn="cancel = !cancel")
 
 </template>
 
 <script>
 import { OfferStatus } from '~/const/OfferStatus'
 import WaitingApproval from './waiting-approval.vue'
-// import ConfirmCancel from './confirm-cancel.vue'
 
 export default {
   name: 'offer-buy-item',
@@ -57,7 +49,6 @@ export default {
     return {
       OfferStatus,
       waiting: false
-      // cancel: false
     }
   },
   computed: {
@@ -66,11 +57,6 @@ export default {
         return v.key === 'buyquantity'
       })
       return buyQuantity.value || 'UNKNOWN'
-    }
-  },
-  methods: {
-    takeOffer () {
-      // this.$router.push({ name: 'buy', params: { id: this.offer.id } })
     }
   }
 }

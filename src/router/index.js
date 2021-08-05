@@ -41,9 +41,7 @@ export default function ({ store }) {
         }
         // return next()
       } else if (to.path === '/login') {
-        // console.log('Is send to login')
       } else {
-        // console.log('Is send to return Url', to.path)
         return next({ path: `/?returnUrl=${to.path}` })
       }
     } else {

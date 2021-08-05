@@ -115,27 +115,21 @@ export default {
       return Number.parseFloat(this.availableSeeds - currentAmount).toFixed(4)
     },
     fiatToGet () {
-      // return this.params.amount * (this.pricePerSeedOnEUR * (this.params.costPerCrypt / 100))
       return this.parseSeedsToCurrentFiat(this.params.amount) * ((this.params.costPerCrypt / 100))
     },
     exchangeRate () {
-      // return this.pricePerSeedOnUSD * (this.params.costPerCrypt / 100)
       return this.myFiatExchangeRate
     }
-    // exchange () {
-    //   return this.exchangeRate
-    // }
   },
   methods: {
     ...mapActions('accounts', ['getCurrentSeedsPerUsd', 'getBalances']),
     ...mapActions('sellOffers', ['addSellOffer']),
     async onConfirmSell () {
       try {
-        const response = await this.addSellOffer({
+        await this.addSellOffer({
           totalOffered: this.parseToSeedSymbol(this.params.amount),
           pricePercentage: this.params.costPerCrypt
         })
-        console.log('response', response)
         this.getBalances()
         this.showSuccessMsg(this.$root.$t('pages.sell.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
         this.$router.replace({ name: 'dashboard' })

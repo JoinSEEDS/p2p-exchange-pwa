@@ -137,7 +137,6 @@ export default {
       try {
         this.offer = await this.getSellOfferById(this.offerId)
       } catch (error) {
-        console.log(error)
       }
     },
     amountOf (asset) {

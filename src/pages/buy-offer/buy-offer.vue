@@ -107,11 +107,11 @@ export default {
     ...mapActions('profiles', ['getPaypal']),
     async confOffer () {
       try {
+        this.setIsLoading(true)
         let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getPaypal(), recipientAccount: this.buyer.account })
-        // console.log('message', messageData)
         await this.acceptBuyOffer({ buyOfferId: this.offer.id, messageData })
         EventBus.$emit('confirmOffer')
-        // this.showSuccessMsg(this.$root.$t('pages.offers.accept_buy_offer'))
+        this.showSuccessMsg(this.$root.$t('pages.offers.accept_buy_offer'))
       } catch (error) {
         console.error(error)
       }
@@ -130,7 +130,7 @@ export default {
         await this.confirmPayment({ buyOfferId: this.offer.id })
         this.showSuccessMsg(this.$root.$t('pages.offers.confirm_payment'))
         EventBus.$emit('confirmOffer')
-        // this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
+        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions', subTab: 'sale' } })
       } catch (error) {
         console.error('An error occurred while trying to confirm payment: ', error)
       }

@@ -135,7 +135,8 @@ export default {
       successMessage: 'Purchase Offer was created successfully for {amount}.',
       amountOfCrypto: 'Enter the amount of seeds to buy',
       cancel: 'Cancel buy offer',
-      confirm_cancel: 'Are you sure of canceling this offer?'
+      confirm_cancel: 'Are you sure of canceling this offer?',
+      existing_offer: 'An offer already exists for this sale offer'
     },
     deposit: {
       deposit: 'Deposit',
@@ -192,7 +193,8 @@ export default {
       percentage: 'Percentage',
       sold: 'Sold',
       no_offers: 'This sell offer has not',
-      not_yet: 'Purchase offers yet'
+      not_yet: 'Purchase offers yet',
+      finished: 'Finished successfully'
     }
   }
 }

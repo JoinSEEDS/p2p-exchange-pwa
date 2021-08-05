@@ -49,8 +49,6 @@ class EncryptionApi extends BaseEosApi {
       indexValue: accountName
     })
 
-    console.log('rows', rows)
-
     return rows[0].public_key
   }
 
@@ -61,8 +59,6 @@ class EncryptionApi extends BaseEosApi {
     buyOfferId
   }) {
     let rcptKey = null
-
-    console.log('privasdasd', privateKey, recipientAccount, message, 'hey', buyOfferId)
 
     privateKey = PrivateKey.fromString(privateKey).toElliptic() // <<- Eliptic from string of sender private key
 

@@ -153,7 +153,6 @@ export default {
       let isRegistered = await this.isRegistered() // <<- PPP registered
 
       if (!this.isP2PProfileCompleted) { // <<- Registered in P2P validation
-        console.log('seeds account', this.seedsAccount)
         this.params.nickname = this.seedsAccount.nickname
         this.setIsLoading(false)
         return
@@ -168,7 +167,6 @@ export default {
         timeZone: this.p2pAccount.time_zone
       }
       paypal = undefined
-      // console.log('PARAMS OF DATA', this.params)
       this.setIsLoading(false)
     },
     async onSubmitForm () {
@@ -214,10 +212,6 @@ export default {
         this.setIsLoading(false)
         this.showSuccessMsg(this.$t('pages.account.saved'))
         this.$router.push({ path: '/dashboard' })
-        // delete this.params.publicKey
-        // delete this.params.paypalLink
-        // this.params = {}
-        console.log(await this.getPaypal())
       } catch (error) {
 
       }

@@ -27,11 +27,8 @@ export default {
         const result = await this.sendTokens(this.form)
         if (result) {
           this.transactionId = result.transactionId
-          console.log(result)
         } else this.transactionId = null
-        // console.log('tID', this.transactionId)
       } catch (e) {
-        // const error = new DeepError(e)
         this.transactionId = null
         this.setErrorMsg(e.message)
       }

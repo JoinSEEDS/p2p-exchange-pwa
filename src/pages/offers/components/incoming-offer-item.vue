@@ -8,7 +8,8 @@
         .text-white #[strong {{ offer.buyer }}]
         .text-white {{ quantity }} =
           span.text-info.text-bold  ${{ equivalentFiat}}
-          div(v-if="hasRemainingTime && !rejected").full-width.flex.items-center.q-mt-xs
+          .text-info.q-mt-xs(v-if="finished") {{ $t('pages.incoming_offers.finished') }}
+          div(v-if="hasRemainingTime && pending").full-width.flex.items-center.q-mt-xs
             q-icon(name="timer" :color="remainingColor" size="xs")
             small.text-white.q-ml-sm {{$t('pages.offers.timeTo', { time: remaining })}}
   .row.justify-center
@@ -113,6 +114,9 @@ export default {
     },
     rejected () {
       return this.offer.current_status === OfferStatus.BUY_OFFER_REJECTED
+    },
+    finished () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_SUCCESS
     },
     equivalentFiat () {
       try {

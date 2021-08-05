@@ -64,7 +64,6 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
   } catch (e) {
     const error = (authenticator.getError() && authenticator.getError().message) || e.message || e.reason
     commit('general/setErrorMsg', error, { root: true })
-    console.log('Login error: ', error)
     return null
   } finally {
     commit('setLoadingWallet')
@@ -76,7 +75,6 @@ export const loginToBackend = async function ({ commit }) {
     await this.dispatch('profiles/getProfile', { root: true })
     return true
   } catch (e) {
-    console.log('Failed to login to backend: ', e)
     commit('general/setErrorMsg', e.message || e, { root: true })
     return false
   }
@@ -90,7 +88,6 @@ export const logout = async function ({ commit }) {
   try {
     authenticator && await authenticator.logout()
   } catch (error) {
-    console.log('Authenticator logout error', error)
   }
   // commit('profiles/setProfile', undefined, { root: true })
   commit('setAccount')
@@ -109,7 +106,6 @@ export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
   let user = null
   if (authenticator) {
     commit('setAutoLogin', true)
-    console.log('autoLogin')
     user = await dispatch('login', { idx, returnUrl, account: localStorage.getItem('account') })
     commit('setAutoLogin', false)
   }

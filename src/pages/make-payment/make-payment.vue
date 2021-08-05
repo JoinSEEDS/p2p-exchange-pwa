@@ -49,9 +49,6 @@ export default {
     hasPypal () {
       return !!this.paypal
     },
-    // paypal () {
-    //   return this.offer.payment_methods.find(el => el.key === 'paypal').value
-    // },
     quantity () {
       return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[0]
     },
