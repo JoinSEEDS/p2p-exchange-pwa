@@ -33,7 +33,7 @@ jobs:
           CONTRACT_SEEDS_WALLET: "'token.seeds'"
           CONTRACT_SEEDS_VALUES: "'tlosto.seeds'"
           CONTRACT_P2P_SETTINGS: "'m1sttgsp2pex'"
-          PPP_ENV: '"test"'
+          PPP_ENV: "'test'"
 
       - name: S3 sync
         uses: jakejarvis/s3-sync-action@master
