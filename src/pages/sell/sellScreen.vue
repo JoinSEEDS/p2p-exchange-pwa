@@ -6,10 +6,10 @@
     .text-white {{ $t('pages.sell.defineTheSaleOffer') }}
     .row.justify-center
         .col-8
-            .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) }}
+            .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) || 0 }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
             q-separator(color="warning")
-            .text-h4.text-white.text-center {{ fiatToGet.toFixed(2) }}
+            .text-h4.text-white.text-center {{ fiatToGet }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{params.fiatCurrency}}
     .row.bg-warning.container-current
       .q-pa-sm
@@ -115,7 +115,7 @@ export default {
       return Number.parseFloat(this.availableSeeds - currentAmount).toFixed(4)
     },
     fiatToGet () {
-      return this.parseSeedsToCurrentFiat(this.params.amount) * ((this.params.costPerCrypt / 100))
+      return this.params.amount ? (this.parseSeedsToCurrentFiat(this.params.amount) * ((this.params.costPerCrypt / 100))).toFixed(2) : 0
     },
     exchangeRate () {
       return this.myFiatExchangeRate

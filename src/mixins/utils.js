@@ -56,10 +56,9 @@ export const utils = {
       this.setIsLoading(state)
     },
     parseToSeedsAmount (amount) {
-      return Number.parseFloat(amount).toFixed(4)
+      return amount ? Number.parseFloat(amount).toFixed(4) : 0
     },
     parseToSeedSymbol (amount) {
-      console.error('parseToSeedSymbol', amount)
       if (!amount) return '0 SEEDS'
       return `${Number.parseFloat(amount).toFixed(4)} SEEDS`
     },

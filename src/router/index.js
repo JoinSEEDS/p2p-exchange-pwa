@@ -30,15 +30,7 @@ export default function ({ store }) {
       // Verify if the user is authenticated
       if (store.getters['accounts/isAuthenticated']) {
         // Verify if the user has profile completed
-        let payp = await store.dispatch('profiles/getPaypal')
-        let hasPaypal = (!!payp && payp.length > 0)
-        console.log('payp', payp)
-        console.log('hasPaypal', hasPaypal)
-        console.log('getter isP2PProfileCompleted', store.getters['accounts/isP2PProfileCompleted'])
-        console.log('match not profile', to.matched.some(record => record.meta.notProfile))
-        console.log('match record.meta.visitorScreen', to.matched.some(record => !record.meta.visitorScreen))
-        console.log('getter user can sell', store.getters['accounts/userCanSell'])
-        if (hasPaypal && (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile))) {
+        if (store.getters['accounts/userHasPaypal'] && (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile))) {
         // if (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile)) {
           if (to.matched.some(record => !record.meta.visitorScreen) && !store.getters['accounts/userCanSell']) {
             return next({ path: '/dashboard' })

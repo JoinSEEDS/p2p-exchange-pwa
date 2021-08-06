@@ -186,7 +186,7 @@ export default {
           publicKey = await this.getPublicKey()
           privateKey = await this.getPrivateKey()
         }
-
+        this.setIsLoading(true)
         const mData = {
           [RootFields.NAME]: this.params.nickname,
           [RootFields.EMAIL]: 'email@email.com',
@@ -197,7 +197,6 @@ export default {
             }
           }
         }
-
         await this.saveAccountData({
           contactMethods: [ { 'key': 'signal', 'value': '' } ],
           paymentMethods: [ { 'key': 'paypal', 'value': '' } ],
@@ -206,13 +205,12 @@ export default {
           publicKey
         }) // Savev public data in contract
         publicKey = null // Delete publicKey after save
-        this.setIsLoading(true)
         await this.signUp(mData) // Save private key in PPP service
+        this.setIsLoading(true)
         privateKey = null
-
+        await this.$router.push({ path: '/dashboard' })
+        await this.showSuccessMsg(this.$t('pages.account.saved'))
         this.setIsLoading(false)
-        this.showSuccessMsg(this.$t('pages.account.saved'))
-        this.$router.push({ path: '/dashboard' })
       } catch (error) {
 
       }

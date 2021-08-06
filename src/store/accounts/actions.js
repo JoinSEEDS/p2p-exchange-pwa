@@ -56,6 +56,8 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       localStorage.setItem('returning', true)
 
       await dispatch('profiles/signIn', {}, { root: true })
+      let paypal = await dispatch('profiles/getPaypal', {}, { root: true })
+      commit('setPaypal', paypal)
 
       this.$router.push({ path: returnUrl || '/dashboard' })
 
@@ -205,7 +207,7 @@ export const saveAccountData = async function ({ commit, dispatch }, params) {
     commit('general/setErrorMsg', e.message || e, { root: true })
     throw new Error(e)
   } finally {
-    commit('general/setIsLoading', false, { root: true })
+    // commit('general/setIsLoading', false, { root: true })
   }
 }
 

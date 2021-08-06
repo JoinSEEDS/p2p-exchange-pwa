@@ -6,7 +6,7 @@
         .text-white {{ $t('pages.buy.howManySeedsWillYouBuy') }}
         .row.justify-center
           .col-9
-            .text-h4.text-white.text-center {{ Number.parseFloat(params.amount).toFixed(4) }}
+            .text-h4.text-white.text-center {{ params.amount ? Number.parseFloat(params.amount).toFixed(4) : 0 }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
             q-separator(color="warning")
             .text-h4.text-white.text-center {{ fiatToPay }}
@@ -108,7 +108,7 @@ export default {
       return this.sellOffer.price_info.find(v => v.key === 'priceper').value
     },
     fiatToPay () {
-      return (this.parseSeedsToCurrentFiat(this.params.amount) * (this.percentageValue / 100)).toFixed(2)
+      return this.params.amount ? (this.parseSeedsToCurrentFiat(this.params.amount) * (this.percentageValue / 100)).toFixed(2) : 0
     },
     exchangeRate () {
       return (this.myFiatExchangeRate * (this.percentageValue / 100)).toFixed(2)

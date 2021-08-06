@@ -3,6 +3,7 @@ export const getSettings = async function ({ commit }) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const settings = await this.$settingsApi.getSettings({ })
+    console.log('settings', settings)
     commit('settings/setSettings', settings, { root: true })
     return settings
   } catch (e) {
