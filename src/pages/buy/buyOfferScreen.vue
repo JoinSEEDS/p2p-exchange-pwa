@@ -167,10 +167,10 @@ export default {
       let existingOffers = rows.filter(
         off => off.sell_id === this.sellOffer.id &&
         off.buyer === this.account &&
-        off.status !== OfferStatus.BUY_OFFER_SUCCESS &&
-        off.status !== OfferStatus.BUY_OFFER_REJECTED
+        off.current_status !== OfferStatus.BUY_OFFER_SUCCESS &&
+        off.current_status !== OfferStatus.BUY_OFFER_REJECTED
       )
-      if (existingOffers.lenght > 0) {
+      if (existingOffers.length > 0) {
         this.$router.replace('/offers')
         this.showSuccessMsg(this.$t('pages.buy.existing_offer'))
       }

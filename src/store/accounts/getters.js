@@ -30,10 +30,3 @@ export const pricePerSeedOnEUR = ({ currentSeedsPerUsd, fiatExchanges }) => {
 export const fiatExchanges = ({ fiatExchanges }) => {
   return fiatExchanges
 }
-// export const privateKey = ({ p2pAccount }) => {
-//   return p2pAccount.commPref.privateKey
-// }
-
-// export const paypal = ({ p2pAccount }) => {
-//   return `https://paypal.me/${p2pAccount.commPref.paypalLink}`
-// }

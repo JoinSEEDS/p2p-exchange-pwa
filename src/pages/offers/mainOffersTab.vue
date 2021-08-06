@@ -33,7 +33,6 @@ export default {
     }
   },
   async mounted () {
-    console.log('USER CAN SELL', this.userCanSell)
     if (this.subTab) this.tab = this.subTab
   },
   computed: {

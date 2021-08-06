@@ -65,7 +65,7 @@
             dark
             standout="text-accent"
             :rules="[rules.required]"
-            prefix="https://paypal.me/"
+            :prefix="paypalBase"
             lazy-rules
             :hint="$t('pages.account.hintPaypal')"
             autocomplete="off"
@@ -96,6 +96,7 @@ export default {
   mixins: [validation, utils],
   data () {
     return {
+      paypalBase: 'https://paypal.me/',
       params: {
         nickname: undefined,
         fiatCurrency: undefined,
@@ -123,7 +124,7 @@ export default {
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
     ...mapGetters('accounts', ['isP2PProfileCompleted']),
-    ...mapGetters('profiles', ['isLoggedIn', 'privateKey']),
+    ...mapGetters('profiles', ['isLoggedIn']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -145,7 +146,7 @@ export default {
   },
   methods: {
     ...mapActions('accounts', ['saveAccountData', 'getPublicKey']),
-    ...mapActions('profiles', ['signUp', 'signIn', 'getPaypal', 'isRegistered']),
+    ...mapActions('profiles', ['signUp', 'signIn', 'getPaypal', 'isRegistered', 'getPrivateKey']),
     ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
@@ -163,7 +164,7 @@ export default {
         nickname: this.seedsAccount.nickname,
         fiatCurrency: this.p2pAccount.fiat_currency,
         contactMethods: undefined,
-        paypalLink: paypal.replace('https://paypal.me/', ''),
+        paypalLink: paypal.replace(this.paypalBase, ''),
         timeZone: this.p2pAccount.time_zone
       }
       paypal = undefined
@@ -183,7 +184,7 @@ export default {
           privateKey = keys.privateKey
         } else {
           publicKey = await this.getPublicKey()
-          privateKey = await this.privateKey
+          privateKey = await this.getPrivateKey()
         }
 
         const mData = {
@@ -192,7 +193,7 @@ export default {
           appData: {
             privateData: {
               privateKey,
-              paypal: 'https://paypal.me/' + this.params.paypalLink
+              paypal: this.paypalBase + this.params.paypalLink
             }
           }
         }
@@ -217,7 +218,7 @@ export default {
       }
     },
     openPayPalLink () {
-      window.open(`https://paypal.me/${this.params.paypalLink}`)
+      window.open(`${this.paypalBase}${this.params.paypalLink}`)
     }
   }
 }

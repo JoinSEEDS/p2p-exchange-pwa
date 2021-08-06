@@ -13,11 +13,10 @@ export const generateKeys = async function ({ commit }) {
   }
 }
 
-export const createMessage = async function ({ commit }, { message, recipientAccount, buyOfferId }) {
+export const createMessage = async function ({ commit, dispatch }, { message, recipientAccount, buyOfferId }) {
   try {
     commit('general/setIsLoading', true, { root: true })
-    const privateKey = await this.getters['profiles/privateKey']
-
+    const privateKey = await dispatch('profiles/getPrivateKey', {}, { root: true })
     const response = await this.$encrypionApi.createMessage({ privateKey, recipientAccount, message, buyOfferId })
     return response
   } catch (e) {
@@ -29,10 +28,10 @@ export const createMessage = async function ({ commit }, { message, recipientAcc
   }
 }
 
-export const receiveMessage = async function ({ commit }, { buyOfferId }) {
+export const receiveMessage = async function ({ commit, dispatch }, { buyOfferId }) {
   try {
     commit('general/setIsLoading', true, { root: true })
-    const recipientPrivateKey = await this.getters['profiles/privateKey']
+    const recipientPrivateKey = await dispatch('profiles/getPrivateKey', {}, { root: true })
     const response = await this.$encrypionApi.receiveMessage({ recipientPrivateKey, buyOfferId })
     return response
   } catch (e) {
@@ -47,7 +46,6 @@ export const receiveMessage = async function ({ commit }, { buyOfferId }) {
 export const addPublicKey = async function ({ commit }, { publicKey }) {
   try {
     commit('general/setIsLoading', true, { root: true })
-    // const privateKey = this.getters['accounts/privateKey']
     const account = this.getters['accounts/account']
     const response = await this.$encrypionApi.addPublicKey({ account, publicKey })
     return response
