@@ -106,7 +106,11 @@ export default {
           nextKey: this.incomingOffers.nextKey
         })
         if (rows) {
-          let rws = rows.filter(el => (el.type === OfferStatus.BUY_OFFER && el.sell_id === parseInt(this.offerId) && el.current_status !== OfferStatus.BUY_OFFER_REJECTED))
+          let rws = rows.filter(el => (
+            el.type === OfferStatus.BUY_OFFER &&
+            el.sell_id === parseInt(this.offerId) &&
+            el.current_status !== OfferStatus.BUY_OFFER_REJECTED
+          ))
           this.incomingOffers.rows = this.incomingOffers.rows.concat(rws)
         }
         this.incomingOffers.more = more

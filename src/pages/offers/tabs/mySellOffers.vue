@@ -61,7 +61,7 @@ export default {
         })
         if (rows) {
           for (const row of rows) {
-            if (row.seller === this.account && row.type === OfferStatus.SELL_OFFER) {
+            if (row.seller === this.account && row.type === OfferStatus.SELL_OFFER && row.current_status !== OfferStatus.SELL_OFFER_SOLDOUT) {
               this.myOffers.rows.push(row)
             }
           }
