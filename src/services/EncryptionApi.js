@@ -125,11 +125,15 @@ class EncryptionApi extends BaseEosApi {
       limit: 1
     })
 
+    console.log('messagesTable', messagesTable)
+
     if (messagesTable.rows.length === 0) return 'No paypal'
     const messageRow = messagesTable.rows.filter(r => r.buy_offer_id === parseInt(buyOfferId))
     const message = messageRow[0]
+    console.log('message', message)
 
     const rcptKey = PrivateKey.fromString(recipientPrivateKey).toElliptic()
+    console.log('rcptKey', rcptKey)
 
     let ephemPublicKey = PublicKey.fromString(message.ephem_key)
     let ephemKey = ephemPublicKey.toElliptic()

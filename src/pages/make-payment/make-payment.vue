@@ -65,7 +65,9 @@ export default {
     }
   },
   async mounted () {
+    console.log('make-payment mounted')
     this.paypal = await this.receiveMessage({ buyOfferId: this.offerId })
+    console.log('make-payment paypal', this.paypal)
     this.getOfferData()
   },
   methods: {

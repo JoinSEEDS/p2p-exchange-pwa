@@ -33,6 +33,7 @@ export const receiveMessage = async function ({ commit }, { buyOfferId }) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const recipientPrivateKey = await this.getters['profiles/privateKey']
+    console.log('receiveMessage recipientPrivateKey', recipientPrivateKey)
     const response = await this.$encrypionApi.receiveMessage({ recipientPrivateKey, buyOfferId })
     return response
   } catch (e) {
