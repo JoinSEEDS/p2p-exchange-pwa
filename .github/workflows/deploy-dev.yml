@@ -19,7 +19,7 @@ jobs:
       - run: yarn global add @quasar/cli
       - run: yarn install
       - run: mv src/statics/chain-manifests-dev.json src/statics/chain-manifests.json
-      - run: yarn build
+      - run: yarn build --mode development
         env:
           APP_NAME: '"P2P Exchange Dev"'
           NETWORK_BLOCKCHAIN: '"eos"'
