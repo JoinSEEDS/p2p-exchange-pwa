@@ -59,9 +59,11 @@ export const utils = {
       return Number.parseFloat(amount).toFixed(4)
     },
     parseToSeedSymbol (amount) {
+      if (!amount) return '0 SEEDS'
       return `${Number.parseFloat(amount).toFixed(4)} SEEDS`
     },
     parseSeedSymbolToAmount (seedsAmount) {
+      if (!seedsAmount) return 0
       return Number.parseFloat(seedsAmount.replace(' SEEDS', ''))
     },
     parseSeedsToCurrentFiatWithSymbol (seedsAmount) {
