@@ -20,6 +20,11 @@ export const getPaypal = async function ({ state }) {
   const profile = await profileApi.getProfile()
   return (profile && profile.appData && profile.appData.privateData) ? profile.appData.privateData.paypal : ''
 }
+export const getPrivateKey = async function ({ state }) {
+  const profileApi = PPP.profileApi()
+  const profile = await profileApi.getProfile()
+  return (profile && profile.appData && profile.appData.privateData) ? profile.appData.privateData.privateKey : ''
+}
 
 export const isRegistered = async function ({ state }) {
   const profileApi = PPP.profileApi()

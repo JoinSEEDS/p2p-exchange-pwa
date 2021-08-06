@@ -16,9 +16,3 @@ export const isLoggedIn = async (state) => {
   if (!validSession) await authApi.signIn()
   return authApi.hasValidSession()
 }
-
-export const privateKey = async (state) => {
-  const profileApi = PPP.profileApi()
-  const profile = await profileApi.getProfile()
-  return (profile && profile.appData && profile.appData.privateData) ? profile.appData.privateData.privateKey : ''
-}

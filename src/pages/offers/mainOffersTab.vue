@@ -9,7 +9,7 @@
     flat
   )
     q-tab(name="buy" :label="$t('pages.offers.buy')")
-    q-tab(name="sale" :label="$t('pages.offers.sale')")
+    q-tab(v-if="userCanSell" name="sale" :label="$t('pages.offers.sale')")
   q-separator
 
   q-tab-panels(v-model="tab" animated).bg-primary
@@ -22,6 +22,7 @@
 <script>
 import MyBuyOffers from './tabs/myBuyOffers.vue'
 import MySellOffers from './tabs/mySellOffers.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'main-offers-screen',
@@ -35,8 +36,9 @@ export default {
     if (this.subTab) this.tab = this.subTab
   },
   computed: {
+    ...mapGetters('accounts', ['userCanSell']),
     subTab () {
-      return this.$route.params.subTab
+      return (this.userCanSell) ? this.$route.params.subTab : 'buy'
     }
   }
 }

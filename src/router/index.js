@@ -30,6 +30,9 @@ export default function ({ store }) {
       // Verify if the user is authenticated
       if (store.getters['accounts/isAuthenticated']) {
         // Verify if the user has profile completed
+        // let payp = await store.dispatch('profiles/getPaypal')
+        // let hasPaypal = (!!payp && payp.length > 0)
+        // if (hasPaypal && (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile))) {
         if (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile)) {
           if (to.matched.some(record => !record.meta.visitorScreen) && !store.getters['accounts/userCanSell']) {
             return next({ path: '/dashboard' })
@@ -37,10 +40,11 @@ export default function ({ store }) {
             return next()
           }
         } else {
-          return next({ path: '/account' })
+          return next({ name: 'account' })
         }
         // return next()
       } else if (to.path === '/login') {
+
       } else {
         return next({ path: `/?returnUrl=${to.path}` })
       }

@@ -71,6 +71,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { validation } from '~/mixins/validation'
 import ConfirmBuy from './components/confirm-buy'
+import { OfferStatus } from '../../const/OfferStatus'
 
 export default {
   name: 'buy-offer-screen',
@@ -82,6 +83,7 @@ export default {
   },
   data () {
     return {
+      OfferStatus,
       showConfirmBuy: undefined,
       sellOffer: undefined,
       sellerInfo: undefined,
@@ -162,8 +164,13 @@ export default {
     },
     async checkIsValidOffer () {
       let { rows } = await this.getMyBuyOffers()
-      let existingOffer = rows.find(off => off.sell_id === this.sellOffer.id)
-      if (existingOffer) {
+      let existingOffers = rows.filter(
+        off => off.sell_id === this.sellOffer.id &&
+        off.buyer === this.account &&
+        off.current_status !== OfferStatus.BUY_OFFER_SUCCESS &&
+        off.current_status !== OfferStatus.BUY_OFFER_REJECTED
+      )
+      if (existingOffers.length > 0) {
         this.$router.replace('/offers')
         this.showSuccessMsg(this.$t('pages.buy.existing_offer'))
       }
