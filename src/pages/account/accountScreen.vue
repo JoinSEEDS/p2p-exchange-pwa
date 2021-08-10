@@ -153,8 +153,6 @@ export default {
       this.setIsLoading(true)
       let isRegistered = await this.isRegistered() // <<- PPP registered
 
-      // console.log('profile p2p', this.isP2PProfileCompleted, 'profile ppp', isRegistered)
-
       if (!this.isP2PProfileCompleted) { // <<- Registered in P2P validation
         this.params.nickname = this.seedsAccount.nickname
         this.setIsLoading(false)
