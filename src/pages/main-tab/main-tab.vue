@@ -4,9 +4,11 @@
       .col-xs-12.col-sm-10.col-md-8
         card-balance
     .activity-component
-      recent-activity-view(@clickOnDeposit="showDepositForm = true")
+      recent-activity-view(@clickOnDeposit="showDialog")
     q-dialog(v-model="showDepositForm" transition-show="slide-up" transition-hide="slide-down" persistent)
       deposit-form.custom-size-modal(@onSuccess="onSuccessUpdateForm")
+    q-dialog(v-model="showNotPermissions" transition-show="slide-up" transition-hide="slide-down" persistent)
+      not-permissions(@onClose="showNotPermissions = false")
 </template>
 
 <script>
@@ -16,13 +18,15 @@ import CustomBuyBtn from './components/custom-buy-btn'
 import RecentActivityView from './components/recent-activity-view'
 import { mapGetters, mapActions } from 'vuex'
 import DepositForm from '~/pages/main-tab/components/deposit-form'
+import NotPermissions from '~/pages/main-tab/components/not-permissions'
 
 export default {
   name: 'main-tab',
-  components: { CardBalance, CustomSellBtn, CustomBuyBtn, RecentActivityView, DepositForm },
+  components: { CardBalance, CustomSellBtn, CustomBuyBtn, RecentActivityView, DepositForm, NotPermissions },
   data () {
     return {
-      showDepositForm: false
+      showDepositForm: false,
+      showNotPermissions: false
     }
   },
   computed: {
@@ -39,6 +43,9 @@ export default {
     onSuccessUpdateForm () {
       this.getBalances()
       this.showDepositForm = false
+    },
+    showDialog () {
+      this.userCanSell ? this.showDepositForm = true : this.showNotPermissions = true
     }
   }
 }
