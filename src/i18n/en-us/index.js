@@ -17,7 +17,8 @@ export default {
       confirm_payment: 'Confirm payment',
       dismiss: 'Dismiss',
       waiting_payment: 'Waiting for payment...',
-      rejected: 'Rejected'
+      rejected: 'Rejected',
+      waiting_payment_confirmation: 'Waiting Payment Confirmation'
     },
     defaultTitle: 'Title'
   },

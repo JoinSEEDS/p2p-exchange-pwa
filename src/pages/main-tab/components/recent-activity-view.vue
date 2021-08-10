@@ -4,7 +4,7 @@
         .text-h6 {{ $t('pages.mainTab.actions') }}
     .row.q-mt-md
       q-btn(
-        label="Deposit/Remove"
+        :label="$t('pages.deposit.depositWithdraw')"
         color="accent"
         no-caps
         @click="$emit('clickOnDeposit')"
