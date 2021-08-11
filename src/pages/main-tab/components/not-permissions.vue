@@ -1,9 +1,8 @@
 <template lang="pug">
-q-card.bg-red.custom-round
-  q-card-section
-    .text-body2.text-white You don't have permissions to sell
-  q-card-actions.justify-center
-    q-btn.text-white.text-sm(flat :label="$t('pages.general.close')" @click="$emit('onClose')")
+q-card.q-pa-md.bg-light.custom-round
+  .row.justify-between
+    .subtitle.text-dark.q-mb-xs.text-red You don't have permissions to sell
+    green-flat-btn(flat :label="$t('pages.general.close')" @click="$emit('onClose')")
 </template>
 
 <script>
@@ -13,12 +12,4 @@ export default {
 </script>
 
 <style scope>
-.text-sm {
-  font-size: 13px;
-}
-
-.bg-red {
-  background-color: #EB5757
-}
-
 </style>
