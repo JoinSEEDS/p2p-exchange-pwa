@@ -196,6 +196,16 @@ export default {
       no_offers: 'This sell offer has not',
       not_yet: 'Purchase offers yet',
       finished: 'Finished successfully'
+    },
+    arbitration: {
+      arbitration: 'Arbitration',
+      available: 'Availale',
+      assigned: 'Assigned',
+      ticket: 'Ticket',
+      buyer: 'Buyer: {buyer}',
+      seller: 'Seller: {seller}',
+      follow_up: 'Follow Up',
+      view_details: 'View details'
     }
   }
 }
