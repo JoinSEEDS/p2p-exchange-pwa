@@ -1,0 +1,49 @@
+<template lang="pug">
+.flex.column
+  q-pull-to-refresh(@refresh="refresh")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+    ticket(:isAssignedTicket="true")
+</template>
+
+<script>
+import Ticket from '../components/ticket'
+
+export default {
+  name: 'assigned-tickets',
+  components: { Ticket },
+  methods: {
+    refresh (done) {
+      console.log('Refresh')
+      done()
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>
