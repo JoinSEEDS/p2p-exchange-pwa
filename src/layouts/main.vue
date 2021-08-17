@@ -18,14 +18,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('accounts', ['isAuthenticated'])
+    ...mapGetters('accounts', ['isAuthenticated', 'isArbiter'])
   }
 }
 </script>
 
 <template lang="pug">
   q-layout(view="lHh Lpr lFf")
-    q-header(elevated)
+    q-header(elevated v-if="!isArbiter")
       q-toolbar
         q-icon(name="app:title" class="title-icon")
         q-toolbar-title.flex.items-center
