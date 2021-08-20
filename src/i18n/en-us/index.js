@@ -199,7 +199,7 @@ export default {
     },
     arbitration: {
       arbitration: 'Arbitration',
-      available: 'Availale',
+      available: 'Available',
       assigned: 'Assigned',
       ticket: 'Ticket',
       buyer: 'Buyer: {buyer}',
