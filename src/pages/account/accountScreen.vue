@@ -1,6 +1,6 @@
 <template lang="pug">
  #container
-    q-icon.cursor-pointer(v-if="isP2PProfileCompleted" name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
+    q-icon.cursor-pointer(v-if="isP2PProfileCompleted" name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: isArbiter ? 'arbitration' : 'dashboard' })")
     .row.justify-center
       img.logoImg(src="../../statics/backgrounds/simple_logo.svg")
     .row.justify-center
@@ -125,6 +125,7 @@ export default {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
     ...mapGetters('accounts', ['isP2PProfileCompleted']),
     ...mapGetters('profiles', ['isLoggedIn']),
+    ...mapGetters('accounts', ['isArbiter']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -208,7 +209,7 @@ export default {
         await this.signUp(mData) // Save private key in PPP service
         this.setIsLoading(true)
         privateKey = null
-        await this.$router.push({ path: '/dashboard' })
+        this.isArbiter ? await this.$router.push({ path: '/arbitration' }) : await this.$router.push({ path: '/dashboard' })
         await this.showSuccessMsg(this.$t('pages.account.saved'))
         this.setIsLoading(false)
       } catch (error) {
