@@ -11,7 +11,8 @@ import {
   SeedsValueApi,
   OffersApi,
   SettingsApi,
-  EncryptionApi
+  EncryptionApi,
+  ArbitrationApi
 } from '~/services'
 
 const signTransaction = async function (actions) {
@@ -111,6 +112,10 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  const arbitrationApi = new ArbitrationApi({
+    eosApi: api
+  })
+
   store['$api'] = api
   store['$userApi'] = userApi
   store['$accountApi'] = accountApi
@@ -124,4 +129,5 @@ export default ({ store }) => {
   store['$seedsValueApi'] = seedsValueApi
   store['$offersApi'] = offersApi
   store['$encrypionApi'] = encrypionApi
+  store['$arbitrationApi'] = arbitrationApi
 }

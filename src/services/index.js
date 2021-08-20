@@ -10,6 +10,7 @@ import SeedsValueApi from './SeedsValueApi'
 import OffersApi from './OffersApi'
 import SettingsApi from './SettingsApi'
 import EncryptionApi from './EncryptionApi'
+import ArbitrationApi from './ArbitrationApi'
 
 export {
   UserApi,
@@ -23,5 +24,6 @@ export {
   SeedsValueApi,
   OffersApi,
   SettingsApi,
-  EncryptionApi
+  EncryptionApi,
+  ArbitrationApi
 }
