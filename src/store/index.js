@@ -12,6 +12,7 @@ import trxStats from './trxStats'
 import settings from './settings'
 import encryption from './encryption'
 import profiles from './profiles'
+import arbitration from './arbitration'
 
 Vue.use(Vuex)
 
@@ -33,7 +34,8 @@ export default function (/* { ssrContext } */) {
       trxStats,
       settings,
       encryption,
-      profiles
+      profiles,
+      arbitration
     },
 
     // enable strict mode (adds overhead!)
