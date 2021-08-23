@@ -1,30 +1,74 @@
 <template lang="pug">
 .flex.column
   q-pull-to-refresh(@refresh="refresh")
-    #tickets-empty(v-if="false")
+    #tickets-empty(v-if="ticketsRowsAreEmpty && loading")
       skeleton-tickets
-    #no-data(v-if="false")
-      .text-h5.custom-font Any Ticket Assigned
-      .text-h4.custom-font Follow Up One
-    q-infinite-scroll.infiniteScroll
+    #no-data(v-if="ticketsRowsAreEmpty && !loading")
+      .text-h5.custom-font No tickets assigned
+    q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
       #containerScroll(ref="scrollTarget")
-        ticket
-        ticket
-        ticket
-        ticket
+        #items(v-for="ticket in tickets.rows")
+          ticket
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import SkeletonTickets from '~/components/skeleton/skeletonTicket'
 import Ticket from '../components/ticket'
 
 export default {
   name: 'assigned-tickets',
   components: { Ticket, SkeletonTickets },
+  data () {
+    return {
+      scrollOffset: 1000,
+      loading: true,
+      limit: 4,
+      tickets: {
+        more: true,
+        rows: [],
+        nextKey: undefined
+      }
+    }
+  },
   methods: {
+    ...mapActions('arbitration', ['getAssignetTicketByArbiter']),
     refresh (done) {
-      console.log('Refresh')
+      this.resetPagination()
       done()
+    },
+    async onLoad (index, done) {
+      this.loading = true
+      if (this.tickets.more) {
+        const { rows, more, next_key: nextKey } = await this.getAssignetTicketByArbiter({
+          limit: this.limit,
+          nextKey: this.tickets.nextKey
+        })
+        console.log(rows, 'Assigned Tickets')
+        this.tickets.rows = this.tickets.rows.concat(rows)
+        this.tickets.more = more
+        this.tickets.nextKey = nextKey
+        done()
+      }
+      this.loading = false
+    },
+    async resetPagination () {
+      this.tickets = {
+        more: true,
+        rows: [],
+        nextKey: undefined
+      }
+      await this.$nextTick()
+      this.$refs.customInfinite.stop()
+      await this.$nextTick()
+      this.$refs.customInfinite.resume()
+      await this.$nextTick()
+      this.$refs.customInfinite.trigger()
+    }
+  },
+  computed: {
+    ticketsRowsAreEmpty () {
+      return this.tickets.rows.length === 0
     }
   }
 }
