@@ -21,6 +21,13 @@ class ArbitrationApi extends BaseEosApi {
     )
   }
 
+  /** *
+  * Parse transfers base
+  */
+  async _parseRows (rows) {
+    return rows
+  }
+
   setArbiterToOffer ({ arbiter, offerId }) {
     const actions = [{
       account: Contracts.CONTRACT_P2P,
@@ -72,22 +79,27 @@ class ArbitrationApi extends BaseEosApi {
     return this.eosApi.signTransaction(actions)
   }
 
-  getAssignetTicketByArbiter ({ arbiter }) {
+  getAssignetTicketByArbiter ({ arbiter, nextKey, limit }) {
     // eslint-disable-next-line no-undef
-    const indexValue = (BigInt(eosjsAccountName.nameToUint64(arbiter)) * BigInt(2 ** 64)).toString()
-    return this.fetchByIndex({
-      scope: Contracts.CONTRACT_P2P,
+    const key = nextKey || (BigInt(eosjsAccountName.nameToUint64(arbiter)) * BigInt(2 ** 64)).toString()
+    return this._getTableRows({
       indexPosition: 4,
+      lowerBound: key,
       keyType: 'i128',
-      indexValue
+      limit
     })
   }
 
-  getAvailableTickets () {
-    return this.fetchByIndex({
-      scope: Contracts.CONTRACT_P2P,
+  getAvailableTickets ({ nextKey, limit }) {
+    return this._getTableRows({
+      lowerBound: nextKey,
+      limit,
       indexPosition: 1
     })
+    /* return this.fetchByIndex({
+      scope: Contracts.CONTRACT_P2P,
+      indexPosition: 1
+    }) */
   }
 }
 export default ArbitrationApi

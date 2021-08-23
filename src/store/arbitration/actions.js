@@ -54,10 +54,11 @@ export const resolveToSeller = async function ({ commit }, { offerId, notes }) {
   }
 }
 
-export const getAssignetTicketByArbiter = async function ({ commit }, { arbiter }) {
+export const getAssignetTicketByArbiter = async function ({ commit }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
-    const response = await this.$arbitrationApi.getAssignetTicketByArbiter({ arbiter })
+    const accountName = this.getters['accounts/account']
+    const response = await this.$arbitrationApi.getAssignetTicketByArbiter({ ...params, arbiter: accountName })
     return response
   } catch (e) {
     console.error('An error ocurred while trying to set arbiter', e)
@@ -68,10 +69,10 @@ export const getAssignetTicketByArbiter = async function ({ commit }, { arbiter 
   }
 }
 
-export const getAvailableTicket = async function ({ commit }) {
+export const getAvailableTicket = async function ({ commit }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
-    const response = await this.$arbitrationApi.getAvailableTickets()
+    const response = await this.$arbitrationApi.getAvailableTickets(params)
     return response
   } catch (e) {
     console.error('An error ocurred while trying to set arbiter', e)
