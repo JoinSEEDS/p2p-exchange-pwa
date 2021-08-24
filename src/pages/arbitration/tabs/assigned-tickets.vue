@@ -8,7 +8,7 @@
     q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
       #containerScroll(ref="scrollTarget")
         #items(v-for="ticket in tickets.rows")
-          ticket
+          ticket(:ticket="ticket")
 </template>
 
 <script>
