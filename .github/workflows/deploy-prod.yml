@@ -23,16 +23,17 @@ jobs:
         env:
           APP_NAME: '"P2P Exchange"'
           NETWORK_BLOCKCHAIN: '"eos"'
-          NETWORK_CHAIN_ID: '"1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f"'
-          NETWORK_HOST: '"testnet.telos.caleos.io"'
+          NETWORK_CHAIN_ID: '"4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"'
+          NETWORK_HOST: '"api.telosfoundation.io"'
           NETWORK_PORT: '443'
           NETWORK_PROTOCOL: '"https"'
-          BLOCKCHAIN_EXPLORER: '"https://telos-test.bloks.io"'
+          BLOCKCHAIN_EXPLORER: '"https://telos.bloks.io"'
           CONTRACT_SEEDS: "'accts.seeds'"
-          CONTRACT_P2P: "'m1escrowp2px'"
+          CONTRACT_P2P: "'p2p.seeds'"
           CONTRACT_SEEDS_WALLET: "'token.seeds'"
           CONTRACT_SEEDS_VALUES: "'tlosto.seeds'"
           CONTRACT_P2P_SETTINGS: "'m1sttgsp2pex'"
+          PPP_ENV: "'prod'"
 
       - name: S3 sync
         uses: jakejarvis/s3-sync-action@master
