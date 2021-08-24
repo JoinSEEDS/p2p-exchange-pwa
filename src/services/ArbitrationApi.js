@@ -82,9 +82,12 @@ class ArbitrationApi extends BaseEosApi {
   getAssignetTicketByArbiter ({ arbiter, nextKey, limit }) {
     // eslint-disable-next-line no-undef
     const key = nextKey || (BigInt(eosjsAccountName.nameToUint64(arbiter)) * BigInt(2 ** 64)).toString()
+    // eslint-disable-next-line no-undef
+    const upperBound = nextKey || (BigInt(eosjsAccountName.nameToUint64(arbiter)) * BigInt(2 ** 64) + BigInt(18446744073709551615)).toString()
     return this._getTableRows({
       indexPosition: 4,
       lowerBound: key,
+      upperBound,
       keyType: 'i128',
       limit
     })
