@@ -4,7 +4,7 @@
     q-avatar.purple-ticket
       img(src="~/assets/arrows.svg")
     .col.q-px-md.q-pb-sm
-        .text-weight-bold.text-white {{ $t('pages.arbitration.ticket') }} 10
+        .text-weight-bold.text-white {{ $t('pages.arbitration.ticket') }} {{ ticket.offer_id }}
         .text-white(v-if="offer") {{ $t('pages.arbitration.buyer', {buyer: offer.buyer }) }}
         .text-white(v-if="offer") {{ $t('pages.arbitration.seller', {seller: offer.seller }) }}
         .text-white.text-caption {{ TimeUtil.formatDateOnly(new Date(ticket.created_date)) }}

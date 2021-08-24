@@ -2,7 +2,7 @@
  #container
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'arbitration' })")
     .row
-      .text-h5.text-white.q-mt-md Ticket 1
+      .text-h5.text-white.q-mt-md Ticket {{ offerId }}
     .row.justify-center.q-mb-xl
       q-avatar(size="7rem").purple-ticket
         img(src="~/assets/arrows.svg")
