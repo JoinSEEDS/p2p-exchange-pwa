@@ -6,12 +6,12 @@
     .row.justify-center.q-mb-xl
       q-avatar(size="7rem").purple-ticket
         img(src="~/assets/arrows.svg")
-    .row.q-mb-xl
+    .row.q-mb-xl(v-if="offer")
       .col-12.q-mb-md
-        .text-white.q-mb-sm {{ $t('pages.arbitration.buyer', {buyer: 'Daniel Poot'}) }}
+        .text-white.q-mb-sm {{ $t('pages.arbitration.buyer', {buyer: offer.buyer}) }}
         contact(phone="999-999-99")
       .col-12
-        .text-white.q-mb-sm {{ $t('pages.arbitration.seller', {seller: 'Daniel Poot'}) }}
+        .text-white.q-mb-sm {{ $t('pages.arbitration.seller', {seller: offer.seller}) }}
         contact(phone="999-999-99")
     .row.flex.self-end
       .col.q-mt-xl
@@ -30,11 +30,28 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import Contact from '../components/contact.vue'
 
 export default {
   name: 'ticket-detail',
-  components: { Contact }
+  components: { Contact },
+  data () {
+    return {
+      offer: undefined
+    }
+  },
+  async mounted () {
+    this.offer = await this.getOffer(this.offerId)
+  },
+  computed: {
+    offerId () {
+      return this.$route.params.id
+    }
+  },
+  methods: {
+    ...mapActions('buyOffers', ['getOffer'])
+  }
 }
 </script>
 
