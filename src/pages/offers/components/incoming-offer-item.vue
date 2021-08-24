@@ -43,7 +43,7 @@
       no-caps
       v-if="rejected"
     )
-    init-arbitrage-button(:buyOfferId="this.offer.id").custom-width
+    init-arbitrage-button(v-if="accepted || paid" :buyOfferId="this.offer.id").custom-width
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
       buy-offer(:offer="offer")

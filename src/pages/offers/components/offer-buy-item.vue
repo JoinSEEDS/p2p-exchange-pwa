@@ -25,7 +25,10 @@
             color="orange-8"
             @click="waiting = !waiting"
         ).custom-round
-        init-arbitrage-button(:buyOfferId="this.offer.id").full-width
+        init-arbitrage-button(
+        v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID"
+        :buyOfferId="this.offer.id"
+        ).full-width
         q-separator.full-width.q-my-sm(color="warning")
   #modals
     q-dialog(v-model="waiting" transition-show="slide-up" transition-hide="slzide-down")
