@@ -19,7 +19,7 @@ jobs:
       - run: yarn global add @quasar/cli
       - run: yarn install
       - run: mv src/statics/chain-manifests-prod.json src/statics/chain-manifests.json
-      - run: yarn build
+      - run: quasar build -m pwa
         env:
           APP_NAME: '"P2P Exchange"'
           NETWORK_BLOCKCHAIN: '"eos"'
@@ -44,7 +44,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
           AWS_REGION: 'eu-west-1'   # optional: defaults to us-east-1
-          SOURCE_DIR: 'dist/spa'    # optional: defaults to entire repository
+          SOURCE_DIR: 'dist/pwa'    # optional: defaults to entire repository
 
       # Invalidate Cloudfront (this action)
       - name: invalidate
