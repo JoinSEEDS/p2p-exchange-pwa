@@ -43,6 +43,7 @@
       no-caps
       v-if="rejected"
     )
+    init-arbitrage-button(:buyOfferId="this.offer.id").custom-width
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
       buy-offer(:offer="offer")
@@ -52,10 +53,11 @@
 import { OfferStatus } from '~/const/OfferStatus'
 import buyOffer from '~/pages/buy-offer/buy-offer'
 import { EventBus } from '~/event-bus'
+import InitArbitrageButton from '~/components/init-arbitrage-button'
 
 export default {
   name: 'offer-buy-item',
-  components: { buyOffer },
+  components: { buyOffer, InitArbitrageButton },
   props: {
     offer: {
       type: Object,

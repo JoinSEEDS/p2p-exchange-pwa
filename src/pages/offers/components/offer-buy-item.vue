@@ -25,6 +25,7 @@
             color="orange-8"
             @click="waiting = !waiting"
         ).custom-round
+        init-arbitrage-button(:buyOfferId="this.offer.id").full-width
         q-separator.full-width.q-my-sm(color="warning")
   #modals
     q-dialog(v-model="waiting" transition-show="slide-up" transition-hide="slzide-down")
@@ -35,10 +36,11 @@
 <script>
 import { OfferStatus } from '~/const/OfferStatus'
 import WaitingApproval from './waiting-approval.vue'
+import InitArbitrageButton from '~/components/init-arbitrage-button'
 
 export default {
   name: 'offer-buy-item',
-  components: { WaitingApproval },
+  components: { WaitingApproval, InitArbitrageButton },
   props: {
     offer: {
       type: Object,
