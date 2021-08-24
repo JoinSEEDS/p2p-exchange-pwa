@@ -18,7 +18,8 @@ export default {
       dismiss: 'Dismiss',
       waiting_payment: 'Waiting for payment...',
       rejected: 'Rejected',
-      waiting_payment_confirmation: 'Waiting for Payment Confirmation'
+      waiting_payment_confirmation: 'Waiting for Payment Confirmation',
+      init_arbitrage: 'Init Arbitrage'
     },
     defaultTitle: 'Title'
   },
