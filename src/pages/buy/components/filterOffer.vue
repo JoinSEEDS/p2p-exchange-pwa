@@ -116,10 +116,6 @@ export default {
   computed: {
     CommonCurrenciesOptions () {
       const options = []
-      // options.push({
-      //   label: 'All',
-      //   value: 'all'
-      // })
       for (let currency in CommonCurrencies) {
         options.push({
           label: `${CommonCurrencies[currency].name} (${CommonCurrencies[currency].symbol})`,
@@ -129,10 +125,6 @@ export default {
       return options
     },
     CommonTimeZoneOptions () {
-      // const options = [{
-      //   label: 'All',
-      //   value: 'all'
-      // }]
       const timeZones = CommonTimeZone.map(v => {
         return {
           label: v.text,

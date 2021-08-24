@@ -6,11 +6,12 @@
       img.avatar-icon.self-center(src="../../../statics/app-icons/seller.svg")
     .col.q-px-md.q-py-sm
         .text-white #[strong {{ offer.buyer }}]
-        .text-white.q-mt-md {{ quantity }} =
+        .text-white {{ quantity }} =
           span.text-info.text-bold  ${{ equivalentFiat}}
-        //- div.full-width.flex.items-center.q-mt-xs
-        //-   q-icon(name="timer" color="red" size="xs")
-        //-   small.text-white.q-ml-sm {{$t('pages.offers.timeTo', {time: '10:10'})}}
+          .text-info.q-mt-xs(v-if="finished") {{ $t('pages.incoming_offers.finished') }}
+          div(v-if="hasRemainingTime && pending").full-width.flex.items-center.q-mt-xs
+            q-icon(name="timer" :color="remainingColor" size="xs")
+            small.text-white.q-ml-sm {{$t('pages.offers.timeTo', { time: remaining })}}
   .row.justify-center
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.view_details')"
@@ -21,7 +22,7 @@
       v-if="pending"
     )
     q-btn.custom-width.custom-round(
-      :label="$t('common.buttons.waiting_payment')"
+      :label="$t('common.buttons.waiting_payment_confirmation')"
       color="blue"
       class="text-cap"
       no-caps
@@ -34,6 +35,13 @@
       @click="showOptions = !showOptions"
       no-caps
       v-if="paid"
+    )
+    q-btn.custom-width.custom-round(
+      :label="$t('common.buttons.rejected')"
+      color="grey-7"
+      class="text-cap"
+      no-caps
+      v-if="rejected"
     )
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
@@ -54,7 +62,11 @@ export default {
       default: () => undefined
     }
   },
-  mounted () {
+  async mounted () {
+    let { remainingMinutes: remaining, percentage } = await this.remainingTimeToAcceptOffer(this.offer.created_date)
+    this.percentage = percentage
+    this.remaining = (remaining > 0) ? this.getHoursAndMinutes(remaining) : ''
+
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
     })
@@ -65,7 +77,26 @@ export default {
   data () {
     return {
       showOptions: false,
-      OfferStatus
+      OfferStatus,
+      remaining: '',
+      hasRemainingTime: false,
+      remainingTime: {
+        hours: 0,
+        minutes: 0
+      },
+      percentage: 0
+    }
+  },
+  methods: {
+    getHoursAndMinutes (minutes) {
+      this.hasRemainingTime = true
+
+      let hours = Math.floor(minutes / 60)
+      let mins = minutes % 60
+      this.remainingTime.hours = hours
+      this.remainingTime.minutes = mins
+
+      return `${hours}h ${mins.toFixed(0)}m`
     }
   },
   computed: {
@@ -81,6 +112,12 @@ export default {
     quantity () {
       return this.offer.quantity_info.find(el => el.key === 'buyquantity').value
     },
+    rejected () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_REJECTED
+    },
+    finished () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_SUCCESS
+    },
     equivalentFiat () {
       try {
         return this.parseSeedsToCurrentFiatWithSymbol(this.quantity.split(' ')[0])
@@ -88,6 +125,9 @@ export default {
         console.error(e)
         return 0
       }
+    },
+    remainingColor () {
+      return (this.percentage > 66) ? 'green' : (this.percentage > 33) ? 'orange' : 'red'
     }
   }
 }

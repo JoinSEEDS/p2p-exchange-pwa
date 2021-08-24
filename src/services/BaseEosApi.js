@@ -12,7 +12,6 @@ class BaseEosApi {
     isParsedSortField = false,
     workflowPayloadType
   }) {
-    // console.log('Contract account:  ', contractAccount)
     this.eosApi = eosApi
     this.notifier = notifier
     this.contractAccount = contractAccount
@@ -32,22 +31,15 @@ class BaseEosApi {
    * @param {Array} actions
    */
   async transactFull (actions) {
-    console.log(actions)
     actions = await this._formatActions(actions)
     try {
       const transaction = await this.eosApi.signTransaction(actions)
       this.notifier && this.notifier.success(actions, transaction)
       return transaction
     } catch (err) {
-      console.log('IMPORTANT!')
-      console.log(err)
       let error = err
       const { cause } = err
       if (cause) {
-        console.log('CAUSE!')
-        console.log(cause)
-        if (cause.cause) console.log(cause.cause)
-        if (cause.cause && cause.cause.couse) console.log(cause.cause.cause)
         error = new Error(cause.message)
       }
       this.notifier && this.notifier.error(actions, error)
@@ -415,8 +407,6 @@ class BaseEosApi {
       reverse
     }
     const results = await this.eosApi.getTableRows(params)
-    // console.log('Table rows results:', JSON.stringify(results, null, 4))
-    // console.log('For params:', params)
     return results
   }
 

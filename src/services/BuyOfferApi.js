@@ -42,10 +42,30 @@ class BuyOfferApi extends BaseEosApi {
     return this.eosApi.signTransaction(actions)
   }
 
-  async acceptBuyOffer ({ buyOfferId }) {
+  async acceptBuyOffer ({ buyOfferId, messageData }) {
+    const actions = [
+      {
+        account: Contracts.CONTRACT_P2P,
+        name: 'accptbuyoffr',
+        data: {
+          buy_offer_id: buyOfferId
+        }
+      },
+      {
+        account: Contracts.CONTRACT_P2P,
+        name: 'addoffermsg',
+        data: {
+          ...messageData
+        }
+      }
+    ]
+    return this.eosApi.signTransaction(actions)
+  }
+
+  async cancelBuyOffer ({ buyOfferId }) {
     const actions = [{
       account: Contracts.CONTRACT_P2P,
-      name: 'accptbuyoffr',
+      name: 'delbuyoffer',
       data: {
         buy_offer_id: buyOfferId
       }
@@ -54,10 +74,10 @@ class BuyOfferApi extends BaseEosApi {
     return this.eosApi.signTransaction(actions)
   }
 
-  async cancelBuyOffer ({ buyOfferId }) {
+  async rejectBuyOffer ({ buyOfferId }) {
     const actions = [{
       account: Contracts.CONTRACT_P2P,
-      name: 'delbuyoffer',
+      name: 'rejctbuyoffr',
       data: {
         buy_offer_id: buyOfferId
       }

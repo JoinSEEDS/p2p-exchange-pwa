@@ -13,7 +13,7 @@
     #containerScroll(ref="scrollTarget")
       q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="200" :scroll-target="$refs.scrollTarget" ref="customInfinite")
         #items(v-for="offer in offersList.rows")
-          offer-item(:offer="offer" v-if="offer.seller !== account")
+          offer-item(:offer="offer" v-if="offer.seller !== account && offer.current_status !== OfferStatus.SELL_OFFER_SOLDOUT")
   #modals
     q-dialog(v-model="showFilter" transition-show="slide-up" transition-hide="slide-down" persistent)
       filter-offer(:filter="filter" @success="onFilterChange")
@@ -23,12 +23,14 @@
 import { mapActions, mapGetters } from 'vuex'
 import OfferItem from '~/pages/buy/components/offerItem'
 import FilterOffer from '~/pages/buy/components/filterOffer'
+import { OfferStatus } from '../../const/OfferStatus'
 
 export default {
   name: 'buyScreen',
   components: { OfferItem, FilterOffer },
   data () {
     return {
+      OfferStatus,
       loading: true,
       showFilter: false,
       scrollTarget: undefined,
@@ -82,14 +84,10 @@ export default {
         rows: [],
         nextKey: undefined
       }
-      console.log('resetPagination')
-      // this.$refs.customInfinite.stop()
-      // this.onLoad()
       await this.$nextTick()
       this.$refs.customInfinite.stop()
       await this.$nextTick()
       this.$refs.customInfinite.resume()
-      // this.$refs.customInfinite.poll()
     },
     onFilterChange (filter) {
       this.showFilter = false
@@ -97,7 +95,6 @@ export default {
       this.resetPagination()
     },
     async onLoad (index, done) {
-      console.log('onLoad', this.offersList.more)
       this.loading = true
       if (this.offersList.more) {
         const { rows, more, next_key: nextKey } = await this.getSellOffers({
@@ -107,13 +104,11 @@ export default {
           filterValue: this.filter.filterValue.value
         })
         if (rows) {
-          // console.log('rows', rows)
           this.offersList.rows = this.offersList.rows.concat(rows)
         }
         this.offersList.more = more
         this.offersList.nextKey = nextKey
         this.offset = this.limit
-        // this.limit = this.limit + this.rowsPerLoad
         if (done) {
           done()
         }

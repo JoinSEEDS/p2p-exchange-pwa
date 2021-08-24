@@ -40,6 +40,10 @@ export const setP2PBalances = (state, balances) => {
   state.balances = balances
 }
 
+export const setPaypal = (state, paypal) => {
+  state.paypal = paypal
+}
+
 export const setCurrentSeedsPerUsd = (state, currentSeedsPerUsd) => {
   state.currentSeedsPerUsd = currentSeedsPerUsd
 }

@@ -9,7 +9,9 @@ import {
   SellOfferApi,
   TrxStatApi,
   SeedsValueApi,
-  OffersApi
+  OffersApi,
+  SettingsApi,
+  EncryptionApi
 } from '~/services'
 
 const signTransaction = async function (actions) {
@@ -32,8 +34,6 @@ const signTransaction = async function (actions) {
       })
     }
   } catch (e) {
-    console.log(actions, e.cause.message)
-    // this.$sentry.captureException(e)
     throw new Error(e.cause.message)
   }
   return transaction
@@ -87,6 +87,10 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  const settingsApi = new SettingsApi({
+    eosApi: api
+  })
+
   const sellOfferApi = new SellOfferApi({
     eosApi: api
   })
@@ -103,6 +107,10 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  const encrypionApi = new EncryptionApi({
+    eosApi: api
+  })
+
   store['$api'] = api
   store['$userApi'] = userApi
   store['$accountApi'] = accountApi
@@ -110,8 +118,10 @@ export default ({ store }) => {
   store['$buyOfferApi'] = buyOfferApi
   store['$buySellRelApi'] = buySellRelApi
   store['$configApi'] = configApi
+  store['$settingsApi'] = settingsApi
   store['$sellOfferApi'] = sellOfferApi
   store['$trxStatApi'] = trxStatApi
   store['$seedsValueApi'] = seedsValueApi
   store['$offersApi'] = offersApi
+  store['$encrypionApi'] = encrypionApi
 }

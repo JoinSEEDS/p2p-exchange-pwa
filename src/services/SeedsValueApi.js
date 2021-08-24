@@ -30,7 +30,6 @@ class SeedsValueApi extends BaseEosApi {
     const row = await this.fetchByIndex({
       scope: Contracts.CONTRACT_SEEDS_VALUES
     })
-    // console.log('getCurrentPricePerUSD', row)
     return row.rows[0].current_seeds_per_usd
   }
 }

@@ -15,6 +15,7 @@
             dark
             standout="text-accent"
             :rules="[rules.required]"
+            lazy-rules
             readonly
           )
           q-select(
@@ -27,6 +28,7 @@
             :options="CommonTimeZoneOptions"
             emit-value
             map-options
+            lazy-rules
             :rules="[rules.required]"
           )
           q-select(
@@ -39,6 +41,7 @@
             emit-value
             map-options
             color="white"
+            lazy-rules
             :rules="[rules.required]"
           )
           //- q-select(
@@ -62,8 +65,10 @@
             dark
             standout="text-accent"
             :rules="[rules.required]"
-            prefix="https://paypal.me/"
+            :prefix="paypalBase"
+            lazy-rules
             :hint="$t('pages.account.hintPaypal')"
+            autocomplete="off"
           )
               template(v-slot:append)
                 q-icon.animated-icon.cursor-pointer.linkBtn(
@@ -81,14 +86,17 @@
 
 <script>
 import { validation } from '~/mixins/validation'
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapMutations, mapGetters } from 'vuex'
 import { CommonCurrencies, CommonTimeZone } from '~/const'
+import { RootFields } from '@smontero/ppp-common'
+import { utils } from '~/mixins/utils'
 
 export default {
   name: 'account',
-  mixins: [validation],
+  mixins: [validation, utils],
   data () {
     return {
+      paypalBase: 'https://paypal.me/',
       params: {
         nickname: undefined,
         fiatCurrency: undefined,
@@ -116,6 +124,7 @@ export default {
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
     ...mapGetters('accounts', ['isP2PProfileCompleted']),
+    ...mapGetters('profiles', ['isLoggedIn']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -136,40 +145,78 @@ export default {
     }
   },
   methods: {
-    ...mapActions('accounts', ['saveAccountData']),
-    loadProfileData () {
-      console.log('loadProfileData')
-      if (!this.isP2PProfileCompleted) {
+    ...mapActions('accounts', ['saveAccountData', 'getPublicKey']),
+    ...mapActions('profiles', ['signUp', 'signIn', 'getPaypal', 'isRegistered', 'getPrivateKey']),
+    ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
+    ...mapMutations('general', ['setIsLoading']),
+    async loadProfileData () {
+      this.setIsLoading(true)
+      let isRegistered = await this.isRegistered() // <<- PPP registered
+
+      if (!this.isP2PProfileCompleted) { // <<- Registered in P2P validation
         this.params.nickname = this.seedsAccount.nickname
+        this.setIsLoading(false)
         return
       }
-      const paypalPaymentLink = this.p2pAccount.payment_methods.find(v => v.key === 'paypal')
 
+      let paypal = (isRegistered) ? await this.getPaypal() : ''
       this.params = {
         nickname: this.seedsAccount.nickname,
         fiatCurrency: this.p2pAccount.fiat_currency,
         contactMethods: undefined,
-        paypalLink: paypalPaymentLink.value.replace('https://paypal.me/', ''),
+        paypalLink: paypal.replace(this.paypalBase, ''),
         timeZone: this.p2pAccount.time_zone
       }
+      paypal = undefined
+      this.setIsLoading(false)
     },
     async onSubmitForm () {
-      console.log('onSubmitted', this.params)
       try {
+        this.setIsLoading(true)
+        let isRegistered = await this.isRegistered() // <<- PPP registered
+
+        let publicKey
+        let privateKey
+
+        if (!isRegistered || !this.isP2PProfileCompleted) { // <<- Registered in P2P validation)
+          const keys = await this.generateKeys()
+          publicKey = keys.publicKey
+          privateKey = keys.privateKey
+        } else {
+          publicKey = await this.getPublicKey()
+          privateKey = await this.getPrivateKey()
+        }
+        this.setIsLoading(true)
+        const mData = {
+          [RootFields.NAME]: this.params.nickname,
+          [RootFields.EMAIL]: 'email@email.com',
+          appData: {
+            privateData: {
+              privateKey,
+              paypal: this.paypalBase + this.params.paypalLink
+            }
+          }
+        }
         await this.saveAccountData({
-          contactMethods: [ { 'key': 'signal', 'value': 'testValue' } ],
-          paymentMethods: [ { 'key': 'paypal', 'value': `https://paypal.me/${this.params.paypalLink}` } ],
+          contactMethods: [ { 'key': 'signal', 'value': '' } ],
+          paymentMethods: [ { 'key': 'paypal', 'value': '' } ],
           timeZone: this.params.timeZone,
-          fiatCurrency: this.params.fiatCurrency
-        })
-        console.log('Account info was saved')
-        this.$router.push({ name: 'dashboard' })
-      } catch (e) {
+          fiatCurrency: this.params.fiatCurrency,
+          publicKey
+        }) // Savev public data in contract
+        publicKey = null // Delete publicKey after save
+        await this.signUp(mData) // Save private key in PPP service
+        this.setIsLoading(true)
+        privateKey = null
+        await this.$router.push({ path: '/dashboard' })
+        await this.showSuccessMsg(this.$t('pages.account.saved'))
+        this.setIsLoading(false)
+      } catch (error) {
 
       }
     },
     openPayPalLink () {
-      window.open(`https://paypal.me/${this.params.paypalLink}`)
+      window.open(`${this.paypalBase}${this.params.paypalLink}`)
     }
   }
 }

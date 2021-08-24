@@ -16,7 +16,9 @@ export default {
       view_details: 'View Details',
       confirm_payment: 'Confirm payment',
       dismiss: 'Dismiss',
-      waiting_payment: 'Waiting for payment...'
+      waiting_payment: 'Waiting for payment...',
+      rejected: 'Rejected',
+      waiting_payment_confirmation: 'Waiting for Payment Confirmation'
     },
     defaultTitle: 'Title'
   },
@@ -74,7 +76,8 @@ export default {
       preferredFiatCurrency: 'Preferred Fiat Currency',
       paypalLink: 'Paypal Link',
       enterPaypalLink: 'Enter your paypal link',
-      hintPaypal: 'Open link to confirm you write your profile link correctly'
+      hintPaypal: 'Open link to confirm you write your profile link correctly',
+      saved: 'Account saved succesfully'
     },
     mainTab: {
       seeds: 'Seeds',
@@ -84,7 +87,8 @@ export default {
       recentActivity: 'Recent Activity',
       makeYour: 'Make your',
       firstTransaction: 'First Transaction',
-      viewAll: 'View All'
+      viewAll: 'View All',
+      actions: 'Actions'
     },
     sell: {
       toSell: 'Sell SEEDS for Fiat',
@@ -109,7 +113,8 @@ export default {
       percentage: 'Percentage: {percentage}',
       sold: 'Sold: {sold}',
       waiting: 'Your offer is pending of approval.',
-      details: 'Details:'
+      details: 'Details:',
+      cancel: 'Cancel'
     },
     buy: {
       buySeeds: 'Buy SEEDS',
@@ -131,7 +136,8 @@ export default {
       successMessage: 'Purchase Offer was created successfully for {amount}.',
       amountOfCrypto: 'Enter the amount of seeds to buy',
       cancel: 'Cancel buy offer',
-      confirm_cancel: 'Are you sure of canceling this offer?'
+      confirm_cancel: 'Are you sure of canceling this offer?',
+      existing_offer: 'An offer already exists for this sale offer'
     },
     deposit: {
       deposit: 'Deposit',
@@ -153,13 +159,17 @@ export default {
     offers: {
       offers: 'Offers',
       buy: 'Buy',
-      sale: 'Sale',
+      sale: 'Sales',
       timeZone: 'Time Zone',
       fiatCurrency: 'Fiat Currency',
       filterBy: 'Filter By',
-      timeTo: '{time} min. to accept the offer.',
+      timeTo: '{time} remaining to accept the offer.',
       accept_buy_offer: 'Offer accepted successfully',
-      confirm_payment: 'Offer payment confirmed successfully'
+      confirm_payment: 'Offer payment confirmed successfully',
+      reject_buy_offer: 'Offer rejected successfully',
+      make_first: 'Make your first',
+      sell_offer: 'Sell Offer',
+      buy_offer: 'Buy Offer'
     },
     make_payment: {
       make_payment: 'Make payment',
@@ -182,7 +192,10 @@ export default {
       incoming_offers: 'Buy offers',
       proposals: 'Purchase proposals',
       percentage: 'Percentage',
-      sold: 'Sold'
+      sold: 'Sold',
+      no_offers: 'This sell offer has not',
+      not_yet: 'Purchase offers yet',
+      finished: 'Finished successfully'
     }
   }
 }

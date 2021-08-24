@@ -1,3 +1,4 @@
+import PPP from '@smontero/ppp-client-api'
 
 const getAuthenticator = function (ual, wallet = null) {
   wallet = wallet || localStorage.getItem('autoLogin')
@@ -28,7 +29,6 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       const accountName = await users[0].getAccountName()
 
       const isUserSeeds = await this.$userApi.checkExistUserSeeds({ accountName })
-      // console.log('isUserSeeds', isUserSeeds)
 
       if (!isUserSeeds || !isUserSeeds.userExist) {
         commit('general/setErrorMsg', 'Please login with a seeds account.', { root: true })
@@ -42,9 +42,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
         return
       }
 
-      // Getting user info
       const userAccount = await this.$accountApi.getAccountInfo({ accountName })
-      // console.log('userAccount', userAccount)
 
       commit('setAccount', accountName)
       commit('setSeedsAccount', isUserSeeds.userData)
@@ -53,23 +51,25 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       await dispatch('getCurrentSeedsPerUsd')
       await dispatch('getFiatExchanges')
 
-      // const defaultReturnUrl = localStorage.getItem('returning') ? '/account' : '/account'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)
       localStorage.setItem('returning', true)
-      const userExist = false
-      const ru = userExist ? returnUrl : '/dashboard'
-      // console.log('returnUrl', returnUrl)
-      // console.log('defaultReturnUrl', defaultReturnUrl)
-      console.log('ru', ru)
-      // this.$router.push({ path: '/home' })
-      this.$router.push({ path: returnUrl || 'dashboard' })
+
+      console.log('before')
+
+      await dispatch('profiles/signIn', {}, { root: true })
+      let paypal = await dispatch('profiles/getPaypal', {}, { root: true })
+      commit('setPaypal', paypal)
+
+      console.log('paypal', paypal)
+
+      this.$router.push({ path: returnUrl || '/dashboard' })
+
       return this.$ualUser
     }
   } catch (e) {
     const error = (authenticator.getError() && authenticator.getError().message) || e.message || e.reason
     commit('general/setErrorMsg', error, { root: true })
-    console.log('Login error: ', error)
     return null
   } finally {
     commit('setLoadingWallet')
@@ -81,18 +81,19 @@ export const loginToBackend = async function ({ commit }) {
     await this.dispatch('profiles/getProfile', { root: true })
     return true
   } catch (e) {
-    console.log('Failed to login to backend: ', e)
     commit('general/setErrorMsg', e.message || e, { root: true })
     return false
   }
 }
 
 export const logout = async function ({ commit }) {
+  await PPP.authApi().signOut()
+  // commit('profiles/setProfile', null, { root: true })
+
   const { authenticator } = getAuthenticator(this.$ual)
   try {
     authenticator && await authenticator.logout()
   } catch (error) {
-    console.log('Authenticator logout error', error)
   }
   // commit('profiles/setProfile', undefined, { root: true })
   commit('setAccount')
@@ -100,6 +101,8 @@ export const logout = async function ({ commit }) {
   commit('setCurrentSeedsPerUsd')
   commit('setP2PBalances')
   localStorage.removeItem('autoLogin')
+  localStorage.removeItem('account')
+  localStorage.removeItem('returning')
   this.$api = null
   this.$router.push({ path: '/' })
 }
@@ -109,7 +112,6 @@ export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
   let user = null
   if (authenticator) {
     commit('setAutoLogin', true)
-    console.log('autoLogin')
     user = await dispatch('login', { idx, returnUrl, account: localStorage.getItem('account') })
     commit('setAutoLogin', false)
   }
@@ -200,7 +202,7 @@ export const saveAccountData = async function ({ commit, dispatch }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
-    const response = await this.$accountApi.saveAccountData({ ...params, accountName })
+    const response = await this.$accountApi.saveAccountData({ ...params, accountName }) // <<- HERE
     // dispatch('accounts/getAccountInfo', true, { root: true })
     dispatch('getAccountInfo', { })
     return response
@@ -209,7 +211,7 @@ export const saveAccountData = async function ({ commit, dispatch }, params) {
     commit('general/setErrorMsg', e.message || e, { root: true })
     throw new Error(e)
   } finally {
-    commit('general/setIsLoading', false, { root: true })
+    // commit('general/setIsLoading', false, { root: true })
   }
 }
 
@@ -240,5 +242,20 @@ export const deposit = async function ({ commit }, params) {
     throw new Error(e)
   } finally {
     commit('general/setIsLoading', false, { root: true })
+  }
+}
+
+export const getPublicKey = async function ({ commit }) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const accountName = this.getters['accounts/account']
+    const response = await this.$encrypionApi.getPublicKey({ accountName })
+    return response
+  } catch (e) {
+    console.error('An error ocurred while trying to do a deposit', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    // commit('general/setIsLoading', false, { root: true })
   }
 }

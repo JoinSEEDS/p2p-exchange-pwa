@@ -1,12 +1,15 @@
 <template lang="pug">
 #containerSellOffers
-    #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
-      skeleton-offer-item
-    q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
-      q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
-        #containerScroll(ref="scrollTarget")
-          #items(v-for="offer in myOffers.rows")
-            offer-sell-item(:offer="offer" v-if="offer.seller === account && offer.type === OfferStatus.SELL_OFFER")
+  #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
+    skeleton-offer-item
+  #noData(v-if="myOffers.rows.length === 0 && !loading")
+    .text-h4.custom-font {{ $t('pages.offers.make_first') }}
+    .text-h5.custom-font {{ $t('pages.offers.sell_offer').toUpperCase() }}
+  q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
+    q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+      #containerScroll(ref="scrollTarget")
+        #items(v-for="offer in myOffers.rows")
+          offer-sell-item(:offer="offer")
 </template>
 
 <script>
@@ -32,6 +35,9 @@ export default {
   computed: {
     ...mapGetters('accounts', ['account'])
   },
+  mounted () {
+    this.myOffers.rows = []
+  },
   components: { OfferSellItem },
   watch: {
     'myOffers.rows' (v) {
@@ -47,7 +53,6 @@ export default {
       done()
     },
     async onLoad (index, done) {
-      // console.log('onLoad', this.myOffers.more)
       this.loading = true
       if (this.myOffers.more) {
         const { rows, more, next_key: nextKey } = await this.getMySellOffers({
@@ -55,13 +60,14 @@ export default {
           nextKey: this.myOffers.nextKey
         })
         if (rows) {
-          // console.log('rows', rows)
-          this.myOffers.rows = this.myOffers.rows.concat(rows.reverse())
+          for (const row of rows) {
+            if (row.seller === this.account && row.type === OfferStatus.SELL_OFFER && row.current_status !== OfferStatus.SELL_OFFER_SOLDOUT) {
+              this.myOffers.rows.push(row)
+            }
+          }
         }
         this.myOffers.more = more
         this.myOffers.nextKey = nextKey
-        // this.offset = this.limit
-        // this.limit = this.limit + this.rowsPerLoad
         if (done) {
           done()
         }
@@ -74,16 +80,12 @@ export default {
         rows: [],
         nextKey: undefined
       }
-      console.log('resetPagination')
-      // this.$refs.customInfinite.stop()
-      // this.onLoad()
       await this.$nextTick()
       this.$refs.customInfinite.stop()
       await this.$nextTick()
       this.$refs.customInfinite.resume()
       await this.$nextTick()
       this.$refs.customInfinite.trigger()
-      // this.$refs.customInfinite.poll()
     }
   }
 }
@@ -93,7 +95,6 @@ export default {
 #containerSellOffers
   display: flex
   flex-direction: column
-  // max-height: 460px
 
 #offersEmpty
   flex: 1
@@ -103,4 +104,10 @@ export default {
   flex: 1
   max-height: 500px
 
+#noData
+  height: 60vh !important
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
 </style>

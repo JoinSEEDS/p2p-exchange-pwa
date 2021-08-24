@@ -1,8 +1,7 @@
 <template lang="pug">
   #containerIncomingOffers(v-if="offer")
-    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })")
+    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions', subTab: 'sale' } })")
     .subtitle.text-white.q-mt-sm {{ $t('pages.incoming_offers.incoming_offers') }}
-    //- .row.full-width
     #offerData
       .col.text-center.q-my-md
         .text-white.text-h5 {{ offered }}
@@ -16,12 +15,10 @@
           q-icon(name="arrow_upward" color="red").q-ml-sm
     q-separator(color="warning").q-my-sm
     .subtitle.text-white.q-my-sm {{ $t('pages.incoming_offers.proposals') }}
-    //- #containerScroll
-    //-   #items(v-for="(offer, index) in incomingOffers")
-    //-     incoming-offer-item(:offer="offer")
-    //-     q-separator.full-width.q-my-sm(color="warning" v-if="index+1 != incomingOffers.length")
-    //- ============================================
     #containerList
+      #noData(v-if="incomingOffers.rows.length === 0").text-center
+        .text-h6.text-white.custom-font {{ $t('pages.incoming_offers.no_offers') }}
+        .text-white.custom-font {{ $t('pages.incoming_offers.not_yet') }}
       q-pull-to-refresh(@refresh="refresh")
         #offersEmpty(v-if="incomingOffers.length === 0 && loading")
           skeleton-offer-item
@@ -30,8 +27,6 @@
             #items(v-for="(offer, index) in incomingOffers.rows")
               incoming-offer-item(:offer="offer")
               q-separator.full-width.q-my-sm(color="warning" v-if="index + 1 != incomingOffers.length")
-              //- offer-buy-item(:offer="offer" v-if="offer.buyer === account")
-
 </template>
 
 <script>
@@ -75,7 +70,6 @@ export default {
     return {
       OfferStatus,
       offer: undefined,
-      // incomingOffers: [],
       loading: true,
       limit: 4,
       scrollOffset: 1000,
@@ -88,11 +82,9 @@ export default {
   },
   mounted () {
     this.getOfferInfo()
-    // this.getIncommingBuyOffers()
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
       this.resetPagination()
-      // this.getIncommingBuyOffers()
     })
   },
   beforeDestroy () {
@@ -114,7 +106,11 @@ export default {
           nextKey: this.incomingOffers.nextKey
         })
         if (rows) {
-          let rws = rows.filter(el => (el.type === OfferStatus.BUY_OFFER && el.sell_id === parseInt(this.offerId)))
+          let rws = rows.filter(el => (
+            el.type === OfferStatus.BUY_OFFER &&
+            el.sell_id === parseInt(this.offerId) &&
+            el.current_status !== OfferStatus.BUY_OFFER_REJECTED
+          ))
           this.incomingOffers.rows = this.incomingOffers.rows.concat(rws)
         }
         this.incomingOffers.more = more
@@ -142,7 +138,6 @@ export default {
       try {
         this.offer = await this.getSellOfferById(this.offerId)
       } catch (error) {
-        console.log(error)
       }
     },
     amountOf (asset) {
@@ -160,10 +155,16 @@ export default {
   #containerScroll
     overflow: auto
     flex: 1
-    max-height: 50vh
+    max-height: 45vh
   .custom-size
     color: $warning
     width: 60%
   .custom-font
     font-family: 'SF Pro Display'
+  #noData
+    height: 50vh !important
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
 </style>

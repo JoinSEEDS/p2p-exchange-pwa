@@ -2,7 +2,7 @@
   #container.text-white.tab-container(v-if="offer")
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions'} })")
     .row
-      .subtitle.text-white.q-mt-md {{ $t('pages.make_payment.make_payment') }}
+      .subtitle.text-white.q-mt-md {{ $t('common.buttons.confirm_payment') }}
     .row.q-my-md
       img.avatar-icon.self-center(src="~/assets/seedIcon.png")
       .col.q-px-md.q-py-md
@@ -17,14 +17,15 @@
     .row.q-my-xl
       .text-white {{ $t('pages.make_payment.to_complete') }}
       .text-accent.more-info.cursor-pointer {{ $t('pages.make_payment.more_info') }}
-    q-btn(color="blue" v-if="hasPypal" @click="copyPaypal()").full-width.q-my-sm.custon-btn
+    q-btn(color="blue" v-if="hasPypal" no-caps).full-width.q-my-sm.custon-btn
       template(v-slot:default).flex-justify-between.cursor-pointer
         .col-2.bg-white.flex.align-center.justify-center.btn-img-container
           q-img(src="~/assets/paypal.png").self-center.btn-img
         label.col-9.cursor-pointer {{ paypal }}
-        q-icon(name="content_copy").col-1
-        q-tooltip(:offset="[-30, 30]" self="top middle" anchor="top right").bg-amber.text-black.shadow-4 {{ $t('pages.make_payment.copy') }}
-    q-btn(:label="$t('pages.make_payment.make_payment')" color="positive" @click="makePayment()").full-width.q-my-sm.custon-btn
+        q-icon.animated-icon.cursor-pointer.linkBtn(
+          name="open_in_new" @click="openPayPalLink"
+        )
+    q-btn(:label="$t('common.buttons.confirm_payment')" color="positive" @click="makePayment()" no-caps).full-width.q-my-sm.custon-btn
     //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
 
@@ -36,7 +37,8 @@ export default {
   data () {
     return {
       offer: undefined,
-      copied: true
+      copied: true,
+      paypal: ''
     }
   },
   computed: {
@@ -45,10 +47,7 @@ export default {
       return this.$route.params.id
     },
     hasPypal () {
-      return !!this.offer.payment_methods.find(el => el.key === 'paypal')
-    },
-    paypal () {
-      return this.offer.payment_methods.find(el => el.key === 'paypal').value
+      return !!this.paypal
     },
     quantity () {
       return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[0]
@@ -65,26 +64,23 @@ export default {
       }
     }
   },
-  mounted () {
+  async mounted () {
+    this.paypal = await this.receiveMessage({ buyOfferId: this.offerId })
     this.getOfferData()
   },
   methods: {
     ...mapActions('buyOffers', ['getOffer', 'payOffer']),
+    ...mapActions('encryption', ['receiveMessage']),
     async getOfferData () {
       this.offer = await this.getOffer(this.offerId)
-      console.log(this.offer)
-    },
-    copyPaypal () {
-      this.copied = true
-      navigator.clipboard.writeText(this.paypal)
-      setTimeout(() => {
-        this.copied = false
-      }, 2000)
     },
     async makePayment () {
       await this.payOffer({ buyOfferId: this.offerId })
       await this.showSuccessMsg(this.$root.$t('pages.make_payment.success_pay'))
       this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
+    },
+    openPayPalLink () {
+      window.open(this.paypal)
     }
   }
 }

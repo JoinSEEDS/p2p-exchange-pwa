@@ -1,4 +1,4 @@
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 import GreenFlatBtn from '~/components/green-flat-btn'
 import SkeletonOfferItem from '~/components/skeleton/skeletonOfferItem'
 import { OfferStatus } from '../const/OfferStatus'
@@ -7,12 +7,14 @@ export const utils = {
   components: { GreenFlatBtn, SkeletonOfferItem },
   computed: {
     ...mapGetters('accounts', ['pricePerSeedOnEUR', 'currentFiatCurrency', 'fiatExchanges']),
+    ...mapGetters('settings', ['acceptLim']),
     myFiatExchangeRate () {
       return Number.parseFloat(this.fiatExchanges.rates[this.currentFiatCurrency.toUpperCase()] * this.pricePerSeedOnEUR).toFixed(4)
     }
   },
   methods: {
     ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg', 'setIsLoading']),
+    ...mapActions('settings', ['getSettings']),
     copyToClipboard (str) {
       const el = document.createElement('textarea')
       el.value = str
@@ -54,12 +56,14 @@ export const utils = {
       this.setIsLoading(state)
     },
     parseToSeedsAmount (amount) {
-      return Number.parseFloat(amount).toFixed(4)
+      return amount ? Number.parseFloat(amount).toFixed(4) : 0
     },
     parseToSeedSymbol (amount) {
+      if (!amount) return '0 SEEDS'
       return `${Number.parseFloat(amount).toFixed(4)} SEEDS`
     },
     parseSeedSymbolToAmount (seedsAmount) {
+      if (!seedsAmount) return 0
       return Number.parseFloat(seedsAmount.replace(' SEEDS', ''))
     },
     parseSeedsToCurrentFiatWithSymbol (seedsAmount) {
@@ -85,6 +89,32 @@ export const utils = {
       let statusPieces = keyStatus.split('_')
       let statusName = statusPieces[statusPieces.length - 1].toLowerCase()
       return statusName
+    },
+    async remainingTimeToAcceptOffer (creationDate) {
+      await this.getSettings()
+
+      let sinceDate = Date.parse(creationDate)
+      let limitMs = this.acceptLim * 1000
+      let limitMins = this.acceptLim / 60
+      let nowLocal = new Date()
+      var now = new Date(
+        nowLocal.getUTCFullYear(),
+        nowLocal.getUTCMonth(),
+        nowLocal.getUTCDate(),
+        nowLocal.getUTCHours(),
+        nowLocal.getUTCMinutes(),
+        nowLocal.getUTCSeconds(),
+        nowLocal.getUTCMilliseconds()
+      )
+      let limitDate = sinceDate + limitMs
+      let remainingTime = limitDate - now
+      let remainingMinutes = remainingTime / 60000
+
+      let percentage = ((100 / limitMins) * remainingMinutes)
+      return (remainingMinutes < 0) ? 0 : { remainingMinutes, percentage }
+
+      // let { hours, minutes } = this.getHoursAndMinutes(remainingMinutes)
+      // return `${hours} h ${minutes} m`
     }
   }
 }

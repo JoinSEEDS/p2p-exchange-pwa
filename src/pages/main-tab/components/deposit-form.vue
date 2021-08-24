@@ -1,6 +1,6 @@
 <template lang="pug">
 #container
- q-card.q-pa-md.bg-light
+ q-card.q-pa-md.bg-light.custom-round
     .row.justify-between
         .subtitle.text-dark.q-mb-xs {{$t('pages.deposit.depositWithdraw')}}
         green-flat-btn(:label="$t('pages.general.close')" v-close-popup)
@@ -24,7 +24,7 @@
           :label="params.typeTransaction"
           color="accent"
           type="submit"
-        )
+        ).custom-round
 </template>
 
 <script>
@@ -48,22 +48,20 @@ export default {
       try {
         const quantity = `${Number.parseFloat(this.params.amount).toFixed(4)} SEEDS`
         if (this.params.typeTransaction === 'deposit') {
-          const response = await this.deposit({
+          await this.deposit({
             quantity,
             memo: `Deposit for ${quantity} SEEDS`
           })
-          console.log('response deposit', response)
           this.$q.notify({
             type: 'positive',
             message: this.$t('pages.deposit.successDeposit', { amount: quantity })
           })
           this.$emit('onSuccess')
         } else if (this.params.typeTransaction === 'withdraw') {
-          const response = await this.withdraw({
+          await this.withdraw({
             quantity,
             memo: `Deposit for ${quantity} SEEDS`
           })
-          console.log('response withdraw', response)
           this.$q.notify({
             type: 'positive',
             message: this.$t('pages.deposit.successWithdraw', { amount: quantity })

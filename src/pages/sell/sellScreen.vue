@@ -6,10 +6,10 @@
     .text-white {{ $t('pages.sell.defineTheSaleOffer') }}
     .row.justify-center
         .col-8
-            .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) }}
+            .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) || 0 }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
             q-separator(color="warning")
-            .text-h4.text-white.text-center {{ fiatToGet.toFixed(2) }}
+            .text-h4.text-white.text-center {{ fiatToGet }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{params.fiatCurrency}}
     .row.bg-warning.container-current
       .q-pa-sm
@@ -115,27 +115,21 @@ export default {
       return Number.parseFloat(this.availableSeeds - currentAmount).toFixed(4)
     },
     fiatToGet () {
-      // return this.params.amount * (this.pricePerSeedOnEUR * (this.params.costPerCrypt / 100))
-      return this.parseSeedsToCurrentFiat(this.params.amount) * ((this.params.costPerCrypt / 100))
+      return this.params.amount ? (this.parseSeedsToCurrentFiat(this.params.amount) * ((this.params.costPerCrypt / 100))).toFixed(2) : 0
     },
     exchangeRate () {
-      // return this.pricePerSeedOnUSD * (this.params.costPerCrypt / 100)
       return this.myFiatExchangeRate
     }
-    // exchange () {
-    //   return this.exchangeRate
-    // }
   },
   methods: {
     ...mapActions('accounts', ['getCurrentSeedsPerUsd', 'getBalances']),
     ...mapActions('sellOffers', ['addSellOffer']),
     async onConfirmSell () {
       try {
-        const response = await this.addSellOffer({
+        await this.addSellOffer({
           totalOffered: this.parseToSeedSymbol(this.params.amount),
           pricePercentage: this.params.costPerCrypt
         })
-        console.log('response', response)
         this.getBalances()
         this.showSuccessMsg(this.$root.$t('pages.sell.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
         this.$router.replace({ name: 'dashboard' })

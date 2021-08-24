@@ -35,10 +35,10 @@ export default {
 </script>
 
 <template lang="pug">
-.row.justify-center.background-login
+.row.justify-center
   .col-sm-10.col-xs-12.col-md-6
     .cm
-      .c1
+      .c1.background-login
       q-list.q-pa-xl.wallets-container
         .label.text-white.q-mb-md Select your wallet
         q-item.q-my-md.wallet-item(
@@ -127,7 +127,6 @@ export default {
 .logo-background
   background-color: rgba(0, 0 , 0 , 0.5)
 .logo-wallet-container
-  // display: contents
   width: 40px
   padding: 5px 30px 5px 30px
   border-radius: 10px 0px 0px 10px
@@ -145,12 +144,12 @@ export default {
   justify-items: center
   align-items: center
 .background-login
-  background-image: url("../../statics/backgrounds/Log_in_V1.svg")
-  background-color: $primary
+  background-image: url("../../statics/backgrounds/Log_in_V1_sm.svg")
+  background-position: bottom
   background-repeat: no-repeat
-  background-size: cover
-  // display: flex
-  // flex: 1
+  background-size: auto
+  @media screen and ( max-width: 600px )
+    background-size: cover
 .cm
   display: flex
   flex-direction: column
@@ -158,11 +157,7 @@ export default {
   height: 97vh
 .c1
   flex: 1.5
-  // background-color: blue
+  justify-self: center
 .wallets-container
   flex: 1
-  // position: static
-  // position: sticky
-  // bottom: 10px
-  // background-image: url("../../backgrounds.svg")
 </style>

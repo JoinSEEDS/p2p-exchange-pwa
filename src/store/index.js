@@ -9,6 +9,9 @@ import buySellRels from './buySellRels'
 import configs from './configs'
 import sellOffers from './sellOffers'
 import trxStats from './trxStats'
+import settings from './settings'
+import encryption from './encryption'
+import profiles from './profiles'
 
 Vue.use(Vuex)
 
@@ -27,7 +30,10 @@ export default function (/* { ssrContext } */) {
       buySellRels,
       configs,
       sellOffers,
-      trxStats
+      trxStats,
+      settings,
+      encryption,
+      profiles
     },
 
     // enable strict mode (adds overhead!)

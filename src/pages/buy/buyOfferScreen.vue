@@ -6,7 +6,7 @@
         .text-white {{ $t('pages.buy.howManySeedsWillYouBuy') }}
         .row.justify-center
           .col-9
-            .text-h4.text-white.text-center {{ Number.parseFloat(params.amount).toFixed(4) }}
+            .text-h4.text-white.text-center {{ params.amount ? Number.parseFloat(params.amount).toFixed(4) : 0 }}
               span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
             q-separator(color="warning")
             .text-h4.text-white.text-center {{ fiatToPay }}
@@ -49,6 +49,7 @@
             :rules="[rules.required, rules.minZero, customMaxValidation]"
             type="number"
             step="0.0001"
+            autofocus
         )
           template(v-slot:append)
             .text SEEDS
@@ -70,6 +71,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { validation } from '~/mixins/validation'
 import ConfirmBuy from './components/confirm-buy'
+import { OfferStatus } from '../../const/OfferStatus'
 
 export default {
   name: 'buy-offer-screen',
@@ -81,6 +83,7 @@ export default {
   },
   data () {
     return {
+      OfferStatus,
       showConfirmBuy: undefined,
       sellOffer: undefined,
       sellerInfo: undefined,
@@ -105,13 +108,9 @@ export default {
       return this.sellOffer.price_info.find(v => v.key === 'priceper').value
     },
     fiatToPay () {
-      // const fiat = this.params.amount * (this.pricePerSeedOnUSD * (this.percentageValue / 100))
-      // return fiat.toFixed(2)
-      return (this.parseSeedsToCurrentFiat(this.params.amount) * (this.percentageValue / 100)).toFixed(2)
+      return this.params.amount ? (this.parseSeedsToCurrentFiat(this.params.amount) * (this.percentageValue / 100)).toFixed(2) : 0
     },
     exchangeRate () {
-      // const exchange = this.pricePerSeedOnUSD * (this.percentageValue / 100)
-      // return exchange.toFixed(4)
       return (this.myFiatExchangeRate * (this.percentageValue / 100)).toFixed(2)
     }
   },
@@ -125,17 +124,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions('buyOffers', ['getOffer', 'createBuyOffer']),
+    ...mapActions('buyOffers', ['getOffer', 'createBuyOffer', 'getMyBuyOffers']),
     ...mapActions('accounts', ['getCurrentSeedsPerUsd', 'getBalances']),
     async onConfirmBuy () {
       this.showConfirmBuy = false
       try {
-        const response = await this.createBuyOffer({
+        await this.createBuyOffer({
           sellOfferId: this.sellOffer.id,
           quantity: this.parseToSeedSymbol(this.params.amount),
           paymentMethod: this.sellOffer.payment_methods.find(v => v.key === 'paypal').key
         })
-        console.log('response', response)
         this.getBalances()
         this.showSuccessMsg(this.$root.$t('pages.buy.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
         this.$router.replace({ name: 'sellOffers' })
@@ -147,7 +145,6 @@ export default {
       this.showConfirmBuy = true
     },
     async getOfferData () {
-      console.log('Getting data for offer ', this.offerId)
       try {
         this.showIsLoading(true)
         this.sellOffer = await this.getOffer(this.offerId)
@@ -165,10 +162,21 @@ export default {
         this.sellerInfo = await this.$store.$userApi.getUserSeedsData({ accountName: this.sellOffer.seller })
       } catch (e) {}
     },
-    checkIsValidOffer () {
+    async checkIsValidOffer () {
+      let { rows } = await this.getMyBuyOffers()
+      let existingOffers = rows.filter(
+        off => off.sell_id === this.sellOffer.id &&
+        off.buyer === this.account &&
+        off.current_status !== OfferStatus.BUY_OFFER_SUCCESS &&
+        off.current_status !== OfferStatus.BUY_OFFER_REJECTED
+      )
+      if (existingOffers.length > 0) {
+        this.$router.replace('/offers')
+        this.showSuccessMsg(this.$t('pages.buy.existing_offer'))
+      }
+
       if (this.sellOffer.current_status !== 's.active' || this.sellOffer.type !== 'offer.sell' || this.sellOffer.seller === this.account) {
         this.$router.replace('/offers')
-        console.warn('Invalid sell offer, redirecting to sell offers list', this.sellOffer)
       }
     }
   }

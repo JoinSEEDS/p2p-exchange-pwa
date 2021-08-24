@@ -1,5 +1,6 @@
 export default () => ({
   account: null,
+  paypal: undefined,
   seedsAccount: undefined,
   p2pAccount: undefined,
   balances: undefined,

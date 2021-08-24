@@ -33,7 +33,7 @@
       .row.q-my-md
         small.text-red.text-bold(v-if="paid || accepted") {{ $t('pages.sell.confirm_payment') }}
       q-btn(v-if="pending" label="Accept offer" color="accent" @click="confOffer()").full-width.q-my-sm.custon-btn.custom-round
-      q-btn(v-if="pending" label="Reject offer" color="negative" ).full-width.q-my-sm.custon-btn.custom-round
+      q-btn(v-if="pending" label="Reject offer" color="negative" @click="rejectOff()").full-width.q-my-sm.custon-btn.custom-round
       q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="() => confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
       //- #modals
@@ -102,13 +102,25 @@ export default {
     }
   },
   methods: {
-    ...mapActions('buyOffers', ['acceptBuyOffer', 'confirmPayment']),
+    ...mapActions('buyOffers', ['acceptBuyOffer', 'confirmPayment', 'rejectBuyOffer']),
+    ...mapActions('encryption', ['createMessage']),
+    ...mapActions('profiles', ['getPaypal']),
     async confOffer () {
       try {
-        await this.acceptBuyOffer({ buyOfferId: this.offer.id })
+        this.setIsLoading(true)
+        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getPaypal(), recipientAccount: this.buyer.account })
+        await this.acceptBuyOffer({ buyOfferId: this.offer.id, messageData })
         EventBus.$emit('confirmOffer')
         this.showSuccessMsg(this.$root.$t('pages.offers.accept_buy_offer'))
-        // this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async rejectOff () {
+      try {
+        await this.rejectBuyOffer({ buyOfferId: this.offer.id })
+        EventBus.$emit('confirmOffer')
+        this.showSuccessMsg(this.$root.$t('pages.offers.reject_buy_offer'))
       } catch (error) {
         console.error(error)
       }
@@ -118,7 +130,7 @@ export default {
         await this.confirmPayment({ buyOfferId: this.offer.id })
         this.showSuccessMsg(this.$root.$t('pages.offers.confirm_payment'))
         EventBus.$emit('confirmOffer')
-        // this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
+        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions', subTab: 'sale' } })
       } catch (error) {
         console.error('An error occurred while trying to confirm payment: ', error)
       }

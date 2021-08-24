@@ -49,12 +49,7 @@ export default {
       return Number.parseFloat(this.seeds).toFixed(4)
     },
     fiatValue () {
-      // return (this.seeds * (this.pricePerSeedOnUSD * (this.percentage / 100))).toFixed(2)
       return (this.parseSeedsToCurrentFiat(this.seeds) * (this.percentage / 100)).toFixed(2)
-      // const fiatValueOnUSD = Number.parseFloat(this.seeds) / this.pricePerSeedOnUSD
-      // console.log('fiatValueOnUSD', fiatValueOnUSD)
-      // let fiatValue = fiatValueOnUSD * (this.percentage / 100)
-      // return fiatValue.toFixed(4)
     }
   }
 }

@@ -36,7 +36,6 @@ class OffersApi extends BaseEosApi {
       case 11:
         // eslint-disable-next-line no-undef
         start = nextKey || BigInt(parseInt(eosjsAccountName.nameToUint64('s.active')) * (2 ** 64)).toString()
-        console.log('index 11 ', filterValue, nextKey, start)
         break
       case 12:
         // eslint-disable-next-line no-undef
@@ -50,7 +49,6 @@ class OffersApi extends BaseEosApi {
         // eslint-disable-next-line no-undef
         start = nextKey || (BigInt(eosjsAccountName.nameToUint64('s.active')) * BigInt(2 ** 64) + BigInt(eosjsAccountName.nameToUint64(filterValue)) * BigInt(2 ** 64)).toString()
 
-        console.log('index 13 ', filterValue, nextKey, start)
         break
       default:
         // eslint-disable-next-line no-undef
