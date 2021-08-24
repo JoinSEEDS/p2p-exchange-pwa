@@ -73,7 +73,7 @@ export const getAssignetTicketByArbiter = async function ({ commit }, params) {
 export const getAvailableTicket = async function ({ commit }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
-    const response = await this.$arbitrationApi.getAvailableTickets(params)
+    const response = await this.$arbitrationApi.getAssignetTicketByArbiter({ ...params, arbiter: 'pending' })
     return response
   } catch (e) {
     console.error('An error ocurred while trying to set arbiter', e)
