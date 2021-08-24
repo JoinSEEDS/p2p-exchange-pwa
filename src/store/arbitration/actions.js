@@ -1,6 +1,7 @@
-export const setArbiterToOffer = async function ({ commit }, { arbiter, offerId }) {
+export const setArbiterToOffer = async function ({ commit }, { offerId }) {
   try {
     commit('general/setIsLoading', true, { root: true })
+    const arbiter = this.getters['accounts/account']
     const response = await this.$arbitrationApi.setArbiterToOffer({ arbiter, offerId })
     return response
   } catch (e) {
