@@ -5,9 +5,9 @@
       img(src="~/assets/arrows.svg")
     .col.q-px-md.q-pb-sm
         .text-weight-bold.text-white {{ $t('pages.arbitration.ticket') }} 10
-        .text-white {{ $t('pages.arbitration.buyer', {buyer: 'Daniel Poot'}) }}
-        .text-white {{ $t('pages.arbitration.seller', {seller: 'Daniel Poot'}) }}
-        .text-white.text-caption 08/13/2021
+        .text-white(v-if="offer") {{ $t('pages.arbitration.buyer', {buyer: offer.buyer }) }}
+        .text-white(v-if="offer") {{ $t('pages.arbitration.seller', {seller: offer.seller }) }}
+        .text-white.text-caption {{ TimeUtil.formatDateOnly(new Date(ticket.created_date)) }}
   .row
     .col
         q-btn.full-width(
@@ -30,22 +30,45 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import TimeUtil from '~/utils/TimeUtil'
+
 export default {
   name: 'ticket',
   props: {
     isAssignedTicket: {
       type: Boolean,
       default: false
+    },
+    ticket: {
+      type: Object,
+      default: undefined
     }
   },
+  data () {
+    return {
+      offer: undefined,
+      TimeUtil
+    }
+  },
+  async mounted () {
+    this.offer = await this.getOffer(this.ticket.offer_id)
+  },
   methods: {
-    onFollowUp () {
+    ...mapActions('buyOffers', ['getOffer']),
+    ...mapActions('arbitration', ['setArbiterToOffer']),
+    async onFollowUp () {
+      try {
+        const response = await this.setArbiterToOffer({ offerId: this.ticket.offer_id })
+        this.showTransactionId(response.transactionId)
+      } catch (e) {
+
+      }
       console.log('Follow-up')
     },
     onViewDetail () {
       console.log('View Detail')
-      this.$router.push({ name: 'ticket', params: { id: 1 } })
-      /* this.$router.push({ name: '/ticket', params: { id: ticket.id } }) */
+      this.$router.push({ name: 'ticket', params: { id: this.ticket.offer_id } })
     }
   }
 }
