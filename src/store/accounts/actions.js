@@ -55,13 +55,9 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       localStorage.setItem('account', accountName)
       localStorage.setItem('returning', true)
 
-      console.log('before')
-
       await dispatch('profiles/signIn', {}, { root: true })
       let paypal = await dispatch('profiles/getPaypal', {}, { root: true })
       commit('setPaypal', paypal)
-
-      console.log('paypal', paypal)
 
       this.$router.push({ path: returnUrl || '/dashboard' })
 
