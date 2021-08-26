@@ -172,7 +172,7 @@ export default {
   },
   methods: {
     ...mapActions('accounts', ['saveAccountData', 'getPublicKey']),
-    ...mapActions('profiles', ['signUp', 'signIn', 'getPaypal', 'isRegistered', 'getPrivateKey', 'getProfile']),
+    ...mapActions('profiles', ['signUp', 'signIn', 'isRegistered', 'getPrivateKey', 'getProfile']),
     ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
@@ -186,28 +186,28 @@ export default {
       }
 
       let PPPprofile = await this.getProfile()
-      // console.log('PPPprofile', PPPprofile)
+      console.log('PPPprofile', PPPprofile)
 
-      let paypal = (isRegistered) ? await this.getPaypal() : ''
+      // let paypal = (isRegistered) ? await this.getPaypal() : ''
       this.params = {
         ...this.params,
         nickname: this.seedsAccount.nickname,
         fiatCurrency: this.p2pAccount.fiat_currency,
         selectedContactMethod: undefined,
-        paypalLink: paypal.replace(this.paypalBase, ''),
         timeZone: this.p2pAccount.time_zone
       }
 
       if (isRegistered && PPPprofile.appData.privateData && PPPprofile.appData.privateData.prefContactMeth) {
         this.params = {
           ...this.params,
+          paypalLink: PPPprofile.appData.privateData.paypal.replace(this.paypalBase, ''),
           selectedContactMethod: PPPprofile.appData.privateData.prefContactMeth,
           contactMethods: {
             [PPPprofile.appData.privateData.prefContactMeth]: PPPprofile.appData.privateData.prefContactMethValue
           }
         }
       }
-      paypal = undefined
+      // paypal = undefined
       PPPprofile = undefined
       this.setIsLoading(false)
     },
