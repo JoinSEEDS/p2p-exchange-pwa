@@ -172,7 +172,7 @@ export default {
   },
   methods: {
     ...mapActions('accounts', ['saveAccountData', 'getPublicKey']),
-    ...mapActions('profiles', ['signUp', 'signIn', 'getPaypal', 'isRegistered', 'getPrivateKey']),
+    ...mapActions('profiles', ['signUp', 'signIn', 'getPaypal', 'isRegistered', 'getPrivateKey', 'getProfile']),
     ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
@@ -185,6 +185,9 @@ export default {
         return
       }
 
+      let PPPprofile = await this.getProfile()
+      // console.log('PPPprofile', PPPprofile)
+
       let paypal = (isRegistered) ? await this.getPaypal() : ''
       this.params = {
         ...this.params,
@@ -194,7 +197,18 @@ export default {
         paypalLink: paypal.replace(this.paypalBase, ''),
         timeZone: this.p2pAccount.time_zone
       }
+
+      if (isRegistered && PPPprofile.appData.privateData && PPPprofile.appData.privateData.prefContactMeth) {
+        this.params = {
+          ...this.params,
+          selectedContactMethod: PPPprofile.appData.privateData.prefContactMeth,
+          contactMethods: {
+            [PPPprofile.appData.privateData.prefContactMeth]: PPPprofile.appData.privateData.prefContactMethValue
+          }
+        }
+      }
       paypal = undefined
+      PPPprofile = undefined
       this.setIsLoading(false)
     },
     async onSubmitForm () {
@@ -214,13 +228,22 @@ export default {
           privateKey = await this.getPrivateKey()
         }
         this.setIsLoading(true)
+        let prefContactMethValue
+        if (this.params.selectedContactMethod === 'signal') {
+          prefContactMethValue = this.params.contactMethods.signal
+        } else if (this.params.selectedContactMethod === 'email') {
+          prefContactMethValue = this.params.contactMethods.email
+        }
+
         const mData = {
           [RootFields.NAME]: this.params.nickname,
           [RootFields.EMAIL]: 'email@email.com',
           appData: {
             privateData: {
               privateKey,
-              paypal: this.paypalBase + this.params.paypalLink
+              paypal: this.paypalBase + this.params.paypalLink,
+              prefContactMeth: this.params.selectedContactMethod,
+              prefContactMethValue
             }
           }
         }
@@ -231,6 +254,7 @@ export default {
           fiatCurrency: this.params.fiatCurrency,
           publicKey
         }) // Savev public data in contract
+        this.setIsLoading(true)
         publicKey = null // Delete publicKey after save
         await this.signUp(mData) // Save private key in PPP service
         this.setIsLoading(true)
@@ -239,7 +263,7 @@ export default {
         await this.showSuccessMsg(this.$t('pages.account.saved'))
         this.setIsLoading(false)
       } catch (error) {
-
+        this.setIsLoading(false)
       }
     },
     openPayPalLink () {
