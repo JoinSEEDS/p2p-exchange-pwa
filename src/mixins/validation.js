@@ -16,7 +16,9 @@ export const validation = {
         isTokenDecimals: val => (parseInt(val) >= 0 && parseInt(val) <= 9) || this.$t('forms.errors.tokenDecimals'),
         positiveInteger: val => parseInt(val) > 0 || this.$t('forms.errors.positiveInteger'),
         required: val => !!val || this.$t('forms.errors.required'),
-        minZero: val => val > 0 || this.$t('forms.errors.minZero')
+        minZero: val => val > 0 || this.$t('forms.errors.minZero'),
+        email: val => /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(val.toLowerCase()) || this.$t('forms.errors.email'),
+        internationalNumber: val => /^\+(?:[0-9]●?){6,14}[0-9]$/.test(val.toLowerCase()) || this.$t('forms.errors.internationalNumber')
       }
     }
   },

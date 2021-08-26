@@ -40,7 +40,9 @@ export default {
       token: 'The field must contain between 2 and 6 characters',
       tokenDecimals: 'The decimals must be between 2 and 9',
       minZero: 'This field must be greater than 0',
-      maxSeedsAvailable: 'This field must be less or equal than {amount}'
+      maxSeedsAvailable: 'This field must be less or equal than {amount}',
+      email: 'The field is not a valid email',
+      internationalNumber: 'The field is not a valid number phone'
     }
   },
   menu: {
