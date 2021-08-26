@@ -44,18 +44,39 @@
             lazy-rules
             :rules="[rules.required]"
           )
-          //- q-select(
-          //-   label="Preferred Contact Method"
-          //-   v-model="params.contactMethods"
-          //-   outlined
-          //-   dark
-          //-   standout="text-accent"
-          //-   :options="options.contactMethods"
-          //-   emit-value
-          //-   map-options
-          //-   color="white"
-          //-   :rules="[rules.required]"
-          //- )
+          q-select(
+            label="Preferred Contact Method"
+            v-model="params.selectedContactMethod"
+            outlined
+            dark
+            standout="text-accent"
+            :options="options.contactMethods"
+            emit-value
+            map-options
+            color="white"
+            :rules="[rules.required]"
+          )
+          #contactMethods(v-if="params.selectedContactMethod")
+            q-input(
+              v-if="params.selectedContactMethod === 'signal'"
+              :label="$t('pages.account.signal')"
+              v-model="params.contactMethods.signal"
+              outlined
+              dark
+              standout="text-accent"
+              :rules="[rules.required, rules.internationalNumber]"
+              autocomplete="off"
+            )
+            q-input(
+              v-else-if="params.selectedContactMethod === 'email'"
+              :label="$t('pages.account.email')"
+              v-model="params.contactMethods.email"
+              outlined
+              dark
+              standout="text-accent"
+              :rules="[rules.required, rules.email]"
+              autocomplete="off"
+            )
           q-separator.full-width(dark)
           .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
           q-input(
@@ -100,19 +121,23 @@ export default {
       params: {
         nickname: undefined,
         fiatCurrency: undefined,
-        contactMethods: undefined,
+        selectedContactMethod: undefined,
+        contactMethods: {
+          signal: undefined,
+          email: undefined
+        },
         paypalLink: undefined,
         timeZone: undefined
       },
       options: {
         contactMethods: [
           {
-            label: 'Email',
-            value: 'email'
+            label: 'Signal Number',
+            value: 'signal'
           },
           {
-            label: 'Cellphone',
-            value: 'cellphone'
+            label: 'Email',
+            value: 'email'
           }
         ]
       }
@@ -162,9 +187,10 @@ export default {
 
       let paypal = (isRegistered) ? await this.getPaypal() : ''
       this.params = {
+        ...this.params,
         nickname: this.seedsAccount.nickname,
         fiatCurrency: this.p2pAccount.fiat_currency,
-        contactMethods: undefined,
+        selectedContactMethod: undefined,
         paypalLink: paypal.replace(this.paypalBase, ''),
         timeZone: this.p2pAccount.time_zone
       }

@@ -80,7 +80,9 @@ export default {
       paypalLink: 'Paypal Link',
       enterPaypalLink: 'Enter your paypal link',
       hintPaypal: 'Open link to confirm you write your profile link correctly',
-      saved: 'Account saved succesfully'
+      saved: 'Account saved succesfully',
+      email: 'Email',
+      signal: 'Signal Number'
     },
     mainTab: {
       seeds: 'Seeds',

@@ -18,7 +18,7 @@ export const validation = {
         required: val => !!val || this.$t('forms.errors.required'),
         minZero: val => val > 0 || this.$t('forms.errors.minZero'),
         email: val => /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(val.toLowerCase()) || this.$t('forms.errors.email'),
-        internationalNumber: val => /^\+(?:[0-9]●?){6,14}[0-9]$/.test(val.toLowerCase()) || this.$t('forms.errors.internationalNumber')
+        internationalNumber: val => /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{9})$/.test(val.toLowerCase()) || this.$t('forms.errors.internationalNumber')
       }
     }
   },
