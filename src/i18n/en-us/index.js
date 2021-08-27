@@ -139,7 +139,8 @@ export default {
       amountOfCrypto: 'Enter the amount of seeds to buy',
       cancel: 'Cancel buy offer',
       confirm_cancel: 'Are you sure of canceling this offer?',
-      existing_offer: 'An offer already exists for this sale offer'
+      existing_offer: 'An offer already exists for this sale offer',
+      buyer: 'Buyer'
     },
     deposit: {
       deposit: 'Deposit',
@@ -207,7 +208,11 @@ export default {
       buyer: 'Buyer: {buyer}',
       seller: 'Seller: {seller}',
       follow_up: 'Follow Up',
-      view_details: 'View details'
+      view_details: 'View details',
+      close_ticket: 'Close ticket',
+      close_ticket_favor: 'Close ticket in favor of:',
+      explain_reasons: 'Please explain the reasons of the judgement*:',
+      sure_close_ticket: 'Are you sure to close Ticket {id}? this action cannot be reversed.'
     }
   }
 }
