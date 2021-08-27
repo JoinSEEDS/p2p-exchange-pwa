@@ -43,7 +43,12 @@
       no-caps
       v-if="rejected"
     )
-    init-arbitrage-button(v-if="accepted || paid" :buyOfferId="this.offer.id").custom-width
+    q-btn.full-width(
+      v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
+      :label="$t('common.buttons.arbitrage')"
+      color="orange-8"
+    ).custom-round
+    init-arbitrage-button(v-if="(accepted || paid) && showArbitrage" :buyOfferId="this.offer.id").custom-width
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
       buy-offer(:offer="offer")
@@ -69,6 +74,10 @@ export default {
     this.percentage = percentage
     this.remaining = (remaining > 0) ? this.getHoursAndMinutes(remaining) : ''
 
+    const dateOfAccepted = this.offer.status_history.find(item => item.key === OfferStatus.BUY_OFFER_ACCEPTED).value
+    this.showArbitrage = await this.sellerCanInitArbitrage(dateOfAccepted)
+    // console.log('showArbitrage', showArbitrage)
+
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
     })
@@ -86,6 +95,7 @@ export default {
         hours: 0,
         minutes: 0
       },
+      showArbitrage: false,
       percentage: 0
     }
   },

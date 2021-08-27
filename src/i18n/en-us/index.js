@@ -19,7 +19,8 @@ export default {
       waiting_payment: 'Waiting for payment...',
       rejected: 'Rejected',
       waiting_payment_confirmation: 'Waiting for Payment Confirmation',
-      init_arbitrage: 'Init Arbitrage'
+      init_arbitrage: 'Init Arbitrage',
+      arbitrage: 'Under arbitrage'
     },
     defaultTitle: 'Title'
   },

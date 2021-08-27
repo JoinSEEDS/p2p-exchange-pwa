@@ -7,7 +7,7 @@ export const utils = {
   components: { GreenFlatBtn, SkeletonOfferItem },
   computed: {
     ...mapGetters('accounts', ['pricePerSeedOnEUR', 'currentFiatCurrency', 'fiatExchanges']),
-    ...mapGetters('settings', ['acceptLim']),
+    ...mapGetters('settings', ['acceptLim', 'sellerConfirmLim', 'buyerConfirmLim']),
     myFiatExchangeRate () {
       return Number.parseFloat(this.fiatExchanges.rates[this.currentFiatCurrency.toUpperCase()] * this.pricePerSeedOnEUR).toFixed(4)
     }
@@ -115,6 +115,56 @@ export const utils = {
 
       // let { hours, minutes } = this.getHoursAndMinutes(remainingMinutes)
       // return `${hours} h ${minutes} m`
+    },
+    async sellerCanInitArbitrage (creationDate) {
+      await this.getSettings()
+
+      let sinceDate = Date.parse(creationDate)
+      let limitMs = this.buyerConfirmLim * 1000
+      let limitMins = this.buyerConfirmLim / 60
+      let nowLocal = new Date()
+      var now = new Date(
+        nowLocal.getUTCFullYear(),
+        nowLocal.getUTCMonth(),
+        nowLocal.getUTCDate(),
+        nowLocal.getUTCHours(),
+        nowLocal.getUTCMinutes(),
+        nowLocal.getUTCSeconds(),
+        nowLocal.getUTCMilliseconds()
+      )
+      let limitDate = sinceDate + limitMs
+      let remainingTime = limitDate - now
+      let remainingMinutes = remainingTime / 60000
+
+      console.log(`buyer has ${limitMins}m to confirm he paid`)
+
+      // let percentage = ((100 / limitMins) * remainingMinutes)
+
+      return remainingMinutes <= 0
+    },
+    async buyerCanInitArbitrage (creationDate) {
+      await this.getSettings()
+
+      let sinceDate = Date.parse(creationDate)
+      let limitMs = this.buyerConfirmLim * 1000
+      // let limitMins = this.buyerConfirmLim / 60
+      let nowLocal = new Date()
+      var now = new Date(
+        nowLocal.getUTCFullYear(),
+        nowLocal.getUTCMonth(),
+        nowLocal.getUTCDate(),
+        nowLocal.getUTCHours(),
+        nowLocal.getUTCMinutes(),
+        nowLocal.getUTCSeconds(),
+        nowLocal.getUTCMilliseconds()
+      )
+      let limitDate = sinceDate + limitMs
+      let remainingTime = limitDate - now
+      let remainingMinutes = remainingTime / 60000
+
+      // let percentage = ((100 / limitMins) * remainingMinutes)
+
+      return remainingMinutes <= 0
     }
   }
 }

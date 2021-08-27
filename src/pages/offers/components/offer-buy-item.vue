@@ -25,8 +25,13 @@
             color="orange-8"
             @click="waiting = !waiting"
         ).custom-round
+        q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
+            :label="$t('common.buttons.arbitrage')"
+            color="orange-8"
+        ).custom-round
         init-arbitrage-button(
-        v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID"
+        v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID && showArbitrage"
         :buyOfferId="this.offer.id"
         ).full-width
         q-separator.full-width.q-my-sm(color="warning")
@@ -53,7 +58,15 @@ export default {
   data () {
     return {
       OfferStatus,
-      waiting: false
+      waiting: false,
+      showArbitrage: false
+    }
+  },
+  async mounted () {
+    console.log('status', this.offer.current_status)
+    if (this.offer.current_status === OfferStatus.BUY_OFFER_PAID) {
+      const dateOfPaid = this.offer.status_history.find(item => item.key === OfferStatus.BUY_OFFER_PAID).value
+      this.showArbitrage = await this.buyerCanInitArbitrage(dateOfPaid)
     }
   },
   computed: {
