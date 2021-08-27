@@ -121,7 +121,6 @@ export const utils = {
 
       let sinceDate = Date.parse(creationDate)
       let limitMs = this.buyerConfirmLim * 1000
-      let limitMins = this.buyerConfirmLim / 60
       let nowLocal = new Date()
       var now = new Date(
         nowLocal.getUTCFullYear(),
@@ -135,10 +134,6 @@ export const utils = {
       let limitDate = sinceDate + limitMs
       let remainingTime = limitDate - now
       let remainingMinutes = remainingTime / 60000
-
-      console.log(`buyer has ${limitMins}m to confirm he paid`)
-
-      // let percentage = ((100 / limitMins) * remainingMinutes)
 
       return remainingMinutes <= 0
     },
@@ -147,7 +142,6 @@ export const utils = {
 
       let sinceDate = Date.parse(creationDate)
       let limitMs = this.buyerConfirmLim * 1000
-      // let limitMins = this.buyerConfirmLim / 60
       let nowLocal = new Date()
       var now = new Date(
         nowLocal.getUTCFullYear(),
@@ -161,8 +155,6 @@ export const utils = {
       let limitDate = sinceDate + limitMs
       let remainingTime = limitDate - now
       let remainingMinutes = remainingTime / 60000
-
-      // let percentage = ((100 / limitMins) * remainingMinutes)
 
       return remainingMinutes <= 0
     }
