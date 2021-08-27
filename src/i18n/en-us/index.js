@@ -19,7 +19,8 @@ export default {
       waiting_payment: 'Waiting for payment...',
       rejected: 'Rejected',
       waiting_payment_confirmation: 'Waiting for Payment Confirmation',
-      init_arbitrage: 'Init Arbitrage'
+      init_arbitrage: 'Init Arbitrage',
+      sendContactMethod: 'Send contact method to arbitrage'
     },
     defaultTitle: 'Title'
   },
@@ -194,7 +195,7 @@ export default {
       time_zone: 'Time zone'
     },
     incoming_offers: {
-      incoming_offers: 'Buy offers',
+      incoming_offers: 'Details of my sale offer',
       proposals: 'Purchase proposals',
       percentage: 'Percentage',
       sold: 'Sold',

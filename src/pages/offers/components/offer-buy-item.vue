@@ -25,6 +25,12 @@
             color="orange-8"
             @click="waiting = !waiting"
         ).custom-round
+        q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
+            :label="$t('common.buttons.sendContactMethod')"
+            color="orange-8"
+            @click="waiting = !waiting"
+        ).custom-round
         init-arbitrage-button(
         v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID"
         :buyOfferId="this.offer.id"
