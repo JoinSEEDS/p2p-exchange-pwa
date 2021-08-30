@@ -1,69 +1,70 @@
 <template lang="pug">
-#container
-  q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
-  q-form().q-gutter-md.q-mt-sm(@submit.prevent="onSubmitForm")
-    .subtitle.text-white.q-mt-md {{ $t('pages.sell.toSell') }}
-    .text-white {{ $t('pages.sell.defineTheSaleOffer') }}
-    .row.justify-center
-        .col-8
-            .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) || 0 }}
-              span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
-            q-separator(color="warning")
-            .text-h4.text-white.text-center {{ fiatToGet }}
-              span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{params.fiatCurrency}}
-    .row.bg-warning.container-current
-      .q-pa-sm
-        .iconSeeds
-      .col-sm-11.self-center
-        .textLabelCurrent.q-ml-xs {{ $t('pages.sell.currentTotal') }}
-        .textValueCurrent.q-ml-xs {{ availableSeeds }}
-    q-checkbox.text-white(v-model="isSellAll" dark :label="$t('pages.sell.sellAllSeeds')" color="accent" class="text-white")
-    q-input(
-        autofocus
-        :label="$t('pages.sell.amountOfCrypto')"
-        v-model="params.amount"
-        outlined
-        dark
-        standout="text-accent"
-        :rules="[rules.required, rules.minZero, customMaxValidation]"
-        :hint="$t('pages.sell.afterTransaction', { amount: afterAmount })"
-        type="number"
-        step="0.0001"
-    )
-      template(v-slot:append)
-        .text SEEDS
-    //- q-input(
-    //-     :label="$t('pages.sell.preferredCurrency')"
-    //-     v-model="params.fiatCurrency"
-    //-     outlined
-    //-     dark
-    //-     disable
-    //-     standout="text-accent"
-    //-     :rules="[rules.required]"
-    //-     bg-color="warning"
-    //- )
-    q-input(
-        :label="$t('pages.sell.costPerCrypto')"
-        v-model="params.costPerCrypt"
-        outlined
-        dark
-        standout="text-accent"
-        :rules="[rules.required, rules.minZero]"
-        type="number"
-    )
-      template(v-slot:append)
-        .text %
-    .hint {{$t('pages.sell.exchangeRate')}}
-    .hint {{$t('pages.sell.marketCost', { amount: `${exchangeRate} ${currentFiatCurrency.toUpperCase()}` })}}
-    .row.bg-primary.btnSave.q-py-sm
-        q-btn.full-width(
-            :label="$t('pages.sell.toSell')"
-            color="accent"
-            type="submit"
-        )
-  #modals
-    q-dialog(v-model="showConfirmSell" transition-show="slide-up" transition-hide="slide-down" persistent)
-      confirm-sell.custom-size-modal(:seeds="params.amount" :percentage="params.costPerCrypt" :exchange="exchangeRate" @confirm="onConfirmSell")
+#cont
+  div.q-pa-md
+    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
+    q-form().q-gutter-md.q-mt-sm(@submit.prevent="onSubmitForm")
+      .subtitle.text-white.q-mt-md {{ $t('pages.sell.toSell') }}
+      .text-white {{ $t('pages.sell.defineTheSaleOffer') }}
+      .row.justify-center
+          .col-8
+              .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) || 0 }}
+                span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
+              q-separator(color="warning")
+              .text-h4.text-white.text-center {{ fiatToGet }}
+                span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{params.fiatCurrency}}
+      .row.bg-warning.container-current
+        .q-pa-sm
+          .iconSeeds
+        .col-sm-11.self-center
+          .textLabelCurrent.q-ml-xs {{ $t('pages.sell.currentTotal') }}
+          .textValueCurrent.q-ml-xs {{ availableSeeds }}
+      q-checkbox.text-white(v-model="isSellAll" dark :label="$t('pages.sell.sellAllSeeds')" color="accent" class="text-white")
+      q-input(
+          autofocus
+          :label="$t('pages.sell.amountOfCrypto')"
+          v-model="params.amount"
+          outlined
+          dark
+          standout="text-accent"
+          :rules="[rules.required, rules.minZero, customMaxValidation]"
+          :hint="$t('pages.sell.afterTransaction', { amount: afterAmount })"
+          type="number"
+          step="0.0001"
+      )
+        template(v-slot:append)
+          .text SEEDS
+      //- q-input(
+      //-     :label="$t('pages.sell.preferredCurrency')"
+      //-     v-model="params.fiatCurrency"
+      //-     outlined
+      //-     dark
+      //-     disable
+      //-     standout="text-accent"
+      //-     :rules="[rules.required]"
+      //-     bg-color="warning"
+      //- )
+      q-input(
+          :label="$t('pages.sell.costPerCrypto')"
+          v-model="params.costPerCrypt"
+          outlined
+          dark
+          standout="text-accent"
+          :rules="[rules.required, rules.minZero]"
+          type="number"
+      )
+        template(v-slot:append)
+          .text %
+      .hint {{$t('pages.sell.exchangeRate')}}
+      .hint {{$t('pages.sell.marketCost', { amount: `${exchangeRate} ${currentFiatCurrency.toUpperCase()}` })}}
+      .row.bg-primary.btnSave.q-py-sm
+          q-btn.full-width(
+              :label="$t('pages.sell.toSell')"
+              color="accent"
+              type="submit"
+          )
+    #modals
+      q-dialog(v-model="showConfirmSell" transition-show="slide-up" transition-hide="slide-down" persistent)
+        confirm-sell.custom-size-modal(:seeds="params.amount" :percentage="params.costPerCrypt" :exchange="exchangeRate" @confirm="onConfirmSell")
 </template>
 
 <script>
@@ -145,8 +146,8 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-#container
-  padding: 10px
+// #container
+//   padding: 10px
 .textLabelCurrent
   color: white
   font-size: 10px

@@ -13,6 +13,7 @@
             :label="$t('common.buttons.confirm_payment')"
             color="blue-9"
             @click="$router.push({ name: 'make-payment', params: { id: offer.id } })"
+            no-caps
         ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID"
@@ -24,12 +25,14 @@
             :label="$t('common.buttons.waiting')"
             color="orange-8"
             @click="waiting = !waiting"
+            no-caps
         ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
             :label="$t('common.buttons.sendContactMethod')"
             color="orange-8"
             @click="waiting = !waiting"
+            no-caps
         ).custom-round
         init-arbitrage-button(
         v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID"
