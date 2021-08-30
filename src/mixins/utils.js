@@ -116,10 +116,10 @@ export const utils = {
       // let { hours, minutes } = this.getHoursAndMinutes(remainingMinutes)
       // return `${hours} h ${minutes} m`
     },
-    async sellerCanInitArbitrage (creationDate) {
+    async sellerCanInitArbitrage (acceptanceDate) {
       await this.getSettings()
 
-      let sinceDate = Date.parse(creationDate)
+      let sinceDate = Date.parse(acceptanceDate)
       let limitMs = this.buyerConfirmLim * 1000
       let nowLocal = new Date()
       var now = new Date(
@@ -137,11 +137,11 @@ export const utils = {
 
       return remainingMinutes <= 0
     },
-    async buyerCanInitArbitrage (creationDate) {
+    async buyerCanInitArbitrage (payDate) {
       await this.getSettings()
 
-      let sinceDate = Date.parse(creationDate)
-      let limitMs = this.buyerConfirmLim * 1000
+      let sinceDate = Date.parse(payDate)
+      let limitMs = this.sellerConfirmLim * 1000
       let nowLocal = new Date()
       var now = new Date(
         nowLocal.getUTCFullYear(),
