@@ -10,7 +10,7 @@
     .col
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_ACCEPTED"
-            :label="$t('common.buttons.make_payment')"
+            :label="$t('common.buttons.confirm_payment')"
             color="blue-9"
             @click="$router.push({ name: 'make-payment', params: { id: offer.id } })"
         ).custom-round

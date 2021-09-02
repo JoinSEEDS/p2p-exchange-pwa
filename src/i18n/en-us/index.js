@@ -17,7 +17,8 @@ export default {
       confirm_payment: 'Confirm payment',
       dismiss: 'Dismiss',
       waiting_payment: 'Waiting for payment...',
-      rejected: 'Rejected'
+      rejected: 'Rejected',
+      waiting_payment_confirmation: 'Waiting for Payment Confirmation'
     },
     defaultTitle: 'Title'
   },
@@ -140,7 +141,7 @@ export default {
     },
     deposit: {
       deposit: 'Deposit',
-      withdraw: 'Remove',
+      withdraw: 'Withdraw',
       amount: 'Amount',
       depositWithdraw: 'Deposit / Withdraw',
       selectTypeAction: 'Select the type of action',

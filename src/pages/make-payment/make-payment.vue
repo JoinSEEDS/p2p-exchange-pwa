@@ -2,7 +2,7 @@
   #container.text-white.tab-container(v-if="offer")
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions'} })")
     .row
-      .subtitle.text-white.q-mt-md {{ $t('pages.make_payment.make_payment') }}
+      .subtitle.text-white.q-mt-md {{ $t('common.buttons.confirm_payment') }}
     .row.q-my-md
       img.avatar-icon.self-center(src="~/assets/seedIcon.png")
       .col.q-px-md.q-py-md
@@ -25,7 +25,7 @@
         q-icon.animated-icon.cursor-pointer.linkBtn(
           name="open_in_new" @click="openPayPalLink"
         )
-    q-btn(:label="$t('pages.make_payment.make_payment')" color="positive" @click="makePayment()" no-caps).full-width.q-my-sm.custon-btn
+    q-btn(:label="$t('common.buttons.confirm_payment')" color="positive" @click="makePayment()" no-caps).full-width.q-my-sm.custon-btn
     //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
 

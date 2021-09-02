@@ -22,7 +22,7 @@
       v-if="pending"
     )
     q-btn.custom-width.custom-round(
-      :label="$t('common.buttons.waiting_payment')"
+      :label="$t('common.buttons.waiting_payment_confirmation')"
       color="blue"
       class="text-cap"
       no-caps
