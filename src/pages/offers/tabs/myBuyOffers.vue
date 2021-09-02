@@ -1,6 +1,6 @@
 <template lang="pug">
 #containerBuyOffers
-  div.q-pa-md
+  .q-pa-md
     q-pull-to-refresh(@refresh="refresh")
       #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
         skeleton-offer-item

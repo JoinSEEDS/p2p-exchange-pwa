@@ -1,6 +1,6 @@
 <template lang="pug">
 #container.q-pa-md
-  div.q-pa-md
+  .q-pa-md
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
     .row.justify-between
       .subtitle.text-white.q-mt-md {{ $t('pages.buy.buySeeds') }}

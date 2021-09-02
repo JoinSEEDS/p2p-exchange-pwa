@@ -1,6 +1,6 @@
 <template lang="pug">
 #container
-  div.q-pa-md
+  .q-pa-md
     q-tab-panels.panelContainer(
         v-model="tab"
         animated

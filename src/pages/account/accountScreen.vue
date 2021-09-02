@@ -1,5 +1,6 @@
 <template lang="pug">
  #container
+  .q-pa-md
     q-icon.cursor-pointer(v-if="isP2PProfileCompleted" name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: isArbiter ? 'arbitration' : 'dashboard' })")
     .row.justify-center
       img.logoImg(src="../../statics/backgrounds/simple_logo.svg")
@@ -282,5 +283,4 @@ export default {
   bottom: 0px
 .linkBtn:hover
   color: $accent
-
 </style>

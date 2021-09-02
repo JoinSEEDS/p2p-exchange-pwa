@@ -1,6 +1,6 @@
 <template lang="pug">
 #containerSellOffers
-  div.q-pa-md
+  .q-pa-md
     #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
       skeleton-offer-item
     #noData(v-if="myOffers.rows.length === 0 && !loading")

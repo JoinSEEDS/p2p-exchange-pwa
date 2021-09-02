@@ -1,6 +1,6 @@
 <template lang="pug">
 #cont
-  div.q-pa-md
+  .q-pa-md
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
     q-form().q-gutter-md.q-mt-sm(@submit.prevent="onSubmitForm")
       .subtitle.text-white.q-mt-md {{ $t('pages.sell.toSell') }}
