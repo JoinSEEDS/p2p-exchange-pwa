@@ -103,7 +103,7 @@
               :label="$t('common.buttons.save')"
               color="accent"
               type="submit"
-            )
+            ).custom-round
 </template>
 
 <script>
