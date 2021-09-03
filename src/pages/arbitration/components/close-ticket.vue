@@ -19,7 +19,7 @@ q-card.q-pa-md.bg-light.custom-round
               img.input-img.img-buyer(src="~/assets/buyer.svg")
           .row.items-center.justify-center
             .text-black {{ $t('pages.buy.buyer') }}
-    .text-normal.text-dark.q-mb-sm {{ $t('pages.arbitration.explain_reasons') }}
+    .text-normal.text-dark.q-mb-sm.q-mt-lg {{ $t('pages.arbitration.explain_reasons') }}
     div
       q-input.q-mb-lg(
         v-model="params.notes"

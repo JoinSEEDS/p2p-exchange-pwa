@@ -15,9 +15,10 @@
       .row
         .col
           .text-h6.text-center.text-white {{ equivalentFiat }}
-      .row
+      .row.q-pt-md
         .col
-          .text-h6.text-center.text-white {{ TimeUtil.formatDateOnly(new Date(offer.created_date)) }}
+          .text-h6.text-center.text-white Ticket inited date:
+            span.q-ml-md {{ TimeUtil.formatDateOnly(new Date(offer.created_date)) }}
     .row.q-mb-xl(v-if="offer")
       .col-12.q-mb-md
         .text-white.q-mb-sm {{ $t('pages.arbitration.buyer', {buyer: offer.buyer}) }}
