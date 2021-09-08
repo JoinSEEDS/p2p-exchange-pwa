@@ -23,7 +23,7 @@ export default {
   )
     q-card
       q-card-section.row.items-center.q-mb-md.bg-primary.text-white
-        div.text-h6.q-mr-md {{ $t('pages.login.selectAccount') }}
+        .text-h6.q-mr-md {{ $t('pages.login.selectAccount') }}
         q-space
         q-btn(
           flat

@@ -20,7 +20,8 @@ export default {
       rejected: 'Rejected',
       waiting_payment_confirmation: 'Waiting for Payment Confirmation',
       init_arbitrage: 'Init Arbitrage',
-      arbitrage: 'Under arbitrage'
+      arbitrage: 'Under arbitrage',
+      sendContactMethod: 'Send contact method to arbitrage'
     },
     defaultTitle: 'Title'
   },
@@ -41,7 +42,9 @@ export default {
       token: 'The field must contain between 2 and 6 characters',
       tokenDecimals: 'The decimals must be between 2 and 9',
       minZero: 'This field must be greater than 0',
-      maxSeedsAvailable: 'This field must be less or equal than {amount}'
+      maxSeedsAvailable: 'This field must be less or equal than {amount}',
+      email: 'The field is not a valid email',
+      internationalNumber: 'The field is not a valid number phone'
     }
   },
   menu: {
@@ -79,7 +82,9 @@ export default {
       paypalLink: 'Paypal Link',
       enterPaypalLink: 'Enter your paypal link',
       hintPaypal: 'Open link to confirm you write your profile link correctly',
-      saved: 'Account saved succesfully'
+      saved: 'Account saved succesfully',
+      email: 'Email',
+      signal: 'Signal Number'
     },
     mainTab: {
       seeds: 'Seeds',
@@ -192,7 +197,7 @@ export default {
       time_zone: 'Time zone'
     },
     incoming_offers: {
-      incoming_offers: 'Buy offers',
+      incoming_offers: 'Details of my sale offer',
       proposals: 'Purchase proposals',
       percentage: 'Percentage',
       sold: 'Sold',

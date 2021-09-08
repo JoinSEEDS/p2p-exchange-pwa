@@ -43,12 +43,14 @@
       no-caps
       v-if="rejected"
     )
-    q-btn.full-width(
-      v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
-      :label="$t('common.buttons.arbitrage')"
+    q-btn.custom-width.custom-round(
+      :label="$t('common.buttons.sendContactMethod')"
       color="orange-8"
-    ).custom-round
-    init-arbitrage-button(v-if="(accepted || paid) && showArbitrage" :buyOfferId="this.offer.id").custom-width
+      class="text-cap"
+      no-caps
+      v-if="arbitrageSendContact"
+    )
+    init-arbitrage-button(v-if="accepted || paid" :buyOfferId="this.offer.id").custom-width
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
       buy-offer(:offer="offer")
@@ -61,7 +63,7 @@ import { EventBus } from '~/event-bus'
 import InitArbitrageButton from '~/components/init-arbitrage-button'
 
 export default {
-  name: 'offer-buy-item',
+  name: 'incoming-buy-offer-item',
   components: { buyOffer, InitArbitrageButton },
   props: {
     offer: {
@@ -129,6 +131,9 @@ export default {
     },
     finished () {
       return this.offer.current_status === OfferStatus.BUY_OFFER_SUCCESS
+    },
+    arbitrageSendContact () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE
     },
     equivalentFiat () {
       try {

@@ -16,8 +16,8 @@
         q-btn.full-width.custom-round(
             :label="$t('common.buttons.view_details')"
             color="accent"
-            class="text-cap"
             @click="takeOffer()"
+            no-caps
         )
         q-separator.full-width.q-my-sm(color="warning")
   //- #modals
