@@ -22,10 +22,22 @@
     .row.q-mb-xl(v-if="offer")
       .col-12.q-mb-md
         .text-white.q-mb-sm {{ $t('pages.arbitration.buyer', {buyer: offer.buyer}) }}
-        contact(phone="999-999-99")
+        q-btn.full-width(
+            v-if="!buyerSendPaymentMethods"
+            :label="$t('pages.arbitration.payment_method_available')"
+            color="orange-8"
+            no-caps
+        )
+        contact(v-else phone="999-999-99")
       .col-12
         .text-white.q-mb-sm {{ $t('pages.arbitration.seller', {seller: offer.seller}) }}
-        contact(phone="999-999-99")
+        q-btn.full-width(
+            v-if="!sellerSendPaymentMethods"
+            :label="$t('pages.arbitration.payment_method_available')"
+            color="orange-8"
+            no-caps
+        )
+        contact(v-else phone="999-999-99")
     .row.flex.self-end
       .col
         q-btn.full-width.q-mb-lg(
@@ -51,11 +63,13 @@ export default {
   data () {
     return {
       offer: undefined,
+      ticket: undefined,
       TimeUtil,
       showTicketForm: false
     }
   },
   async mounted () {
+    this.ticket = await this.getTicketById({ id: this.offerId })
     this.offer = await this.getOffer(this.offerId)
     this.setOfferId(this.offerId)
   },
@@ -76,11 +90,18 @@ export default {
         console.error(e)
         return 0
       }
+    },
+    sellerSendPaymentMethods () {
+      return this.ticket.buyer_contact
+    },
+    buyerSendPaymentMethods () {
+      return this.ticket.seller_contact
     }
   },
   methods: {
     ...mapActions('buyOffers', ['getOffer']),
     ...mapMutations('arbitration', ['setOfferId']),
+    ...mapActions('arbitration', ['getTicketById']),
     onClicCloseTicket () {
       this.showTicketForm = true
     }

@@ -218,7 +218,8 @@ export default {
       close_ticket_favor: 'Close ticket in favor of:',
       explain_reasons: 'Please explain the reasons of the judgement*:',
       sure_close_ticket: 'Are you sure to close Ticket {id}? this action cannot be reversed.',
-      contact_methods_sent: 'Contact methods sent to arbiter'
+      contact_methods_sent: 'Contact methods sent to arbiter',
+      payment_method_available: 'Payment method not available'
     }
   }
 }
