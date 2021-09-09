@@ -5,7 +5,7 @@ TODO desc
 ```bash
 yarn
 ```
-## Install the dependencies
+## Set up environment
 ```bash
 To execute on test copy env.example to .env
 ```
