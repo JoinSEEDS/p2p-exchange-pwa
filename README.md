@@ -1,10 +1,13 @@
-# Telos (telos)
-
+# PTM (P2P SEEDS)
 TODO desc
 
 ## Install the dependencies
 ```bash
 yarn
+```
+## Install the dependencies
+```bash
+To execute on test copy env.example to .env
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
