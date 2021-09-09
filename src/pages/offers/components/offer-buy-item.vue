@@ -6,6 +6,7 @@
         .text-white {{ $t('pages.buy.seller') }}: {{ offer.seller }}
         .text-white {{ quantity }}
         //- .text-cancel(v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING" @click="cancel = !cancel") Cancel offer
+        //- .text-cancel(v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING" @click="cancel = !cancel") Cancel offer
   .row
     .col
         q-btn.full-width(
@@ -28,12 +29,13 @@
             no-caps
         ).custom-round
         q-btn.full-width(
-            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_INPROGRESS"
             :label="$t('common.buttons.sendContactMethod')"
             color="orange-8"
             @click="sendContactMethodsMessage"
             no-caps
         ).custom-round
+        .text-white.text-center.text-subtitle1(v-if="flagged") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
             :label="$t('common.buttons.arbitrage')"
@@ -69,7 +71,8 @@ export default {
     return {
       OfferStatus,
       waiting: false,
-      showArbitrage: false
+      showArbitrage: false,
+      ticket: undefined
     }
   },
   async mounted () {
@@ -78,8 +81,14 @@ export default {
       const dateOfPaid = this.offer.status_history.find(item => item.key === OfferStatus.BUY_OFFER_PAID).value
       this.showArbitrage = await this.buyerCanInitArbitrage(dateOfPaid)
     }
+    if (this.flagged) {
+      this.ticket = await this.getTicketById({ id: this.offer.id })
+    }
   },
   computed: {
+    flagged () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_FLAGGED
+    },
     quantity () {
       const buyQuantity = this.offer.quantity_info.find(v => {
         return v.key === 'buyquantity'

@@ -51,6 +51,12 @@
       v-if="arbitrageSendContact"
       @click="sendContactMethodsMessage"
     )
+    q-btn.full-width(
+      v-if="arbitragePending"
+      :label="$t('common.buttons.arbitrage')"
+      color="orange-8"
+    ).custom-round
+    .text-white.text-center.text-subtitle1(v-if="flagged") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
     init-arbitrage-button(v-if="accepted || paid" :buyOfferId="this.offer.id").custom-width
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
@@ -81,6 +87,9 @@ export default {
     const dateOfAccepted = this.offer.status_history.find(item => item.key === OfferStatus.BUY_OFFER_ACCEPTED).value
     this.showArbitrage = await this.sellerCanInitArbitrage(dateOfAccepted)
     // console.log('showArbitrage', showArbitrage)
+    if (this.flagged) {
+      this.ticket = await this.getTicketById({ id: this.offer.id })
+    }
 
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
@@ -100,7 +109,8 @@ export default {
         minutes: 0
       },
       showArbitrage: false,
-      percentage: 0
+      percentage: 0,
+      ticket: undefined
     }
   },
   methods: {
@@ -147,8 +157,14 @@ export default {
     finished () {
       return this.offer.current_status === OfferStatus.BUY_OFFER_SUCCESS
     },
+    arbitragePending () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_PENDING
+    },
     arbitrageSendContact () {
-      return this.offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_INPROGRESS
+    },
+    flagged () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_FLAGGED
     },
     equivalentFiat () {
       try {
