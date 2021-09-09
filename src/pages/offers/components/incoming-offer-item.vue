@@ -49,6 +49,7 @@
       class="text-cap"
       no-caps
       v-if="arbitrageSendContact"
+      @click="sendContactMethodsMessage"
     )
     init-arbitrage-button(v-if="accepted || paid" :buyOfferId="this.offer.id").custom-width
   #modals
@@ -57,6 +58,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { OfferStatus } from '~/const/OfferStatus'
 import buyOffer from '~/pages/buy-offer/buy-offer'
 import { EventBus } from '~/event-bus'
@@ -102,6 +104,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions('encryption', ['createMessage']),
+    ...mapActions('profiles', ['getPaypal']),
+    ...mapActions('arbitration', ['getTicketById', 'sendContactMethods']),
     getHoursAndMinutes (minutes) {
       this.hasRemainingTime = true
 
@@ -111,6 +116,16 @@ export default {
       this.remainingTime.minutes = mins
 
       return `${hours}h ${mins.toFixed(0)}m`
+    },
+    async sendContactMethodsMessage () {
+      try {
+        let ticket = await this.getTicketById({ id: this.offer.id })
+        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getPaypal(), recipientAccount: ticket.arbiter })
+        await this.sendContactMethods({ messageData })
+        this.showSuccessMsg(this.$root.$t('pages.arbitration.contact_methods_sent'))
+      } catch (error) {
+        console.error(error)
+      }
     }
   },
   computed: {
