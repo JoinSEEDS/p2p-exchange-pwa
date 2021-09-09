@@ -104,5 +104,25 @@ class ArbitrationApi extends BaseEosApi {
       indexPosition: 1
     }) */
   }
+
+  getTicket ({ id }) {
+    return this.fetchById({
+      idValue: id
+    })
+  }
+
+  sendContactMethods ({ messageData }) {
+    const actions = [
+      {
+        account: Contracts.CONTRACT_P2P,
+        name: 'addoffermsg',
+        data: {
+          ...messageData
+        }
+      }
+    ]
+
+    return this.eosApi.signTransaction(actions)
+  }
 }
 export default ArbitrationApi

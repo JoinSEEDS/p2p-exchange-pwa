@@ -31,7 +31,7 @@
             v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
             :label="$t('common.buttons.sendContactMethod')"
             color="orange-8"
-            @click="waiting = !waiting"
+            @click="sendContactMethodsMessage"
             no-caps
         ).custom-round
         q-btn.full-width(
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { OfferStatus } from '~/const/OfferStatus'
 import WaitingApproval from './waiting-approval.vue'
 import InitArbitrageButton from '~/components/init-arbitrage-button'
@@ -84,6 +85,21 @@ export default {
         return v.key === 'buyquantity'
       })
       return buyQuantity.value || 'UNKNOWN'
+    }
+  },
+  methods: {
+    ...mapActions('encryption', ['createMessage']),
+    ...mapActions('profiles', ['getPaypal']),
+    ...mapActions('arbitration', ['getTicketById', 'sendContactMethods']),
+    async sendContactMethodsMessage () {
+      try {
+        let ticket = await this.getTicketById({ id: this.offer.id })
+        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getPaypal(), recipientAccount: ticket.arbiter })
+        await this.sendContactMethods({ messageData })
+        this.showSuccessMsg(this.$root.$t('pages.arbitration.contact_methods_sent'))
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 }

@@ -83,3 +83,31 @@ export const getAvailableTicket = async function ({ commit }, params) {
     commit('general/setIsLoading', false, { root: true })
   }
 }
+
+export const getTicketById = async function ({ commit }, { id }) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const response = await this.$arbitrationApi.getTicket({ id })
+    return response
+  } catch (e) {
+    console.error('An error ocurred while trying to get ticket', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    return null
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}
+
+export const sendContactMethods = async function ({ commit }, { messageData }) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const response = await this.$arbitrationApi.sendContactMethods({ messageData })
+    return response
+  } catch (e) {
+    console.error('An error ocurred while trying to send contact methods', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    return null
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}
