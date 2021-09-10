@@ -1,6 +1,6 @@
 <template lang="pug">
 #subContainer
-  .row
+  .row.q-pa-sm
     .q-mt-sm(style="position: relative")
       .yellow-dot
       img.avatar-icon.self-center(src="../../../statics/app-icons/seller.svg")
@@ -20,6 +20,7 @@
       @click="showOptions = !showOptions"
       no-caps
       v-if="pending"
+      dense
     )
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.waiting_payment_confirmation')"
@@ -27,6 +28,8 @@
       class="text-cap"
       no-caps
       v-if="accepted"
+      disabled
+      dense
     )
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.confirm_payment')"
@@ -35,6 +38,7 @@
       @click="showOptions = !showOptions"
       no-caps
       v-if="paid"
+      dense
     )
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.rejected')"
@@ -42,6 +46,7 @@
       class="text-cap"
       no-caps
       v-if="rejected"
+      dense
     )
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.sendContactMethod')"
@@ -50,11 +55,14 @@
       no-caps
       v-if="arbitrageSendContact"
       @click="sendContactMethodsMessage"
+      dense
     )
     q-btn.full-width(
       v-if="arbitragePending"
       :label="$t('common.buttons.arbitrage')"
       color="orange-8"
+      disabled
+      dense
     ).custom-round
     .text-white.text-center.text-subtitle1(v-if="flagged") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
     init-arbitrage-button(v-if="accepted || paid" :buyOfferId="this.offer.id").custom-width

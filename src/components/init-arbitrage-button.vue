@@ -3,6 +3,8 @@ q-btn.q-my-sm(
   :label="$t('common.buttons.init_arbitrage')"
   color="negative"
   @click="initArbitrage"
+  no-caps
+  dense
 ).custom-round
 </template>
 

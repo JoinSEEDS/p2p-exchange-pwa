@@ -15,11 +15,15 @@
             color="blue-9"
             @click="$router.push({ name: 'make-payment', params: { id: offer.id } })"
             no-caps
+            dense
         ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID"
-            label="WAITING PAY CONFIRM"
+            label="Waiting Pay Confirm"
             color="blue-9"
+            no-caps
+            dense
+            disable
         ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING"
@@ -27,6 +31,8 @@
             color="orange-8"
             @click="waiting = !waiting"
             no-caps
+            dense
+            disable
         ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_INPROGRESS"
@@ -34,12 +40,15 @@
             color="orange-8"
             @click="sendContactMethodsMessage"
             no-caps
+            dense
         ).custom-round
         .text-white.text-center.text-subtitle1(v-if="flagged") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
             :label="$t('common.buttons.arbitrage')"
             color="orange-8"
+            no-caps
+            dense
         ).custom-round
         init-arbitrage-button(
         v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID && showArbitrage"
