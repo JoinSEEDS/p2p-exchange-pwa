@@ -220,7 +220,8 @@ export default {
       sure_close_ticket: 'Are you sure to close Ticket {id}? this action cannot be reversed.',
       contact_methods_sent: 'Contact methods sent to arbiter',
       payment_method_available: 'Payment method not available',
-      flagged_to: 'Flagged to: '
+      flagged_to: 'Flagged to: ',
+      non_available: 'No Tickets Available'
     }
   }
 }
