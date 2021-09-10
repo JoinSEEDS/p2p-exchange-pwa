@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     ...mapActions('encryption', ['createMessage']),
-    ...mapActions('profiles', ['getPaypal']),
+    ...mapActions('profiles', ['getPaypal', 'getContactMethod']),
     ...mapActions('arbitration', ['getTicketById', 'sendContactMethods']),
     getHoursAndMinutes (minutes) {
       this.hasRemainingTime = true
@@ -141,7 +141,7 @@ export default {
     async sendContactMethodsMessage () {
       try {
         let ticket = await this.getTicketById({ id: this.offer.id })
-        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getPaypal(), recipientAccount: ticket.arbiter })
+        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getContactMethod(), recipientAccount: ticket.arbiter })
         await this.sendContactMethods({ messageData })
         this.showSuccessMsg(this.$root.$t('pages.arbitration.contact_methods_sent'))
       } catch (error) {
