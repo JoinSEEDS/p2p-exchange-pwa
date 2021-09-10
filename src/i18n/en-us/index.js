@@ -14,14 +14,14 @@ export default {
       waiting: 'Waiting...',
       make_payment: 'Make Payment',
       view_details: 'View Details',
-      confirm_payment: 'Confirm payment',
+      confirm_payment: 'Confirm Payment',
       dismiss: 'Dismiss',
-      waiting_payment: 'Waiting for payment...',
+      waiting_payment: 'Waiting for Payment...',
       rejected: 'Rejected',
       waiting_payment_confirmation: 'Waiting for Payment Confirmation',
       init_arbitrage: 'Init Arbitrage',
-      arbitrage: 'Under arbitrage',
-      sendContactMethod: 'Send contact method to arbitrage'
+      arbitrage: 'Under Arbitrage',
+      sendContactMethod: 'Send Contact Method to Arbitrage'
     },
     defaultTitle: 'Title'
   },
