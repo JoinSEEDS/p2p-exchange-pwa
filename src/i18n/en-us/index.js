@@ -11,7 +11,7 @@ export default {
       save: 'Save',
       confirm: 'Confirm',
       filter: 'Filter',
-      waiting: 'Waiting...',
+      waiting: 'Waiting for Seller to accept',
       make_payment: 'Make Payment',
       view_details: 'View Details',
       confirm_payment: 'Confirm Payment',
