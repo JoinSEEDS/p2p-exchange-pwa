@@ -130,11 +130,11 @@ class EncryptionApi extends BaseEosApi {
     if (messagesTable.rows.length === 0) return 'No contact method'
     var messageRow = messagesTable.rows.filter(r => r.buy_offer_id === parseInt(buyOfferId))
 
-    var messages
+    var messages = []
     if (arbiter) {
       messages = messagesTable.rows.filter(r => r.receiver === arbiter)
     } else {
-      messages.push(messageRow[0])
+      messages = [ messageRow[0] ]
     }
 
     let messagesList = []
