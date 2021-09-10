@@ -51,8 +51,8 @@
             dense
         ).custom-round
         init-arbitrage-button(
-        v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID && showArbitrage"
-        :buyOfferId="this.offer.id"
+          v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID && showArbitrage"
+          :buyOfferId="this.offer.id"
         ).full-width
         q-separator.full-width.q-my-sm(color="warning")
   #modals
