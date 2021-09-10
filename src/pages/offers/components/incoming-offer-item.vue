@@ -65,7 +65,7 @@
       dense
     ).custom-round
     .text-white.text-center.text-subtitle1(v-if="flagged") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
-    init-arbitrage-button(v-if="showArbitrage && (accepted || paid)" :buyOfferId="this.offer.id").custom-width
+    init-arbitrage-button(v-if="(showArbitrage && accepted) || paid" :buyOfferId="this.offer.id").custom-width
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
       buy-offer(:offer="offer")
