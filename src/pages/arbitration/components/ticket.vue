@@ -1,32 +1,33 @@
 <template lang="pug">
-#container.q-ma-sm.q-pa-sm
-  .row
-    q-avatar.purple-ticket
-      img(src="~/assets/arrows.svg")
-    .col.q-px-md.q-pb-sm
-        .text-weight-bold.text-white {{ $t('pages.arbitration.ticket') }} {{ ticket.offer_id }}
-        .text-white(v-if="offer") {{ $t('pages.arbitration.buyer', {buyer: offer.buyer }) }}
-        .text-white(v-if="offer") {{ $t('pages.arbitration.seller', {seller: offer.seller }) }}
-        .text-white.text-caption {{ TimeUtil.formatDateOnly(new Date(ticket.created_date)) }}
-  .row
-    .col
-        q-btn.full-width(
-            :label="$t('pages.arbitration.follow_up')"
-            color="accent"
-            size="md"
-            v-if="isAssignedTicket"
-            no-caps
-            @click="onFollowUp"
-        )
-        q-btn.full-width(
-            :label="$t('pages.arbitration.view_details')"
-            color="accent"
-            size="md"
-            no-caps
-            v-else
-            @click="onViewDetail"
-        )
-        q-separator.full-width.q-my-md(color="warning")
+#container
+  .q-pa-md
+    .row
+      q-avatar.purple-ticket
+        img(src="~/assets/arrows.svg")
+      .col.q-px-md.q-pb-sm
+          .text-weight-bold.text-white {{ $t('pages.arbitration.ticket') }} {{ ticket.offer_id }}
+          .text-white(v-if="offer") {{ $t('pages.arbitration.buyer', { buyer }) }}
+          .text-white(v-if="offer") {{ $t('pages.arbitration.seller', { seller }) }}
+          .text-white.text-caption {{ TimeUtil.formatDateOnly(new Date(ticket.created_date)) }}
+    .row.q-mt-sm
+      .col
+          q-btn.full-width(
+              :label="$t('pages.arbitration.follow_up')"
+              color="accent"
+              size="md"
+              v-if="isAssignedTicket"
+              no-caps
+              @click="onFollowUp"
+          )
+          q-btn.full-width(
+              :label="$t('pages.arbitration.view_details')"
+              color="accent"
+              size="md"
+              no-caps
+              v-else
+              @click="onViewDetail"
+          )
+          q-separator.full-width.q-my-md(color="warning")
 </template>
 
 <script>
@@ -45,15 +46,23 @@ export default {
       default: undefined
     }
   },
+  computed: {
+    buyer () {
+      return 'buyer'
+    },
+    seller () {
+      return 'seller'
+    }
+  },
   data () {
     return {
       offer: undefined,
       TimeUtil
     }
   },
-  async mounted () {
-    this.offer = await this.getOffer(this.ticket.offer_id)
-  },
+  // async mounted () {
+  //   this.offer = await this.getOffer(this.ticket.offer_id)
+  // },
   methods: {
     ...mapActions('buyOffers', ['getOffer']),
     ...mapActions('arbitration', ['setArbiterToOffer']),
@@ -67,7 +76,7 @@ export default {
       console.log('Follow-up')
     },
     onViewDetail () {
-      console.log('View Detail')
+      // console.log('View Detail')
       this.$router.push({ name: 'ticket', params: { id: this.ticket.offer_id } })
     }
   }

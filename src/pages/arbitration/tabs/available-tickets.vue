@@ -4,7 +4,7 @@
     #tickets-empty(v-if="ticketsRowsAreEmpty && loading")
       skeleton-tickets
     #no-data(v-if="ticketsRowsAreEmpty && !loading")
-      .text-h5.custom-font No Tickets Available
+      .text-h5.custom-font {{ $t('pages.arbitration.non_available') }}
     q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
       #containerScroll(ref="scrollTarget")
         #items(v-for="ticket in tickets.rows")
@@ -89,4 +89,5 @@ export default {
   align-items: center
 .custom-font
   font-family: 'SF Pro Display'
+  color: white
 </style>

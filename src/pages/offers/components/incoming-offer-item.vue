@@ -84,8 +84,11 @@ export default {
     this.percentage = percentage
     this.remaining = (remaining > 0) ? this.getHoursAndMinutes(remaining) : ''
 
-    const dateOfAccepted = this.offer.status_history.find(item => item.key === OfferStatus.BUY_OFFER_ACCEPTED).value
-    this.showArbitrage = await this.sellerCanInitArbitrage(dateOfAccepted)
+    const dateOfAccepted = this.offer.status_history.find(item => item.key === OfferStatus.BUY_OFFER_ACCEPTED)
+
+    if (dateOfAccepted) {
+      this.showArbitrage = await this.sellerCanInitArbitrage(dateOfAccepted.value)
+    }
     // console.log('showArbitrage', showArbitrage)
     if (this.flagged) {
       this.ticket = await this.getTicketById({ id: this.offer.id })
@@ -149,7 +152,7 @@ export default {
       return this.offer.current_status === OfferStatus.BUY_OFFER_ACCEPTED
     },
     quantity () {
-      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value || ''
     },
     rejected () {
       return this.offer.current_status === OfferStatus.BUY_OFFER_REJECTED
