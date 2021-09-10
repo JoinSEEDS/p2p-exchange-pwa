@@ -115,7 +115,7 @@ class ArbitrationApi extends BaseEosApi {
     const actions = [
       {
         account: Contracts.CONTRACT_P2P,
-        name: 'addoffermsg',
+        name: 'sendconmethd',
         data: {
           ...messageData
         }

@@ -102,10 +102,12 @@ export default {
       return this.ticket.seller_contact
     },
     buyer () {
-      return 'edwintestnet'
+      // return 'edwintestnet'
+      return this.ticket.buyer_contact[0].key
+      //  [ { "key": "edwintestne1", "value": 0 } ]
     },
     seller () {
-      return 'jmgayosso155'
+      return this.ticket.seller_contact[0].key
     },
     buyerContact () {
       return this.contacts.find(cont => cont.sender === this.buyer).message || 'No contact'
