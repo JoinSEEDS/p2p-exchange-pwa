@@ -134,7 +134,7 @@ class EncryptionApi extends BaseEosApi {
     if (arbiter) {
       messages = messagesTable.rows.filter(r => r.receiver === arbiter)
     } else {
-      messages = messageRow[0]
+      messages.push(messageRow[0])
     }
 
     let messagesList = []

@@ -121,7 +121,6 @@ class ArbitrationApi extends BaseEosApi {
         }
       }
     ]
-
     return this.eosApi.signTransaction(actions)
   }
 }
