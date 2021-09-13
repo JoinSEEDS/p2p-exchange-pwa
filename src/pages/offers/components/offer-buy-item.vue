@@ -138,7 +138,8 @@ export default {
     },
     async getIsContactMethodSent () {
       this.isContactMethodSent = await this.getIsContactMethodSentByAccount({
-        buyOfferId: this.offer.id
+        buyOfferId: this.offer.id,
+        isBuyer: true
       })
     }
   }

@@ -112,15 +112,19 @@ export const sendContactMethods = async function ({ commit }, { messageData }) {
   }
 }
 
-export const getIsContactMethodSentByAccount = async function ({ commit }, { buyOfferId }) {
+export const getIsContactMethodSentByAccount = async function ({ commit }, { buyOfferId, isBuyer }) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
-    const { rows } = await this.$arbitrationApi.getIsContactMethodSentByAccount({ buyOfferId, accountName })
+    const { rows } = await this.$arbitrationApi.getIsContactMethodSentByAccount({ buyOfferId })
     const ticket = rows[0]
     if (ticket) {
       if (accountName === ticket.buyer_contact[0].key) {
         if (ticket.buyer_contact[0].value === 1) {
+          return true
+        }
+      } else if (accountName === ticket.seller_contact[0].key) {
+        if (ticket.seller_contact[0].value === 1) {
           return true
         }
       } else return false
