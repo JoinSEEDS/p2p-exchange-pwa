@@ -53,9 +53,19 @@
       color="orange-8"
       class="text-cap"
       no-caps
-      v-if="arbitrageSendContact"
+      v-if="arbitrageSendContact && !isContactMethodSent"
       @click="sendContactMethodsMessage"
       dense
+    )
+    q-btn.custom-width.custom-round(
+      :label="$t('common.buttons.sentContactMethod')"
+      color="orange-8"
+      class="text-cap"
+      no-caps
+      v-if="arbitrageSendContact && isContactMethodSent"
+      @click="sendContactMethodsMessage"
+      dense
+      disable
     )
     q-btn.full-width(
       v-if="arbitragePending"
@@ -105,6 +115,8 @@ export default {
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
     })
+
+    this.getIsContactMethodSent()
   },
   beforeDestroy () {
     EventBus.$off('confirmOffer')
@@ -121,13 +133,14 @@ export default {
       },
       showArbitrage: false,
       percentage: 0,
-      ticket: undefined
+      ticket: undefined,
+      isContactMethodSent: false
     }
   },
   methods: {
     ...mapActions('encryption', ['createMessage']),
     ...mapActions('profiles', ['getPaypal', 'getContactMethod']),
-    ...mapActions('arbitration', ['getTicketById', 'sendContactMethods']),
+    ...mapActions('arbitration', ['getTicketById', 'sendContactMethods', 'getIsContactMethodSentByAccount']),
     getHoursAndMinutes (minutes) {
       this.hasRemainingTime = true
 
@@ -147,6 +160,11 @@ export default {
       } catch (error) {
         console.error(error)
       }
+    },
+    async getIsContactMethodSent () {
+      this.isContactMethodSent = await this.getIsContactMethodSentByAccount({
+        buyOfferId: this.offer.id
+      })
     }
   },
   computed: {

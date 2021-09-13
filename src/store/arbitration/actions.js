@@ -111,3 +111,27 @@ export const sendContactMethods = async function ({ commit }, { messageData }) {
     commit('general/setIsLoading', false, { root: true })
   }
 }
+
+export const getIsContactMethodSentByAccount = async function ({ commit }, { buyOfferId }) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const accountName = this.getters['accounts/account']
+    const { rows } = await this.$arbitrationApi.getIsContactMethodSentByAccount({ buyOfferId, accountName })
+    const ticket = rows[0]
+    if (ticket) {
+      if (accountName === ticket.buyer_contact[0].key) {
+        if (ticket.buyer_contact[0].value === 1) {
+          return true
+        }
+      } else return false
+    } else {
+      return false
+    }
+  } catch (e) {
+    console.error('An error ocurred while trying to get is contact method sent by account', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    return null
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}

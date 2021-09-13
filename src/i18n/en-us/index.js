@@ -21,7 +21,8 @@ export default {
       waiting_payment_confirmation: 'Waiting for Payment Confirmation',
       init_arbitrage: 'Init Arbitrage',
       arbitrage: 'Under Arbitrage',
-      sendContactMethod: 'Send Contact Method to Arbitrage'
+      sendContactMethod: 'Send Contact Method to Arbitrage',
+      sentContactMethod: 'Waiting for arbitrage resolution'
     },
     defaultTitle: 'Title'
   },

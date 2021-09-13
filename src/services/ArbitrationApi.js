@@ -123,5 +123,15 @@ class ArbitrationApi extends BaseEosApi {
     ]
     return this.eosApi.signTransaction(actions)
   }
+
+  getIsContactMethodSentByAccount ({ buyOfferId, accountName }) {
+    return this._getTableRows({
+      indexPosition: 1,
+      lowerBound: buyOfferId,
+      upperBound: buyOfferId,
+      limit: 1,
+      keyType: 'i64'
+    })
+  }
 }
 export default ArbitrationApi

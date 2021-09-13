@@ -35,14 +35,29 @@
             disable
         ).custom-round
         q-btn.full-width(
-            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_INPROGRESS"
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_INPROGRESS && !isContactMethodSent"
             :label="$t('common.buttons.sendContactMethod')"
             color="orange-8"
             @click="sendContactMethodsMessage"
             no-caps
             dense
         ).custom-round
+        q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_INPROGRESS && isContactMethodSent"
+            :label="$t('common.buttons.sentContactMethod')"
+            color="orange-8"
+            no-caps
+            dense
+            disable
+        ).custom-round
         .text-white.text-center.text-subtitle1(v-if="flagged") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
+        //- q-btn.full-width(
+        //-   v-if="arbitragePending"
+        //-   :label="$t('common.buttons.arbitrage')"
+        //-   color="orange-8"
+        //-   disabled
+        //-   dense
+        //- ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
             :label="$t('common.buttons.arbitrage')"
@@ -81,7 +96,8 @@ export default {
       OfferStatus,
       waiting: false,
       showArbitrage: false,
-      ticket: undefined
+      ticket: undefined,
+      isContactMethodSent: false
     }
   },
   async mounted () {
@@ -93,6 +109,7 @@ export default {
     if (this.flagged) {
       this.ticket = await this.getTicketById({ id: this.offer.id })
     }
+    this.getIsContactMethodSent()
   },
   computed: {
     flagged () {
@@ -108,7 +125,7 @@ export default {
   methods: {
     ...mapActions('encryption', ['createMessage']),
     ...mapActions('profiles', ['getPaypal', 'getContactMethod']),
-    ...mapActions('arbitration', ['getTicketById', 'sendContactMethods']),
+    ...mapActions('arbitration', ['getTicketById', 'sendContactMethods', 'getIsContactMethodSentByAccount']),
     async sendContactMethodsMessage () {
       try {
         let ticket = await this.getTicketById({ id: this.offer.id })
@@ -118,6 +135,11 @@ export default {
       } catch (error) {
         console.error(error)
       }
+    },
+    async getIsContactMethodSent () {
+      this.isContactMethodSent = await this.getIsContactMethodSentByAccount({
+        buyOfferId: this.offer.id
+      })
     }
   }
 }
