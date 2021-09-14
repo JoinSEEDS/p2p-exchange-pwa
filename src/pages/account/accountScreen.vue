@@ -1,6 +1,7 @@
 <template lang="pug">
  #container
-    q-icon.cursor-pointer(v-if="isP2PProfileCompleted" name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
+  .q-pa-md
+    q-icon.cursor-pointer(v-if="isP2PProfileCompleted" name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: isArbiter ? 'arbitration' : 'dashboard' })")
     .row.justify-center
       img.logoImg(src="../../statics/backgrounds/simple_logo.svg")
     .row.justify-center
@@ -44,18 +45,39 @@
             lazy-rules
             :rules="[rules.required]"
           )
-          //- q-select(
-          //-   label="Preferred Contact Method"
-          //-   v-model="params.contactMethods"
-          //-   outlined
-          //-   dark
-          //-   standout="text-accent"
-          //-   :options="options.contactMethods"
-          //-   emit-value
-          //-   map-options
-          //-   color="white"
-          //-   :rules="[rules.required]"
-          //- )
+          q-select(
+            label="Preferred Contact Method"
+            v-model="params.selectedContactMethod"
+            outlined
+            dark
+            standout="text-accent"
+            :options="options.contactMethods"
+            emit-value
+            map-options
+            color="white"
+            :rules="[rules.required]"
+          )
+          #contactMethods(v-if="params.selectedContactMethod")
+            q-input(
+              v-if="params.selectedContactMethod === 'signal'"
+              :label="$t('pages.account.signal')"
+              v-model="params.contactMethods.signal"
+              outlined
+              dark
+              standout="text-accent"
+              :rules="[rules.required, rules.internationalNumber]"
+              autocomplete="off"
+            )
+            q-input(
+              v-else-if="params.selectedContactMethod === 'email'"
+              :label="$t('pages.account.email')"
+              v-model="params.contactMethods.email"
+              outlined
+              dark
+              standout="text-accent"
+              :rules="[rules.required, rules.email]"
+              autocomplete="off"
+            )
           q-separator.full-width(dark)
           .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
           q-input(
@@ -81,7 +103,7 @@
               :label="$t('common.buttons.save')"
               color="accent"
               type="submit"
-            )
+            ).custom-round
 </template>
 
 <script>
@@ -100,19 +122,23 @@ export default {
       params: {
         nickname: undefined,
         fiatCurrency: undefined,
-        contactMethods: undefined,
+        selectedContactMethod: undefined,
+        contactMethods: {
+          signal: undefined,
+          email: undefined
+        },
         paypalLink: undefined,
         timeZone: undefined
       },
       options: {
         contactMethods: [
           {
-            label: 'Email',
-            value: 'email'
+            label: 'Signal Number',
+            value: 'signal'
           },
           {
-            label: 'Cellphone',
-            value: 'cellphone'
+            label: 'Email',
+            value: 'email'
           }
         ]
       }
@@ -125,6 +151,7 @@ export default {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
     ...mapGetters('accounts', ['isP2PProfileCompleted']),
     ...mapGetters('profiles', ['isLoggedIn']),
+    ...mapGetters('accounts', ['isArbiter']),
     commonCurrenciesOptions () {
       const options = []
       for (let currency in CommonCurrencies) {
@@ -146,7 +173,7 @@ export default {
   },
   methods: {
     ...mapActions('accounts', ['saveAccountData', 'getPublicKey']),
-    ...mapActions('profiles', ['signUp', 'signIn', 'getPaypal', 'isRegistered', 'getPrivateKey']),
+    ...mapActions('profiles', ['signUp', 'signIn', 'isRegistered', 'getPrivateKey', 'getProfile']),
     ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
     ...mapMutations('general', ['setIsLoading']),
     async loadProfileData () {
@@ -159,15 +186,30 @@ export default {
         return
       }
 
-      let paypal = (isRegistered) ? await this.getPaypal() : ''
+      let PPPprofile = await this.getProfile()
+      console.log('PPPprofile', PPPprofile)
+
+      // let paypal = (isRegistered) ? await this.getPaypal() : ''
       this.params = {
+        ...this.params,
         nickname: this.seedsAccount.nickname,
         fiatCurrency: this.p2pAccount.fiat_currency,
-        contactMethods: undefined,
-        paypalLink: paypal.replace(this.paypalBase, ''),
+        selectedContactMethod: undefined,
         timeZone: this.p2pAccount.time_zone
       }
-      paypal = undefined
+
+      if (isRegistered && PPPprofile.appData.privateData && PPPprofile.appData.privateData.prefContactMeth) {
+        this.params = {
+          ...this.params,
+          paypalLink: PPPprofile.appData.privateData.paypal.replace(this.paypalBase, ''),
+          selectedContactMethod: PPPprofile.appData.privateData.prefContactMeth,
+          contactMethods: {
+            [PPPprofile.appData.privateData.prefContactMeth]: PPPprofile.appData.privateData.prefContactMethValue
+          }
+        }
+      }
+      // paypal = undefined
+      PPPprofile = undefined
       this.setIsLoading(false)
     },
     async onSubmitForm () {
@@ -187,13 +229,22 @@ export default {
           privateKey = await this.getPrivateKey()
         }
         this.setIsLoading(true)
+        let prefContactMethValue
+        if (this.params.selectedContactMethod === 'signal') {
+          prefContactMethValue = this.params.contactMethods.signal
+        } else if (this.params.selectedContactMethod === 'email') {
+          prefContactMethValue = this.params.contactMethods.email
+        }
+
         const mData = {
           [RootFields.NAME]: this.params.nickname,
           [RootFields.EMAIL]: 'email@email.com',
           appData: {
             privateData: {
               privateKey,
-              paypal: this.paypalBase + this.params.paypalLink
+              paypal: this.paypalBase + this.params.paypalLink,
+              prefContactMeth: this.params.selectedContactMethod,
+              prefContactMethValue
             }
           }
         }
@@ -204,15 +255,16 @@ export default {
           fiatCurrency: this.params.fiatCurrency,
           publicKey
         }) // Savev public data in contract
+        this.setIsLoading(true)
         publicKey = null // Delete publicKey after save
         await this.signUp(mData) // Save private key in PPP service
         this.setIsLoading(true)
         privateKey = null
-        await this.$router.push({ path: '/dashboard' })
+        this.isArbiter ? await this.$router.push({ path: '/arbitration' }) : await this.$router.push({ path: '/dashboard' })
         await this.showSuccessMsg(this.$t('pages.account.saved'))
         this.setIsLoading(false)
       } catch (error) {
-
+        this.setIsLoading(false)
       }
     },
     openPayPalLink () {
@@ -231,5 +283,4 @@ export default {
   bottom: 0px
 .linkBtn:hover
   color: $accent
-
 </style>

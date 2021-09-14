@@ -1,5 +1,6 @@
 <template lang="pug">
 #container
+  .q-pa-md
     q-tab-panels.panelContainer(
         v-model="tab"
         animated
@@ -61,7 +62,7 @@ export default {
 #container
     display: flex
     flex-direction: column
-    padding: 0px
+    // padding: 0px
 
 .panelContainer
     flex: 1

@@ -25,11 +25,13 @@
             :label="$t('common.buttons.confirm')"
             color="accent"
             @click="$emit('confirm')"
+            no-caps
         )
         q-btn.full-width(
             :label="$t('common.buttons.cancel')"
             color="negative"
             v-close-popup
+            no-caps
         )
 </template>
 

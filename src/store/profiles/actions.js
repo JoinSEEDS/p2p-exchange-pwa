@@ -1,6 +1,7 @@
 import PPP from '@smontero/ppp-client-api'
 
 export const signUp = async function ({ state }, mData) {
+  // console.log('signUp!', mData)
   PPP.setActiveUser(this.$ualUser)
   const profileApi = PPP.profileApi()
   return profileApi.register(mData)
@@ -19,6 +20,14 @@ export const getPaypal = async function ({ state }) {
   const profileApi = PPP.profileApi()
   const profile = await profileApi.getProfile()
   return (profile && profile.appData && profile.appData.privateData) ? profile.appData.privateData.paypal : ''
+}
+export const getContactMethod = async function ({ state }) {
+  const profileApi = PPP.profileApi()
+  const profile = await profileApi.getProfile()
+  if ((profile && profile.appData && profile.appData.privateData)) {
+    return `${profile.appData.privateData.prefContactMeth}/${profile.appData.privateData.prefContactMethValue}`
+  }
+  return undefined
 }
 export const getPrivateKey = async function ({ state }) {
   const profileApi = PPP.profileApi()
@@ -52,7 +61,7 @@ export const getProfile = async function ({ commit }) {
   const profileApi = PPP.profileApi()
   try {
     const profile = await profileApi.getProfile()
-    commit('setProfile', profile)
+    // commit('setProfile', profile)
     return profile
   } catch (error) {
     commit('general/setErrorMsg', error.message || error, { root: true })

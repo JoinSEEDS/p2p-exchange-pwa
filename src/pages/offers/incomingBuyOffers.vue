@@ -1,32 +1,33 @@
 <template lang="pug">
   #containerIncomingOffers(v-if="offer")
-    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions', subTab: 'sale' } })")
-    .subtitle.text-white.q-mt-sm {{ $t('pages.incoming_offers.incoming_offers') }}
-    #offerData
-      .col.text-center.q-my-md
-        .text-white.text-h5 {{ offered }}
-        hr.custom-size.q-my-sm
-        .text-white.text-h5 ${{ equivalentFiat }}
-      .col
-        .text-green {{ $t('pages.incoming_offers.percentage') }}:
-          span.text-white  {{ priceper }}%
-        .text-green {{ $t('pages.incoming_offers.sold') }}:
-          span.text-white  {{ sold }}
-          q-icon(name="arrow_upward" color="red").q-ml-sm
-    q-separator(color="warning").q-my-sm
-    .subtitle.text-white.q-my-sm {{ $t('pages.incoming_offers.proposals') }}
-    #containerList
-      #noData(v-if="incomingOffers.rows.length === 0").text-center
-        .text-h6.text-white.custom-font {{ $t('pages.incoming_offers.no_offers') }}
-        .text-white.custom-font {{ $t('pages.incoming_offers.not_yet') }}
-      q-pull-to-refresh(@refresh="refresh")
-        #offersEmpty(v-if="incomingOffers.length === 0 && loading")
-          skeleton-offer-item
-        q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
-          #containerScroll(ref="scrollTarget")
-            #items(v-for="(offer, index) in incomingOffers.rows")
-              incoming-offer-item(:offer="offer")
-              q-separator.full-width.q-my-sm(color="warning" v-if="index + 1 != incomingOffers.length")
+    .q-pa-md
+      q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard', params: { tab: 'transactions', subTab: 'sale' } })")
+      .subtitle.text-white.q-mt-sm {{ $t('pages.incoming_offers.incoming_offers') }}
+      #offerData
+        .col.text-center.q-my-md
+          .text-white.text-h5 {{ offered }}
+          hr.custom-size.q-my-sm
+          .text-white.text-h5 ${{ equivalentFiat }}
+        .col
+          .text-green {{ $t('pages.incoming_offers.percentage') }}:
+            span.text-white  {{ priceper }}%
+          .text-green {{ $t('pages.incoming_offers.sold') }}:
+            span.text-white  {{ sold }}
+            q-icon(name="arrow_upward" color="red").q-ml-sm
+      q-separator(color="warning").q-my-sm
+      .subtitle.text-white.q-my-sm {{ $t('pages.incoming_offers.proposals') }}
+      #containerList
+        #noData(v-if="incomingOffers.rows.length === 0").text-center
+          .text-h6.text-white.custom-font {{ $t('pages.incoming_offers.no_offers') }}
+          .text-white.custom-font {{ $t('pages.incoming_offers.not_yet') }}
+        q-pull-to-refresh(@refresh="refresh")
+          #offersEmpty(v-if="incomingOffers.length === 0 && loading")
+            skeleton-offer-item
+          q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+            #containerScroll(ref="scrollTarget")
+              #items(v-for="(offer, index) in incomingOffers.rows")
+                incoming-offer-item(:offer="offer")
+                q-separator.full-width.q-my-sm(color="warning" v-if="index + 1 != incomingOffers.length")
 </template>
 
 <script>
@@ -151,7 +152,7 @@ export default {
   #containerIncomingOffers
     display: flex
     flex-direction: column
-    padding: 10% 5%
+    // padding: 10% 5%
   #containerScroll
     overflow: auto
     flex: 1

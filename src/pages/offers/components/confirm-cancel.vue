@@ -9,9 +9,9 @@
           .text-dark {{ $t('pages.buy.confirm_cancel') }}
       .row.q-my-sm.q-gutter-md
         .col
-          q-btn(color="red" :label="$t('common.buttons.dismiss')" v-close-popup).full-width
+          q-btn(color="red" :label="$t('common.buttons.dismiss')" v-close-popup no-caps).full-width
         .col
-          q-btn(color="green" :label="$t('common.buttons.confirm')" @click="cancelOffer()").full-width
+          q-btn(color="green" :label="$t('common.buttons.confirm')" @click="cancelOffer()" no-caps).full-width
 </template>
 
 <script>
