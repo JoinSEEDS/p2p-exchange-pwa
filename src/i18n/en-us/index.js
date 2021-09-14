@@ -220,9 +220,14 @@ export default {
       explain_reasons: 'Please explain the reasons of the judgement*:',
       sure_close_ticket: 'Are you sure to close Ticket {id}? this action cannot be reversed.',
       contact_methods_sent: 'Contact methods sent to arbiter',
+      arbitrage_inited: 'Arbitrage initiated successfully',
       payment_method_available: 'Payment method not available',
       flagged_to: 'Arbitrage resolved to: ',
-      non_available: 'No Tickets Available'
+      non_available: 'No Tickets Available',
+      ticket_taken: 'Ticket taken successfully',
+      resolved_buyer: 'Resolved to buyer successfully',
+      resolved_seller: 'Resolved to seller successfully',
+      select_favor: 'You must select a user (seller / buyer) for the resolution'
     }
   }
 }

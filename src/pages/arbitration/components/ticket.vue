@@ -68,8 +68,10 @@ export default {
     ...mapActions('arbitration', ['setArbiterToOffer']),
     async onFollowUp () {
       try {
-        const response = await this.setArbiterToOffer({ offerId: this.ticket.offer_id })
-        this.showTransactionId(response.transactionId)
+        // const response = await this.setArbiterToOffer({ offerId: this.ticket.offer_id })
+        // this.showTransactionId(response.transactionId)
+        await this.setArbiterToOffer({ offerId: this.ticket.offer_id })
+        this.showSuccessMsg(this.$root.$t('pages.arbitration.ticket_taken'))
       } catch (e) {
 
       }

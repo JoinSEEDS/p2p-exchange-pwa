@@ -24,8 +24,10 @@ export default {
     ...mapActions('arbitration', ['initArbiter']),
     async initArbitrage () {
       try {
-        const response = await this.initArbiter({ offerId: this.buyOfferId })
-        this.showTransactionId(response.transactionId)
+        // const response = await this.initArbiter({ offerId: this.buyOfferId })
+        // this.showTransactionId(response.transactionId)
+        await this.initArbiter({ offerId: this.buyOfferId })
+        this.showSuccessMsg(this.$root.$t('pages.arbitration.arbitrage_inited'))
       } catch (e) {
       }
     }

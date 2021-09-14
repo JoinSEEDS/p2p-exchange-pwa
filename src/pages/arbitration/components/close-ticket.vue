@@ -80,11 +80,15 @@ export default {
         if (this.params.favor === 'buyer') {
           await this.resolveToBuyer({ offerId: this.getOfferId, notes: this.params.notes })
           this.$emit('close-ticket')
-          this.$q.notify({ type: 'positive', message: 'Resolved to buyer correctly' })
+          // this.$q.notify({ type: 'positive', message: 'Resolved to buyer correctly' })
+          this.showSuccessMsg(this.$root.$t('pages.arbitration.resolved_buyer'))
         } else if (this.params.favor === 'seller') {
           await this.resolveToSeller({ offerId: this.getOfferId, notes: this.params.notes })
           this.$emit('close-ticket')
-          this.$q.notify({ type: 'positive', message: 'Resolved to seller correctly' })
+          this.showSuccessMsg(this.$root.$t('pages.arbitration.resolved_seller'))
+          // this.$q.notify({ type: 'positive', message: 'Resolved to seller correctly' })
+        } else {
+          this.showErrorMsg(this.$root.$t('pages.arbitration.select_favor'))
         }
       } catch (e) {
       }
