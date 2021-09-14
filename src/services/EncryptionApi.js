@@ -149,7 +149,7 @@ class EncryptionApi extends BaseEosApi {
       messagesList.push(plainMsg)
     }
 
-    return messagesList.length > 1 ? messagesList : messagesList[0]
+    return messagesList
   }
 
   async decryptMessage ({

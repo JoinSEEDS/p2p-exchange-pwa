@@ -70,12 +70,14 @@ export default {
       contacts: []
     }
   },
-  async mounted () {
+  async beforeMount () {
     this.ticket = await this.getTicketById({ id: this.offerId })
     this.offer = await this.getOffer(this.offerId)
     this.setOfferId(this.offerId)
 
     this.contacts = await this.receiveContactMethods({ buyOfferId: this.offerId })
+    console.log('conts', this.contacts)
+    console.log(this.buyer, this.seller)
   },
   computed: {
     offerId () {
@@ -102,18 +104,18 @@ export default {
       return this.ticket.seller_contact
     },
     buyer () {
-      // return 'edwintestnet'
       return this.ticket.buyer_contact[0].key
-      //  [ { "key": "edwintestne1", "value": 0 } ]
     },
     seller () {
       return this.ticket.seller_contact[0].key
     },
     buyerContact () {
-      return this.contacts.find(cont => cont.sender === this.buyer).message || 'No contact'
+      return this.contacts.find(cont => cont.sender === this.buyer) ? this.contacts.find(cont => cont.sender === this.buyer).message : 'No contact'
+      // return 'No contact'
     },
     sellerContact () {
-      return this.contacts.find(cont => cont.sender === this.seller).message || 'No contact'
+      // return 'No contact'
+      return this.contacts.find(cont => cont.sender === this.seller) ? this.contacts.find(cont => cont.sender === this.seller).message : 'No contact'
     }
   },
   methods: {

@@ -33,7 +33,7 @@ export const receiveMessage = async function ({ commit, dispatch }, { buyOfferId
     commit('general/setIsLoading', true, { root: true })
     const recipientPrivateKey = await dispatch('profiles/getPrivateKey', {}, { root: true })
     const response = await this.$encrypionApi.receiveMessage({ recipientPrivateKey, buyOfferId })
-    return response
+    return response[0]
   } catch (e) {
     console.error('An error ocurred while trying to do a deposit', e)
     commit('general/setErrorMsg', e.message || e, { root: true })
