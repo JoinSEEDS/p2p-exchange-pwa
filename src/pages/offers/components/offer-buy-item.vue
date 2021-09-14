@@ -51,13 +51,13 @@
             disable
         ).custom-round
         .text-white.text-center.text-subtitle1(v-if="flagged") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
-        //- q-btn.full-width(
-        //-   v-if="arbitragePending"
-        //-   :label="$t('common.buttons.arbitrage')"
-        //-   color="orange-8"
-        //-   disabled
-        //-   dense
-        //- ).custom-round
+        q-btn.full-width(
+          v-if="arbitragePending"
+          :label="$t('common.buttons.arbitrage')"
+          color="orange-8"
+          disabled
+          dense
+        ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
             :label="$t('common.buttons.arbitrage')"
@@ -120,6 +120,9 @@ export default {
         return v.key === 'buyquantity'
       })
       return buyQuantity.value || 'UNKNOWN'
+    },
+    arbitragePending () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_PENDING
     }
   },
   methods: {
