@@ -50,7 +50,7 @@
             dense
             disable
         ).custom-round
-        .text-white.text-center.text-subtitle1(v-if="flagged") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
+        .text-white.text-center.text-subtitle1(v-if="flagged && ticket") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
         q-btn.full-width(
           v-if="arbitragePending"
           :label="$t('common.buttons.arbitrage')"
