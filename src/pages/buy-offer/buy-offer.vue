@@ -32,9 +32,15 @@
         .col-12.text-h6.text-center.text-dark {{ currentFiatCurrency.toUpperCase() }}
       .row.q-my-md
         small.text-red.text-bold(v-if="paid || accepted") {{ $t('pages.sell.confirm_payment') }}
-      q-btn(v-if="pending" label="Accept offer" color="accent" @click="confOffer()").full-width.q-my-sm.custon-btn.custom-round
-      q-btn(v-if="pending" label="Reject offer" color="negative" @click="rejectOff()").full-width.q-my-sm.custon-btn.custom-round
-      q-btn(v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="() => confirmPaym()" v-close-popup).full-width.q-my-sm.custon-btn.custom-round
+      q-btn(
+        no-caps
+        v-if="pending"
+        label="Accept offer"
+        color="accent"
+        @click="confOffer()"
+      ).full-width.custom-round
+      q-btn(no-caps v-if="pending" label="Reject offer" color="negative" @click="rejectOff()").full-width.q-my-sm.custom-round
+      q-btn(no-caps v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="() => confirmPaym()" v-close-popup).full-width.q-my-sm.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
       //- #modals
       //-   q-dialog(v-model="showConfirm" transition-show="slide-up" transition-hide="slide-down")
@@ -152,8 +158,6 @@ export default {
     padding: 0px !important
   .btn-img
     width: 50px
-  .custon-btn
-    height: 50px
   .btn-img-container
     height: 100% !important
     border-top-left-radius: 5px

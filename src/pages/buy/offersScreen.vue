@@ -1,22 +1,23 @@
 <template lang="pug">
-#container
-  q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
-  .row.justify-between
-    .subtitle.text-white.q-mt-md {{ $t('pages.buy.buySeeds') }}
-    green-flat-btn(:label="$t('common.buttons.filter')" @click="showFilter = true")
-  .row.justify-start(v-if="filter.filterValue.label")
-    .text-info Filtered by {{ filter.filterLabel.label }} : {{ filter.filterValue.label }}
-    q-icon.q-ml-sm(name="close" color="white" @click="removeFilter")
-  #offersEmpty(v-if="offersList.rows.length === 0 && loading")
-    skeleton-offer-item
-  q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
-    #containerScroll(ref="scrollTarget")
-      q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="200" :scroll-target="$refs.scrollTarget" ref="customInfinite")
-        #items(v-for="offer in offersList.rows")
-          offer-item(:offer="offer" v-if="offer.seller !== account && offer.current_status !== OfferStatus.SELL_OFFER_SOLDOUT")
-  #modals
-    q-dialog(v-model="showFilter" transition-show="slide-up" transition-hide="slide-down" persistent)
-      filter-offer(:filter="filter" @success="onFilterChange")
+#container.q-pa-md
+  .q-pa-md
+    q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace({ name: 'dashboard' })")
+    .row.justify-between
+      .subtitle.text-white.q-mt-md {{ $t('pages.buy.buySeeds') }}
+      green-flat-btn(:label="$t('common.buttons.filter')" @click="showFilter = true")
+    .row.justify-start(v-if="filter.filterValue.label")
+      .text-info Filtered by {{ filter.filterLabel.label }} : {{ filter.filterValue.label }}
+      q-icon.q-ml-sm(name="close" color="white" @click="removeFilter")
+    #offersEmpty(v-if="offersList.rows.length === 0 && loading")
+      skeleton-offer-item
+    q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
+      #containerScroll(ref="scrollTarget")
+        q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="200" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+          #items(v-for="offer in offersList.rows")
+            offer-item(:offer="offer" v-if="offer.seller !== account && offer.current_status !== OfferStatus.SELL_OFFER_SOLDOUT")
+    #modals
+      q-dialog(v-model="showFilter" transition-show="slide-up" transition-hide="slide-down" persistent)
+        filter-offer(:filter="filter" @success="onFilterChange")
 </template>
 
 <script>

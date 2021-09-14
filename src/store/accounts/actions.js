@@ -62,8 +62,11 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       commit('setPaypal', paypal)
 
       console.log('paypal', paypal)
-
-      this.$router.push({ path: returnUrl || '/dashboard' })
+      let isArbiter
+      if (this.getters['accounts/isP2PProfileCompleted']) {
+        isArbiter = this.getters['accounts/isArbiter']
+      }
+      isArbiter ? this.$router.push({ path: '/arbitration' }) : this.$router.push({ path: returnUrl || '/dashboard' })
 
       return this.$ualUser
     }

@@ -1,5 +1,6 @@
 <template lang="pug">
 #container
+  .q-pa-md
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace('/offers')")
     q-form.q-gutter-md.q-mt-sm(@submit.event="onValidForm")
         .subtitle.text-white.q-mt-md {{ $t('pages.buy.offerDetail') }}
@@ -202,4 +203,6 @@ export default {
   font-weight: bolder
 .container-current
   border-radius: 10px
+// .q-pextra
+//   padding: 36px
 </style>

@@ -8,6 +8,7 @@ import { PrivateKey } from 'eosjs/dist/PrivateKey'
 
 const crypto = require('crypto')
 import shajs from 'sha.js'
+// import { tmpdir } from 'os'
 const EC = require('elliptic').ec
 
 class EncryptionApi extends BaseEosApi {
@@ -108,7 +109,8 @@ class EncryptionApi extends BaseEosApi {
 
   async receiveMessage ({
     recipientPrivateKey,
-    buyOfferId
+    buyOfferId,
+    arbiter
   }) {
     // eslint-disable-next-line no-undef
     let idxValue = BigInt(BigInt(buyOfferId) * BigInt(2 ** 64)).toString()
@@ -121,13 +123,40 @@ class EncryptionApi extends BaseEosApi {
       indexPosition: 2,
       keyType: 'i128',
       lowerBound: idxValue,
-      upperBound: idxValueU,
-      limit: 1
+      upperBound: idxValueU
+      // limit: 1
     })
 
-    if (messagesTable.rows.length === 0) return 'No paypal'
-    const messageRow = messagesTable.rows.filter(r => r.buy_offer_id === parseInt(buyOfferId))
-    const message = messageRow[0]
+    if (messagesTable.rows.length === 0) return 'No contact method'
+    var messageRow = messagesTable.rows.filter(r => r.buy_offer_id === parseInt(buyOfferId))
+
+    var messages = []
+    if (arbiter) {
+      messages = messagesTable.rows.filter(r => r.receiver === arbiter)
+    } else {
+      messages = [ messageRow[0] ]
+    }
+
+    let messagesList = []
+
+    for (let message of messages) {
+      console.log('MESSAGE TO DECRYPT', message)
+      let plainMsg = await this.decryptMessage({
+        message,
+        recipientPrivateKey,
+        arbiter
+      })
+      messagesList.push(plainMsg)
+    }
+
+    return messagesList.length > 1 ? messagesList : messagesList[0]
+  }
+
+  async decryptMessage ({
+    message,
+    recipientPrivateKey,
+    arbiter
+  }) {
     const rcptKey = PrivateKey.fromString(recipientPrivateKey).toElliptic()
 
     let ephemPublicKey = PublicKey.fromString(message.ephem_key)
@@ -159,7 +188,7 @@ class EncryptionApi extends BaseEosApi {
       let secondChunk = cipher.final()
       let plaintext = Buffer.concat([firstChunk, secondChunk])
 
-      return plaintext.toString()
+      return arbiter ? { message: plaintext.toString(), sender: message.sender } : plaintext.toString()
     }
   }
 }

@@ -13,11 +13,13 @@ q-dialog(
         flat
         :label="$t('common.buttons.cancel')"
         @click="onCancel"
+        no-caps
       )
       q-btn(
         color="primary"
         :label="$t('common.buttons.confirm')"
         @click="onConfirmed"
+        no-caps
       )
 </template>
 

@@ -11,14 +11,18 @@ export default {
       save: 'Save',
       confirm: 'Confirm',
       filter: 'Filter',
-      waiting: 'Waiting...',
+      waiting: 'Waiting for Seller to accept',
       make_payment: 'Make Payment',
       view_details: 'View Details',
-      confirm_payment: 'Confirm payment',
+      confirm_payment: 'Confirm Payment',
       dismiss: 'Dismiss',
-      waiting_payment: 'Waiting for payment...',
+      waiting_payment: 'Waiting for Payment...',
       rejected: 'Rejected',
-      waiting_payment_confirmation: 'Waiting for Payment Confirmation'
+      waiting_payment_confirmation: 'Waiting for Payment Confirmation',
+      init_arbitrage: 'Init Arbitrage',
+      arbitrage: 'Under Arbitrage',
+      sendContactMethod: 'Send Contact Method to Arbitrage',
+      sentContactMethod: 'Waiting for arbitrage resolution'
     },
     defaultTitle: 'Title'
   },
@@ -39,7 +43,9 @@ export default {
       token: 'The field must contain between 2 and 6 characters',
       tokenDecimals: 'The decimals must be between 2 and 9',
       minZero: 'This field must be greater than 0',
-      maxSeedsAvailable: 'This field must be less or equal than {amount}'
+      maxSeedsAvailable: 'This field must be less or equal than {amount}',
+      email: 'The field is not a valid email',
+      internationalNumber: 'The field is not a valid number phone'
     }
   },
   menu: {
@@ -77,7 +83,9 @@ export default {
       paypalLink: 'Paypal Link',
       enterPaypalLink: 'Enter your paypal link',
       hintPaypal: 'Open link to confirm you write your profile link correctly',
-      saved: 'Account saved succesfully'
+      saved: 'Account saved succesfully',
+      email: 'Email',
+      signal: 'Signal Number'
     },
     mainTab: {
       seeds: 'Seeds',
@@ -137,7 +145,8 @@ export default {
       amountOfCrypto: 'Enter the amount of seeds to buy',
       cancel: 'Cancel buy offer',
       confirm_cancel: 'Are you sure of canceling this offer?',
-      existing_offer: 'An offer already exists for this sale offer'
+      existing_offer: 'An offer already exists for this sale offer',
+      buyer: 'Buyer'
     },
     deposit: {
       deposit: 'Deposit',
@@ -189,13 +198,31 @@ export default {
       time_zone: 'Time zone'
     },
     incoming_offers: {
-      incoming_offers: 'Buy offers',
+      incoming_offers: 'Details of my sale offer',
       proposals: 'Purchase proposals',
       percentage: 'Percentage',
       sold: 'Sold',
       no_offers: 'This sell offer has not',
       not_yet: 'Purchase offers yet',
       finished: 'Finished successfully'
+    },
+    arbitration: {
+      arbitration: 'Arbitration',
+      available: 'Available',
+      assigned: 'Assigned',
+      ticket: 'Ticket',
+      buyer: 'Buyer: {buyer}',
+      seller: 'Seller: {seller}',
+      follow_up: 'Follow Up',
+      view_details: 'View details',
+      close_ticket: 'Close ticket',
+      close_ticket_favor: 'Close ticket in favor of:',
+      explain_reasons: 'Please explain the reasons of the judgement*:',
+      sure_close_ticket: 'Are you sure to close Ticket {id}? this action cannot be reversed.',
+      contact_methods_sent: 'Contact methods sent to arbiter',
+      payment_method_available: 'Payment method not available',
+      flagged_to: 'Flagged to: ',
+      non_available: 'No Tickets Available'
     }
   }
 }

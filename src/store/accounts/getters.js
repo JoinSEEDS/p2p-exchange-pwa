@@ -33,3 +33,4 @@ export const pricePerSeedOnEUR = ({ currentSeedsPerUsd, fiatExchanges }) => {
 export const fiatExchanges = ({ fiatExchanges }) => {
   return fiatExchanges
 }
+export const isArbiter = ({ p2pAccount }) => p2pAccount.is_arbiter
