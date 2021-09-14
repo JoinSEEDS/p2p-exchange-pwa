@@ -28,6 +28,7 @@ export default {
     async cancelOffer () {
       await this.cancelBuyOffer({ buyOfferId: this.id })
       EventBus.$emit('canceled')
+      EventBus.$emit('confirmOffer')
       this.$emit('canceledBtn')
     }
   }

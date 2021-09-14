@@ -81,6 +81,7 @@ import { mapActions } from 'vuex'
 import { OfferStatus } from '~/const/OfferStatus'
 import WaitingApproval from './waiting-approval.vue'
 import InitArbitrageButton from '~/components/init-arbitrage-button'
+import { EventBus } from '~/event-bus.js'
 
 export default {
   name: 'offer-buy-item',
@@ -134,6 +135,7 @@ export default {
         let ticket = await this.getTicketById({ id: this.offer.id })
         let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getContactMethod(), recipientAccount: ticket.arbiter })
         await this.sendContactMethods({ messageData })
+        EventBus.$emit('confirmOffer')
         this.showSuccessMsg(this.$root.$t('pages.arbitration.contact_methods_sent'))
       } catch (error) {
         console.error(error)
