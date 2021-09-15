@@ -70,8 +70,12 @@ export default {
       try {
         // const response = await this.setArbiterToOffer({ offerId: this.ticket.offer_id })
         // this.showTransactionId(response.transactionId)
-        await this.setArbiterToOffer({ offerId: this.ticket.offer_id })
-        this.showSuccessMsg(this.$root.$t('pages.arbitration.ticket_taken'))
+        const response = await this.setArbiterToOffer({ offerId: this.ticket.offer_id })
+
+        if (response) {
+          this.showSuccessMsg(this.$root.$t('pages.arbitration.ticket_taken'))
+          this.$emit('tickedUpdated')
+        }
       } catch (e) {
 
       }

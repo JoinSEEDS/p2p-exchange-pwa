@@ -10,6 +10,7 @@ q-btn.q-my-sm(
 
 <script>
 import { mapActions } from 'vuex'
+import { EventBus } from '~/event-bus.js'
 
 export default {
   name: 'init-arbitrage-button',
@@ -26,8 +27,11 @@ export default {
       try {
         // const response = await this.initArbiter({ offerId: this.buyOfferId })
         // this.showTransactionId(response.transactionId)
-        await this.initArbiter({ offerId: this.buyOfferId })
-        this.showSuccessMsg(this.$root.$t('pages.arbitration.arbitrage_inited'))
+        const res = await this.initArbiter({ offerId: this.buyOfferId })
+        if (res) {
+          this.showSuccessMsg(this.$root.$t('pages.arbitration.arbitrage_inited'))
+          EventBus.$emit('confirmOffer')
+        }
       } catch (e) {
       }
     }

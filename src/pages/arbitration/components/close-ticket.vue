@@ -37,6 +37,7 @@ q-card.q-pa-md.bg-light.custom-round
       label="Close ticket"
       color="accent"
       type="submit"
+      :disable="!params.favor"
     ).custom-round.q-mb-sm
     q-btn.full-width(
       label="Cancel"
@@ -78,17 +79,19 @@ export default {
     async favorTo () {
       try {
         if (this.params.favor === 'buyer') {
-          await this.resolveToBuyer({ offerId: this.getOfferId, notes: this.params.notes })
-          this.$emit('close-ticket')
-          // this.$q.notify({ type: 'positive', message: 'Resolved to buyer correctly' })
-          this.showSuccessMsg(this.$root.$t('pages.arbitration.resolved_buyer'))
+          const res = await this.resolveToBuyer({ offerId: this.getOfferId, notes: this.params.notes })
+          if (res) {
+            this.$emit('close-ticket')
+            this.$router.push({ name: 'arbitration' })
+            this.showSuccessMsg(this.$root.$t('pages.arbitration.resolved_buyer'))
+          }
         } else if (this.params.favor === 'seller') {
-          await this.resolveToSeller({ offerId: this.getOfferId, notes: this.params.notes })
-          this.$emit('close-ticket')
-          this.showSuccessMsg(this.$root.$t('pages.arbitration.resolved_seller'))
-          // this.$q.notify({ type: 'positive', message: 'Resolved to seller correctly' })
-        } else {
-          this.showErrorMsg(this.$root.$t('pages.arbitration.select_favor'))
+          const res = await this.resolveToSeller({ offerId: this.getOfferId, notes: this.params.notes })
+          if (res) {
+            this.$emit('close-ticket')
+            this.$router.push({ name: 'arbitration' })
+            this.showSuccessMsg(this.$root.$t('pages.arbitration.resolved_seller'))
+          }
         }
       } catch (e) {
       }

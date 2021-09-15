@@ -59,8 +59,10 @@ export const getAssignetTicketByArbiter = async function ({ commit }, params) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
-    const response = await this.$arbitrationApi.getAssignetTicketByArbiter({ ...params, arbiter: accountName })
-    return response
+    let { rows } = await this.$arbitrationApi.getAssignetTicketByArbiter({ ...params, arbiter: accountName })
+
+    let response = rows.filter(el => el.resolution === 'a.inprogress' || el.resolution === 'pending' || el.resolution === 'a.pending')
+    return { rows: response }
   } catch (e) {
     console.error('An error ocurred while trying to set arbiter', e)
     commit('general/setErrorMsg', e.message || e, { root: true })

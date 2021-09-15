@@ -135,7 +135,7 @@ export default {
         let ticket = await this.getTicketById({ id: this.offer.id })
         let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getContactMethod(), recipientAccount: ticket.arbiter })
         await this.sendContactMethods({ messageData })
-        EventBus.$emit('confirmOffer')
+        EventBus.$emit('canceled')
         this.showSuccessMsg(this.$root.$t('pages.arbitration.contact_methods_sent'))
       } catch (error) {
         console.error(error)
