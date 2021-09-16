@@ -105,7 +105,7 @@ export default {
       seeds: 'Seeds',
       amountOfCrypto: 'Enter the amount of seeds to sell',
       afterTransaction: 'After the transaction in your account will be {amount} seeds.',
-      costPerCrypto: 'Price ratio in percentage',
+      costPerCrypto: 'Percentage above or below market price',
       marketCost: '100% (1 SEED) = {amount}',
       exchangeRateEqual: '1 SEED = {amount}',
       preferredCurrency: 'Preferred Currency',
@@ -149,8 +149,8 @@ export default {
       buyer: 'Buyer'
     },
     deposit: {
-      deposit: 'Deposit',
-      withdraw: 'Withdraw',
+      deposit: 'Deposit from Wallet',
+      withdraw: 'Withdraw to Wallet',
       amount: 'Amount',
       depositWithdraw: 'Deposit / Withdraw',
       selectTypeAction: 'Select the type of action',
@@ -158,10 +158,10 @@ export default {
       successWithdraw: 'Success withdraw for {amount}'
     },
     balance: {
-      balance: 'Balance',
+      balance: 'Balances Details',
       available: 'Available',
-      swap: 'Swap',
-      escrow: 'Escrow',
+      swap: 'Offered',
+      escrow: 'Processing Sell',
       total: 'Total',
       seeBalancesDetails: 'See balances details'
     },

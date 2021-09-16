@@ -3,12 +3,13 @@
     .row.justify-between
         .text-h6 {{ $t('pages.mainTab.actions') }}
     .row.q-mt-md
-      q-btn(
-        :label="$t('pages.deposit.depositWithdraw')"
-        color="accent"
-        no-caps
-        @click="$emit('clickOnDeposit')"
-      ).full-width.custom-round.q-my-sm.custom-btn
+      //- q-btn(
+      //-   :label="$t('pages.deposit.depositWithdraw')"
+      //-   color="accent"
+      //-   no-caps
+      //-   @click="$emit('clickOnDeposit')"
+      //- ).full-width.custom-round.q-my-sm.custom-btn
+      custom-dw-btn(@click="$emit('clickOnDeposit')").full-width.q-my-sm
       custom-sell-btn(@click="goToSellScreen" v-if="userCanSell").full-width.q-my-sm
       custom-buy-btn(@click="goToBuyScreen").full-width.q-my-sm
 
@@ -25,11 +26,12 @@
 <script>
 import CustomSellBtn from './custom-sell-btn'
 import CustomBuyBtn from './custom-buy-btn'
+import CustomDwBtn from './custom-dw-btn'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'recent-activity-view',
-  components: { CustomSellBtn, CustomBuyBtn },
+  components: { CustomSellBtn, CustomBuyBtn, CustomDwBtn },
   data () {
     return {
       listRecentActivity: undefined

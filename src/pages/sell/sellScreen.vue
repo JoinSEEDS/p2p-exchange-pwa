@@ -7,11 +7,17 @@
       .text-white {{ $t('pages.sell.defineTheSaleOffer') }}
       .row.justify-center
           .col-8
-              .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) || 0 }}
-                span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
+              .row
+                .col-xs-7.col-md-10
+                  .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) || 0 }}
+                .col
+                  span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
               q-separator(color="warning")
-              .text-h4.text-white.text-center {{ fiatToGet }}
-                span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{params.fiatCurrency}}
+              .row
+                .col-xs-7.col-md-10
+                  .text-h4.text-white.text-center {{ fiatToGet }}
+                .col
+                  span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{params.fiatCurrency}}
       .row.bg-warning.container-current
         .q-pa-sm
           .iconSeeds
@@ -29,7 +35,7 @@
           :rules="[rules.required, rules.minZero, customMaxValidation]"
           :hint="$t('pages.sell.afterTransaction', { amount: afterAmount })"
           type="number"
-          step="0.0001"
+          step="0.01"
       )
         template(v-slot:append)
           .text SEEDS
@@ -82,7 +88,7 @@ export default {
       availableSeeds: undefined,
       isSellAll: false,
       params: {
-        amount: Number.parseFloat(0).toFixed(4),
+        amount: Number.parseFloat(0).toFixed(2),
         costPerCrypt: 100
       },
       customMaxValidation: val => (val <= this.parseSeedSymbolToAmount(this.availableSeeds)) || this.$t('forms.errors.maxSeedsAvailable', { amount: this.availableSeeds })
@@ -99,9 +105,9 @@ export default {
   },
   mounted () {
     try {
-      this.availableSeeds = 0.0000
+      this.availableSeeds = 0.00
       if (this.userBalances) {
-        this.availableSeeds = Number.parseFloat(this.userBalances.available_balance.replace(' SEEDS', '')).toFixed(4)
+        this.availableSeeds = Number.parseFloat(this.userBalances.available_balance.replace(' SEEDS', '')).toFixed(2)
       }
       this.params.fiatCurrency = this.currentFiatCurrency.toUpperCase()
       this.getCurrentSeedsPerUsd()
@@ -113,7 +119,7 @@ export default {
     ...mapGetters('accounts', ['userBalances', 'currentFiatCurrency', 'pricePerSeedOnUSD']),
     afterAmount () {
       const currentAmount = this.params.amount ? Number.parseFloat(this.params.amount) : 0
-      return Number.parseFloat(this.availableSeeds - currentAmount).toFixed(4)
+      return Number.parseFloat(this.availableSeeds - currentAmount).toFixed(2)
     },
     fiatToGet () {
       return this.params.amount ? (this.parseSeedsToCurrentFiat(this.params.amount) * ((this.params.costPerCrypt / 100))).toFixed(2) : 0
@@ -133,7 +139,8 @@ export default {
         })
         this.getBalances()
         this.showSuccessMsg(this.$root.$t('pages.sell.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
-        this.$router.replace({ name: 'dashboard' })
+        // this.$router.replace({ name: 'dashboard' })
+        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions', subTab: 'sale' } })
       } catch (e) {
 
       }
