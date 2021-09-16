@@ -8,8 +8,8 @@
     active-color="accent"
     flat
   )
-    q-tab(name="buy" :label="$t('pages.offers.buy')")
-    q-tab(v-if="userCanSell" name="sale" :label="$t('pages.offers.sale')")
+    q-tab(name="buy" :label="$t('pages.offers.buy')" noCaps)
+    q-tab(v-if="userCanSell" name="sale" :label="$t('pages.offers.sale')" noCaps)
   q-separator
 
   q-tab-panels(v-model="tab" animated).bg-primary

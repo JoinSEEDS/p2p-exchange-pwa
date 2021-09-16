@@ -167,8 +167,8 @@ export default {
     },
     offers: {
       offers: 'Offers',
-      buy: 'Buy',
-      sale: 'Sales',
+      buy: 'My Buy Offers',
+      sale: 'My Sale Offers',
       timeZone: 'Time Zone',
       fiatCurrency: 'Fiat Currency',
       filterBy: 'Filter By',
