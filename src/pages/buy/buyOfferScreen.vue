@@ -137,7 +137,8 @@ export default {
         })
         this.getBalances()
         this.showSuccessMsg(this.$root.$t('pages.buy.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
-        this.$router.replace({ name: 'sellOffers' })
+        // this.$router.replace({ name: 'sellOffers' })
+        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions', subTab: 'buy' } })
       } catch (e) {
 
       }
