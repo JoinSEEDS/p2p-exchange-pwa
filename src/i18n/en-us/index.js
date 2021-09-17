@@ -19,10 +19,10 @@ export default {
       waiting_payment: 'Waiting for Payment...',
       rejected: 'Rejected',
       waiting_payment_confirmation: 'Waiting for Payment Confirmation',
-      init_arbitrage: 'Init Arbitrage',
+      init_arbitrage: 'Init Arbitration',
       arbitrage: 'Awaiting for Arbitrage',
       sendContactMethod: 'Send Contact Method to Arbitrage',
-      sentContactMethod: 'Waiting for arbitrage resolution'
+      sentContactMethod: 'Waiting for resolution'
     },
     defaultTitle: 'Title'
   },
@@ -91,7 +91,7 @@ export default {
       seeds: 'Seeds',
       walletBalance: 'Available Balance',
       toSell: 'Sell SEEDS for Fiat',
-      toBuy: 'Buy SEEDS with Fiat',
+      toBuy: 'Init Purchase',
       recentActivity: 'Recent Activity',
       makeYour: 'Make your',
       firstTransaction: 'First Transaction',
@@ -168,7 +168,7 @@ export default {
     offers: {
       offers: 'Offers',
       buy: 'My Buy Offers',
-      sale: 'My Sale Offers',
+      sale: 'My Sell Offers',
       timeZone: 'Time Zone',
       fiatCurrency: 'Fiat Currency',
       filterBy: 'Filter By',

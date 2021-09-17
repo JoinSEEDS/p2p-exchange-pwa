@@ -58,7 +58,7 @@
         //- .hint {{$t('pages.sell.marketCost', { amount: `${pricePerSeedOnUSD} USD` })}}
         .row.bg-primary.btnSave.q-py-sm
           q-btn.full-width(
-              :label="$t('pages.sell.toSell')"
+              :label="$t('pages.sell.toBuy')"
               color="accent"
               type="submit"
           )

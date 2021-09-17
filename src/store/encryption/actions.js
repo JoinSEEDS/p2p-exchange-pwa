@@ -50,6 +50,7 @@ export const receiveContactMethods = async function ({ commit, dispatch }, { buy
 
     const recipientPrivateKey = await dispatch('profiles/getPrivateKey', {}, { root: true })
     const response = await this.$encrypionApi.receiveMessage({ recipientPrivateKey, buyOfferId, arbiter })
+    console.log('receiveContactMethods', response)
     return response
   } catch (e) {
     console.error('An error ocurred while trying to do a deposit', e)

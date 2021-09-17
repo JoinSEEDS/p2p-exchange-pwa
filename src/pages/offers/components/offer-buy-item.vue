@@ -19,7 +19,7 @@
         ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID"
-            label="Waiting Pay Confirm"
+            label="Waiting Payment Confirmation"
             color="blue-9"
             no-caps
             dense

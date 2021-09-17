@@ -1,7 +1,7 @@
 <template lang="pug">
 #container
   .row.justify-between
-    .subtitle.text-white.q-mt-md {{ $t('pages.offers.offers') }}
+    //- .subtitle.text-white.q-mt-md {{ $t('pages.offers.offers') }}
     //- green-flat-btn.self-center(:label="$t('common.buttons.filter')")
   q-tabs(
     v-model="tab"
@@ -48,4 +48,5 @@ export default {
   .q-tab-panel
     padding-left: 0  !important
     padding-right: 0 !important
+    height: 80vh
 </style>
