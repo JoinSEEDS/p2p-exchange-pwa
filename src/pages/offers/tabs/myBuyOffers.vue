@@ -1,6 +1,6 @@
 <template lang="pug">
 #containerBuyOffers
-  .q-pa-md
+  .q-pa-sm
     q-pull-to-refresh(@refresh="refresh")
       #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
         skeleton-offer-item
@@ -114,7 +114,11 @@ export default {
 #containerScroll
   overflow: auto
   flex: 1
-  // max-height: 500px
+  max-height: 66vh
+
+@media screen and ( min-width: $breakpoint-mobile )
+  #containerScroll
+    max-height: 72vh
 
 .custom-font
     font-family: 'SF Pro Display'

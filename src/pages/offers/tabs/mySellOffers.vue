@@ -1,6 +1,6 @@
 <template lang="pug">
 #containerSellOffers
-  .q-pa-md
+  .q-pa-sm
     #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
       skeleton-offer-item
     #noData(v-if="myOffers.rows.length === 0 && !loading")
@@ -104,7 +104,11 @@ export default {
 #containerScroll
   overflow: auto
   flex: 1
-  max-height: 500px
+  max-height: 66vh
+
+@media screen and ( min-width: $breakpoint-mobile )
+  #containerScroll
+    max-height: 72vh
 
 #noData
   height: 60vh !important

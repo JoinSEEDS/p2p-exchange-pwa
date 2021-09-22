@@ -17,9 +17,6 @@
         q-tab-panel(name="notifications").tabContainer
             .text-h6 Notifications
             p Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        q-tab-panel(name="settings").tabContainer
-            .text-h6 Settings
-            p Lorem ipsum dolor sit amet consectetur adipisicing elit.
     q-separator(color="warning")
     q-tabs.tabsContainer(
         v-model="tab"
@@ -95,6 +92,6 @@ export default {
 
 @media screen and ( min-width: $breakpoint-mobile )
   .tabContainer
-    padding: 10px
+    padding: 2px
 
 </style>

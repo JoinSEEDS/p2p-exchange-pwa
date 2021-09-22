@@ -1,5 +1,6 @@
 <template lang="pug">
-  #container.q-gutter-y-md
+  //- q-scroll-area
+  #container.q-gutter-y-md(ref="container")
     .row.justify-center
       .col-xs-12.col-sm-10.col-md-8
         card-balance
@@ -29,6 +30,13 @@ export default {
       showNotPermissions: false
     }
   },
+  async mounted () {
+    // this.$refs.container.scrollTo(0)
+    setTimeout(() => {
+      window.scrollTo(255, 255)
+    }, 500)
+    window.scrollTo(255, 255)
+  },
   computed: {
     ...mapGetters('accounts', ['userCanSell'])
   },
@@ -56,6 +64,8 @@ export default {
   flex: 1
   display: flex
   flex-direction: column
+  // overflow: auto
 .activity-component
-  flex: 1
+  // overflow: auto
+  flex: 0.8
 </style>

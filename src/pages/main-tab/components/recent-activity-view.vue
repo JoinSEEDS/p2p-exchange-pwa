@@ -54,4 +54,7 @@ export default {
 <style lang="sass" scoped>
 .custom-btn
   height: 45px
+@media screen and ( min-width: $breakpoint-mobile )
+  .custom-btn
+    padding: 40px
 </style>

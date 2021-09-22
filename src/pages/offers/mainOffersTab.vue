@@ -48,5 +48,8 @@ export default {
   .q-tab-panel
     padding-left: 0  !important
     padding-right: 0 !important
-    height: 80vh
+    height: 72vh
+  @media screen and ( min-width: $breakpoint-mobile )
+    .q-tab-panel
+      height: 78vh
 </style>
