@@ -100,6 +100,7 @@ export default {
     },
     sell: {
       toSell: 'Sell SEEDS for Fiat',
+      toBuy: 'Initiate purchase',
       defineTheSaleOffer: 'How many seeds would you like to sell?',
       crypto: 'Crypto',
       seeds: 'Seeds',
@@ -125,7 +126,7 @@ export default {
       cancel: 'Cancel'
     },
     buy: {
-      buySeeds: 'Buy SEEDS',
+      buySeeds: 'Sell Offers List',
       offerDetail: 'Offer Detail',
       howManySeedsWillYouBuy: 'How many Seeds will you buy?',
       seedsAvailable: 'Seeds Available',
@@ -178,6 +179,8 @@ export default {
       reject_buy_offer: 'Offer rejected successfully',
       make_first: 'Make your first',
       sell_offer: 'Sell Offer',
+      there_arent: 'There are not',
+      active_sell_offer: 'Active Sell Offers',
       buy_offer: 'Buy Offer'
     },
     make_payment: {

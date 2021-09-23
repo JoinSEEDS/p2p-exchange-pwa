@@ -35,11 +35,11 @@
       q-btn(
         no-caps
         v-if="pending"
-        label="Accept offer"
+        label="Accept"
         color="accent"
         @click="confOffer()"
       ).full-width.custom-round
-      q-btn(no-caps v-if="pending" label="Reject offer" color="negative" @click="rejectOff()").full-width.q-my-sm.custom-round
+      q-btn(no-caps v-if="pending" label="Reject" color="negative" @click="rejectOff()").full-width.q-my-sm.custom-round
       q-btn(no-caps v-if="paid || accepted" :label="$t('common.buttons.confirm_payment')" color="blue" @click="() => confirmPaym()" v-close-popup).full-width.q-my-sm.custom-round
       //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
       //- #modals
