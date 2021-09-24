@@ -79,25 +79,28 @@
               autocomplete="off"
             )
           q-separator.full-width(dark)
-          .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
-          q-input(
-            :label="$t('pages.account.paypalLink')"
-            v-model="params.paypalLink"
-            outlined
-            dark
-            standout="text-accent"
-            :rules="[rules.required]"
-            :prefix="paypalBase"
-            lazy-rules
-            :hint="$t('pages.account.hintPaypal')"
-            autocomplete="off"
-          )
-              template(v-slot:append)
-                q-icon.animated-icon.cursor-pointer.linkBtn(
-                  name="open_in_new" @click="openPayPalLink"
-                  v-show="params.paypalLink"
-                )
-                  q-tooltip {{ $t('pages.account.hintPaypal') }}
+          PaymenthMethods(:paymentMethods.sync="params.paymentMethods" :paramsPayment.sync="params.paramsPayment")
+          //-
+            q-separator.full-width(dark)
+            .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
+            q-input(
+              :label="$t('pages.account.paypalLink')"
+              v-model="params.paypalLink"
+              outlined
+              dark
+              standout="text-accent"
+              :rules="[rules.required]"
+              :prefix="paypalBase"
+              lazy-rules
+              :hint="$t('pages.account.hintPaypal')"
+              autocomplete="off"
+            )
+                template(v-slot:append)
+                  q-icon.animated-icon.cursor-pointer.linkBtn(
+                    name="open_in_new" @click="openPayPalLink"
+                    v-show="params.paypalLink"
+                  )
+                    q-tooltip {{ $t('pages.account.hintPaypal') }}
           .row.bg-primary.btnSave.q-py-sm
             q-btn.full-width(
               :label="$t('common.buttons.save')"
@@ -112,10 +115,12 @@ import { mapActions, mapState, mapMutations, mapGetters } from 'vuex'
 import { CommonCurrencies, CommonTimeZone } from '~/const'
 import { RootFields } from '@smontero/ppp-common'
 import { utils } from '~/mixins/utils'
+import PaymenthMethods from './components/payment-methods.vue'
 
 export default {
   name: 'account',
   mixins: [validation, utils],
+  components: { PaymenthMethods },
   data () {
     return {
       paypalBase: 'https://paypal.me/',
@@ -126,6 +131,15 @@ export default {
         contactMethods: {
           signal: undefined,
           email: undefined
+        },
+        paramsPayment: {
+          selectedPaymentMethod: undefined
+        },
+        paymentMethods: {
+          paypal: undefined,
+          pm1: undefined,
+          pm2: undefined,
+          pm3: undefined
         },
         paypalLink: undefined,
         timeZone: undefined
@@ -213,6 +227,8 @@ export default {
       this.setIsLoading(false)
     },
     async onSubmitForm () {
+      console.log(this.params.paramsPayment.selectedPaymentMethod, 'Payment Method')
+      console.log(this.params.paymentMethods, 'Payment Method')
       try {
         this.setIsLoading(true)
         let isRegistered = await this.isRegistered() // <<- PPP registered
