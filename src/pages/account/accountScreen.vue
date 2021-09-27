@@ -137,9 +137,10 @@ export default {
         },
         paymentMethods: {
           paypal: undefined,
-          pm1: undefined,
-          pm2: undefined,
-          pm3: undefined
+          transferwise: undefined,
+          cashapp: undefined,
+          venmo: undefined,
+          gojek: undefined
         },
         paypalLink: undefined,
         timeZone: undefined

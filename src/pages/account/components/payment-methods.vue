@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   q-select(
-    label="Preferred Contact Method"
+    label="Preferred Payment Method"
     v-model="paramsPayment.selectedPaymentMethod"
     outlined
     dark
@@ -34,9 +34,31 @@ div
           )
             q-tooltip {{ $t('pages.account.hintPaypal') }}
     q-input(
-      v-else-if="paramsPayment.selectedPaymentMethod === 'option-1'"
-      label="Option 1"
-      v-model="paymentMethods.pm1"
+      v-else-if="paramsPayment.selectedPaymentMethod === 'transferwise'"
+      :label="$t('pages.account.transferwise')"
+      v-model.trim="paymentMethods.transferwise"
+      outlined
+      dark
+      standout="text-accent"
+      :rules="[rules.required]"
+      mask="#### #### #### ####"
+      autocomplete="off"
+    )
+    q-input(
+      v-else-if="paramsPayment.selectedPaymentMethod === 'cashapp'"
+      :label="$t('pages.account.cashtag')"
+      v-model="paymentMethods.cashapp"
+      outlined
+      dark
+      prefix="$"
+      standout="text-accent"
+      :rules="[rules.required]"
+      autocomplete="off"
+    )
+    q-input(
+      v-else-if="paramsPayment.selectedPaymentMethod === 'venmo'"
+      :label="$t('pages.account.venmo')"
+      v-model="paymentMethods.venmo"
       outlined
       dark
       standout="text-accent"
@@ -44,23 +66,13 @@ div
       autocomplete="off"
     )
     q-input(
-      v-else-if="paramsPayment.selectedPaymentMethod === 'option-2'"
-      label="Option 2"
-      v-model="paymentMethods.pm2"
+      v-else-if="paramsPayment.selectedPaymentMethod === 'gojek'"
+      :label="$t('pages.account.gojek')"
+      v-model="paymentMethods.gojek"
       outlined
       dark
       standout="text-accent"
-      :rules="[rules.required]"
-      autocomplete="off"
-    )
-    q-input(
-      v-else-if="paramsPayment.selectedPaymentMethod === 'option-3'"
-      label="Option 3"
-      v-model="paymentMethods.pm3"
-      outlined
-      dark
-      standout="text-accent"
-      :rules="[rules.required]"
+      :rules="[rules.required, rules.internationalNumber]"
       autocomplete="off"
     )
 </template>
@@ -91,16 +103,20 @@ export default {
             value: 'paypal'
           },
           {
-            label: 'Option-1',
-            value: 'option-1'
+            label: 'Transferwise',
+            value: 'transferwise'
           },
           {
-            label: 'Option-2',
-            value: 'option-2'
+            label: 'CashApp',
+            value: 'cashapp'
           },
           {
-            label: 'Option-3',
-            value: 'option-3'
+            label: 'Venmo',
+            value: 'venmo'
+          },
+          {
+            label: 'Gojek',
+            value: 'gojek'
           }
         ]
       }
