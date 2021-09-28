@@ -85,7 +85,11 @@ export default {
       hintPaypal: 'Open link to confirm you write your profile link correctly',
       saved: 'Account saved succesfully',
       email: 'Email',
-      signal: 'Signal Number'
+      signal: 'Signal Number',
+      transferwise: 'Transferwise',
+      cashtag: 'Cashtag',
+      venmo: 'Venmo Routing Number',
+      gojek: 'GoPay Cellphone Number'
     },
     mainTab: {
       seeds: 'Seeds',
@@ -107,7 +111,7 @@ export default {
       amountOfCrypto: 'Enter the amount of seeds to sell',
       afterTransaction: 'After the transaction in your account will be {amount} seeds.',
       costPerCrypto: 'Percentage above or below market price',
-      marketCost: '100% (1 SEED) = {amount}',
+      marketCost: '0% (1 SEED) = {amount}',
       exchangeRateEqual: '1 SEED = {amount}',
       preferredCurrency: 'Preferred Currency',
       successMessage: 'Sell Offer was created successfully for {amount}.',
