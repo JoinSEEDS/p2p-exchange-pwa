@@ -6,15 +6,15 @@
       .subtitle.text-white.q-mt-md {{ $t('pages.sell.toSell') }}
       .text-white {{ $t('pages.sell.defineTheSaleOffer') }}
       .row.justify-center
-          .col-8
+          .col-xs-11.col-md-8
               .row
-                .col-xs-7.col-md-10
+                .col-xs-9.col-md-10
                   .text-h4.text-white.text-center {{ parseToSeedsAmount(params.amount) || 0 }}
                 .col
                   span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
               q-separator(color="warning")
               .row
-                .col-xs-7.col-md-10
+                .col-xs-9.col-md-10
                   .text-h4.text-white.text-center {{ fiatToGet }}
                 .col
                   span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{params.fiatCurrency}}
