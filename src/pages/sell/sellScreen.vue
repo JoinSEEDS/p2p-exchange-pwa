@@ -49,7 +49,19 @@
       //-     :rules="[rules.required]"
       //-     bg-color="warning"
       //- )
-      q-input(
+      .text-white {{ $t('pages.sell.costPerCrypto') }}
+      q-slider.slider-size(
+        v-model="params.costPerCrypt"
+        :min="-100"
+        :max="100"
+        :step="1"
+        snap
+        label
+        :label-value="params.costPerCrypt + '%'"
+        color="white"
+        label-text-color="black"
+      )
+      // q-input(
           :label="$t('pages.sell.costPerCrypto')"
           v-model="params.costPerCrypt"
           outlined
@@ -57,7 +69,7 @@
           standout="text-accent"
           :rules="[rules.required, rules.minZero]"
           type="number"
-      )
+      // )
         template(v-slot:append)
           .text %
       .hint {{$t('pages.sell.exchangeRate')}}
@@ -173,4 +185,6 @@ export default {
   padding-right: 10px !important
 .container-current
   border-radius: 10px
+.slider-size
+  max-width: 880px
 </style>
