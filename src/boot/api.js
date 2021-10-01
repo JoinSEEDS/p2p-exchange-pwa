@@ -12,7 +12,8 @@ import {
   OffersApi,
   SettingsApi,
   EncryptionApi,
-  ArbitrationApi
+  ArbitrationApi,
+  EsrApi
 } from '~/services'
 
 const signTransaction = async function (actions) {
@@ -56,8 +57,8 @@ const getTableRows = async function (options) {
 
 export default ({ store }) => {
   const rpc = new JsonRpc(`${process.env.NETWORK_PROTOCOL}://${process.env.NETWORK_HOST}:${process.env.NETWORK_PORT}`)
-  store['$defaultApi'] = new Api({ rpc, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })
-
+  const _api = new Api({ rpc, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })
+  store['$defaultApi'] = _api
   const api = {
     signTransaction: signTransaction.bind(store),
     getTableRows: getTableRows.bind(store)
@@ -116,6 +117,11 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  const esrApi = new EsrApi({
+    api: _api,
+    rpc
+  })
+
   store['$api'] = api
   store['$userApi'] = userApi
   store['$accountApi'] = accountApi
@@ -130,4 +136,5 @@ export default ({ store }) => {
   store['$offersApi'] = offersApi
   store['$encrypionApi'] = encrypionApi
   store['$arbitrationApi'] = arbitrationApi
+  store['$esrApi'] = esrApi
 }

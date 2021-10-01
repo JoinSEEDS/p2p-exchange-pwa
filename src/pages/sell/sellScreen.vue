@@ -50,28 +50,31 @@
       //-     bg-color="warning"
       //- )
       .text-white {{ $t('pages.sell.costPerCrypto') }}
-      q-slider.slider-size(
-        v-model="params.costPerCrypt"
-        :min="-100"
-        :max="100"
-        :step="1"
-        snap
-        label
-        :label-value="params.costPerCrypt + '%'"
-        color="white"
-        label-text-color="black"
-      )
-      // q-input(
-          :label="$t('pages.sell.costPerCrypto')"
+      .row
+        .col-11
+        q-slider.q-my-xs(
           v-model="params.costPerCrypt"
-          outlined
-          dark
-          standout="text-accent"
-          :rules="[rules.required, rules.minZero]"
-          type="number"
-      // )
-        template(v-slot:append)
-          .text %
+          :min="-100"
+          :max="100"
+          :step="1"
+          snap
+          label
+          :label-value="params.costPerCrypt + '%'"
+          label-always
+          color="white"
+          label-text-color="black"
+        )
+      //- // q-input(
+      //-     :label="$t('pages.sell.costPerCrypto')"
+      //-     v-model="params.costPerCrypt"
+      //-     outlined
+      //-     dark
+      //-     standout="text-accent"
+      //-     :rules="[rules.required, rules.minZero]"
+      //-     type="number"
+      //- // )
+      //-   template(v-slot:append)
+      //-     .text %
       .hint {{$t('pages.sell.exchangeRate')}}
       .hint {{$t('pages.sell.marketCost', { amount: `${exchangeRate} ${currentFiatCurrency.toUpperCase()}` })}}
       .row.bg-primary.btnSave.q-py-sm
@@ -101,7 +104,7 @@ export default {
       isSellAll: false,
       params: {
         amount: Number.parseFloat(0).toFixed(2),
-        costPerCrypt: 100
+        costPerCrypt: 0
       },
       customMaxValidation: val => (val <= this.parseSeedSymbolToAmount(this.availableSeeds)) || this.$t('forms.errors.maxSeedsAvailable', { amount: this.availableSeeds })
     }
@@ -133,8 +136,11 @@ export default {
       const currentAmount = this.params.amount ? Number.parseFloat(this.params.amount) : 0
       return Number.parseFloat(this.availableSeeds - currentAmount).toFixed(2)
     },
+    percentageMarketPrice () {
+      return 100 + this.params.costPerCrypt
+    },
     fiatToGet () {
-      return this.params.amount ? (this.parseSeedsToCurrentFiat(this.params.amount) * ((this.params.costPerCrypt / 100))).toFixed(2) : 0
+      return this.params.amount ? (this.parseSeedsToCurrentFiat(this.params.amount) * ((this.percentageMarketPrice / 100))).toFixed(2) : 0
     },
     exchangeRate () {
       return this.myFiatExchangeRate
@@ -147,7 +153,7 @@ export default {
       try {
         await this.addSellOffer({
           totalOffered: this.parseToSeedSymbol(this.params.amount),
-          pricePercentage: this.params.costPerCrypt
+          pricePercentage: this.percentageMarketPrice
         })
         this.getBalances()
         this.showSuccessMsg(this.$root.$t('pages.sell.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))

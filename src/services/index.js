@@ -12,6 +12,7 @@ import SettingsApi from './SettingsApi'
 import EncryptionApi from './EncryptionApi'
 import ArbitrationApi from './ArbitrationApi'
 import RequestApi from './RequestApi'
+import EsrApi from './EsrAPI'
 
 export {
   UserApi,
@@ -27,5 +28,6 @@ export {
   SettingsApi,
   EncryptionApi,
   ArbitrationApi,
-  RequestApi
+  RequestApi,
+  EsrApi
 }

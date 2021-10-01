@@ -20,7 +20,7 @@ import RecentActivityView from './components/recent-activity-view'
 import { mapGetters, mapActions } from 'vuex'
 import DepositForm from '~/pages/main-tab/components/deposit-form'
 import NotPermissions from '~/pages/main-tab/components/not-permissions'
-import { RequestApi } from '~/services'
+// import { RequestApi } from '~/services'
 
 export default {
   name: 'main-tab',
@@ -58,23 +58,54 @@ export default {
     },
     async testLightWallet () {
       // curl --location --request POST 'https://api-esr.hypha.earth/qr' \
-      const requestApi = new RequestApi('https://api-esr.hypha.earth')
-      const response = await requestApi.post({
-        resource: '/qr',
+      // const requestApi = new RequestApi('https://api-esr.hypha.earth')
+      // const response = await requestApi.post({
+      //   resource: '/qr',
+      //   data: {
+      //     actions: [{
+      //       account: 'token.seeds',
+      //       name: 'payoffer',
+      //       data: {
+      //         buy_offer_id: 3
+      //       }
+      //     }]
+      //   },
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   }
+      // })
+      // console.log('testing light wallet', response)
+      // const actions = [{
+      //   account: '',
+      //   name: 'identity',
+      //   data: {
+      //     scope: 'PTM'
+      //     // permission: {
+      //     //   actor: 'jmgayosso155',
+      //     //   permission: 'active'
+      //     // }
+      //   }
+      // }]
+      const actions = [{
+        account: 'token.seeds',
+        name: 'transfer',
         data: {
-          actions: [{
-            account: 'token.seeds',
-            name: 'payoffer',
-            data: {
-              buy_offer_id: 3
-            }
-          }]
+          from: 'jmgayosso155',
+          to: 'm1escrowp2px',
+          quantity: '0.1000 SEEDS',
+          memo: 'test'
         },
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      console.log('testing light wallet', response)
+        authorization: [
+          {
+            actor: '............1',
+            permission: '............2'
+          }
+        ]
+      }]
+      const { esr } = await this.$store.$esrApi.signTransaction(actions)
+      // const r = await window.open(esr.replace('esr://', 'https://eosio.to/'))
+      const r = await window.open(esr)
+      console.log('store', esr, r)
     }
   }
 }
