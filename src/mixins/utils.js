@@ -13,8 +13,19 @@ export const utils = {
     }
   },
   methods: {
-    ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg', 'setIsLoading']),
+    ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg', 'setIsLoading', 'setESRRequest']),
     ...mapActions('settings', ['getSettings']),
+    async createEsrRequest (actions) {
+      this.setESRRequest(null)
+      this.showIsLoading(true)
+      const esr = await this.$store.$esrApi.generateESR(actions)
+      this.showIsLoading(false)
+      const esrRequest = {
+        ...esr
+      }
+      console.log('createEsrRequest', esrRequest)
+      this.setESRRequest(esrRequest)
+    },
     copyToClipboard (str) {
       const el = document.createElement('textarea')
       el.value = str

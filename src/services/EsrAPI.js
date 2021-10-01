@@ -101,14 +101,14 @@ class EsrApi {
     }
   }
 
-  async signTransaction (actions) {
+  async generateESR (actions) {
     const esr = await this.buildTransaction(actions)
-    // const qrPath = await this.buildQrCode(esr)
+    const qrPath = await this.buildQrCode(esr)
     // const qr = 'https://' + window.hostname + '/' + qrPath
 
     return {
-      esr
-      // qr: qrPath
+      esr,
+      qr: qrPath
     }
   }
 
@@ -142,9 +142,9 @@ class EsrApi {
       //     }
       //   ]
       // }
-      const { esr } = await this.signTransaction(actions)
+      const { esr } = await this.generateESR(actions)
       // const r = await window.open(esr.replace('esr://', 'https://eosio.to/'))
-      const r = await window.open(esr)
+      const r = await window.open(esr, '_blank')
       console.log('store', esr, r)
       const ENDPOINT = 'https://testnet.telos.caleos.io/'
       const client = new HyperionSocketClient(ENDPOINT, { async: false })

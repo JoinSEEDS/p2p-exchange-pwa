@@ -79,12 +79,13 @@ export default {
             }
           ]
         }]
-        this.showIsLoading(true)
-        const r = await this.$store.$esrApi.signEsrTransaction({ actions })
+        // this.showIsLoading(true)
+        this.createEsrRequest(actions)
+        // const r = await this.$store.$esrApi.signEsrTransaction({ actions })
         // const r = await window.open(esr.replace('esr://', 'https://eosio.to/'))
         // const r = await window.open(esr)
-        this.showIsLoading(false)
-        console.log('store', r)
+        // this.showIsLoading(false)
+        // console.log('store', r)
         // const ENDPOINT = 'https://testnet.telos.caleos.io/'
         // const client = new HyperionSocketClient(ENDPOINT, { async: false })
 

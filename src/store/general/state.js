@@ -1,5 +1,6 @@
 export default () => ({
   errorMsg: null,
   successMsg: null,
-  isLoading: null
+  isLoading: null,
+  esrRequest: null
 })

@@ -1,12 +1,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import appIcons from '~/utils/app-icons'
+import esrModal from '~/components/esr-modal'
 
 export default {
   name: 'App',
+  components: { esrModal },
   computed: {
     ...mapGetters('accounts', ['isAutoLoading']),
-    ...mapGetters('general', ['isLoading', 'errorMsg', 'successMsg']),
+    ...mapGetters('general', ['isLoading', 'errorMsg', 'successMsg', 'esrRequest', 'isRequestingESR']),
     layout () {
       return `layout-${this.$route.meta.layout || 'main'}`
     }
@@ -49,4 +51,5 @@ export default {
       router-view
     q-inner-loading(:showing="isAutoLoading")
       q-spinner(size="3em")
+    esr-modal(:esrRequest="esrRequest")
 </template>
