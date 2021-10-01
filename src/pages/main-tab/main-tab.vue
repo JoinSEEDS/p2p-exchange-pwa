@@ -21,7 +21,7 @@ import { mapGetters, mapActions } from 'vuex'
 import DepositForm from '~/pages/main-tab/components/deposit-form'
 import NotPermissions from '~/pages/main-tab/components/not-permissions'
 // import { RequestApi } from '~/services'
-import HyperionSocketClient from '@eosrio/hyperion-stream-client'
+// import HyperionSocketClient from '@eosrio/hyperion-stream-client'
 
 export default {
   name: 'main-tab',
@@ -79,41 +79,43 @@ export default {
             }
           ]
         }]
-        const { esr } = await this.$store.$esrApi.signTransaction(actions)
+        this.showIsLoading(true)
+        const r = await this.$store.$esrApi.signEsrTransaction({ actions })
         // const r = await window.open(esr.replace('esr://', 'https://eosio.to/'))
-        const r = await window.open(esr)
-        console.log('store', esr, r)
-        const ENDPOINT = 'https://testnet.telos.caleos.io/'
-        const client = new HyperionSocketClient(ENDPOINT, { async: false })
+        // const r = await window.open(esr)
+        this.showIsLoading(false)
+        console.log('store', r)
+        // const ENDPOINT = 'https://testnet.telos.caleos.io/'
+        // const client = new HyperionSocketClient(ENDPOINT, { async: false })
 
-        const current = new Date().toISOString()
-        // const current = '2021-09-30T00:00:00.000Z'
-        client.onConnect = () => {
-          client.streamActions({
-            contract: 'token.seeds',
-            action: 'transfer',
-            account: '',
-            start_from: current,
-            read_until: 0,
-            // filters: []
-            filters: [
-              {
-                field: 'act.data.memo',
-                value: data.memo
-              }
-            ]
-          })
-        }
+        // const current = new Date().toISOString()
+        // // const current = '2021-09-30T00:00:00.000Z'
+        // client.onConnect = () => {
+        //   client.streamActions({
+        //     contract: 'token.seeds',
+        //     action: 'transfer',
+        //     account: '',
+        //     start_from: current,
+        //     read_until: 0,
+        //     // filters: []
+        //     filters: [
+        //       {
+        //         field: 'act.data.memo',
+        //         value: data.memo
+        //       }
+        //     ]
+        //   })
+        // }
 
-        // see 3 for handling data
-        client.onData = async (data, ack) => {
-          console.log('On Data Listened', data) // process incoming data, replace with your code
-          ack() // ACK when done
-        }
+        // // see 3 for handling data
+        // client.onData = async (data, ack) => {
+        //   console.log('On Data Listened', data) // process incoming data, replace with your code
+        //   ack() // ACK when done
+        // }
 
-        client.connect(() => {
-          console.log('connected!', current)
-        })
+        // client.connect(() => {
+        //   console.log('connected!', current)
+        // })
       } catch (e) {
         console.error('error using ESR', e)
       } finally {

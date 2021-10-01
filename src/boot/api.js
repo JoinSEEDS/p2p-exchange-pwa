@@ -64,12 +64,18 @@ export default ({ store }) => {
     getTableRows: getTableRows.bind(store)
   }
 
+  const esrApi = new EsrApi({
+    api: _api,
+    rpc
+  })
+
   const userApi = new UserApi({
     eosApi: api
   })
 
   const accountApi = new AccountApi({
-    eosApi: api
+    eosApi: api,
+    esrApi
   })
 
   const balanceApi = new BalanceApi({
@@ -115,11 +121,6 @@ export default ({ store }) => {
 
   const arbitrationApi = new ArbitrationApi({
     eosApi: api
-  })
-
-  const esrApi = new EsrApi({
-    api: _api,
-    rpc
   })
 
   store['$api'] = api

@@ -12,6 +12,7 @@ import QRCode from 'qrcode'
 import md5 from 'md5'
 // const QRCode = require('qrcode')
 // const md5 = require('md5')
+import HyperionSocketClient from '@eosrio/hyperion-stream-client'
 
 class EsrApi {
   constructor ({ api, rpc }) {
@@ -55,7 +56,7 @@ class EsrApi {
     const headBlock = await rpc.get_block(info.last_irreversible_block_num)
     const chainId = info.chain_id
     // set expiration to 7 days from now.
-    const expiration = Serialize.timePointSecToDate(Serialize.dateToTimePointSec(headBlock.timestamp) + 3600)
+    const expiration = Serialize.timePointSecToDate(Serialize.dateToTimePointSec(headBlock.timestamp) + 250)
 
     // const identity = {
     //   account: '',
@@ -108,6 +109,84 @@ class EsrApi {
     return {
       esr
       // qr: qrPath
+    }
+  }
+
+  async signEsrTransaction ({ actions }) {
+    try {
+      // const data = {
+      //   from: 'jmgayosso155',
+      //   to: 'm1escrowp2px',
+      //   quantity: '0.1000 SEEDS',
+      //   memo: 'test esr deposit 15'
+      // }
+      // const actions = [{
+      //   account: 'token.seeds',
+      //   name: 'transfer',
+      //   data,
+      //   authorization: [
+      //     {
+      //       actor: 'jmgayosso155',
+      //       permission: 'active'
+      //       // actor: '............1',
+      //       // permission: '............2'
+      //     }
+      //   ]
+      // }]
+      // const _actions = {
+      //   ...actions,
+      //   authorization: [
+      //     {
+      //       actor: 'jmgayosso155',
+      //       permission: 'active'
+      //     }
+      //   ]
+      // }
+      const { esr } = await this.signTransaction(actions)
+      // const r = await window.open(esr.replace('esr://', 'https://eosio.to/'))
+      const r = await window.open(esr)
+      console.log('store', esr, r)
+      const ENDPOINT = 'https://testnet.telos.caleos.io/'
+      const client = new HyperionSocketClient(ENDPOINT, { async: false })
+
+      return new Promise((resolve, reject) => {
+        const current = new Date().toISOString()
+        // const current = '2021-09-30T00:00:00.000Z'
+        client.onConnect = () => {
+          client.streamActions({
+            contract: 'token.seeds',
+            action: 'transfer',
+            account: '',
+            start_from: current,
+            read_until: 0,
+            // filters: []
+            filters: [
+              {
+                field: 'act.data.memo',
+                value: actions[0].data.memo
+              }
+            ]
+          })
+        }
+
+        // see 3 for handling data
+        client.onData = async (data, ack) => {
+          console.log('On Data Listened', data) // process incoming data, replace with your code
+          resolve(data)
+          // ack() // ACK when done
+        }
+
+        client.connect(() => {
+          console.log('connected!', current)
+        })
+
+        setTimeout(() => {
+          reject('TimeOut')
+        }, 30 * 1000)
+      })
+    } catch (e) {
+      console.error('error using ESR', e)
+    } finally {
     }
   }
 }

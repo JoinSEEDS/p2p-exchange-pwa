@@ -7,6 +7,7 @@ import {
 class AccountApi extends BaseEosApi {
   constructor ({
     eosApi,
+    esrApi,
     // accountName,
     notifier
   }) {
@@ -20,6 +21,7 @@ class AccountApi extends BaseEosApi {
         defaultSortField: 'account'
       }
     )
+    this.esrApi = esrApi
   }
 
   /** *
@@ -96,10 +98,19 @@ class AccountApi extends BaseEosApi {
         to: Contracts.CONTRACT_P2P,
         quantity,
         memo
-      }
+      },
+      authorization: [
+        {
+          actor: 'jmgayosso155',
+          permission: 'active'
+          // actor: '............1',
+          // permission: '............2'
+        }
+      ]
     }]
 
-    return this.eosApi.signTransaction(actions)
+    return this.esrApi.signEsrTransaction({ actions })
+    // return this.eosApi.signTransaction(actions)
   }
 }
 
