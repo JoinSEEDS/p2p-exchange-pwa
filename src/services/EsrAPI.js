@@ -56,7 +56,7 @@ class EsrApi {
     const headBlock = await rpc.get_block(info.last_irreversible_block_num)
     const chainId = info.chain_id
     // set expiration to 7 days from now.
-    const expiration = Serialize.timePointSecToDate(Serialize.dateToTimePointSec(headBlock.timestamp) + 250)
+    const expiration = Serialize.timePointSecToDate(Serialize.dateToTimePointSec(headBlock.timestamp) + 3600)
 
     // const identity = {
     //   account: '',
