@@ -23,6 +23,7 @@
     "*.{js,vue}": "yarn lint"
   },
   "dependencies": {
+    "@eosrio/hyperion-stream-client": "^0.4.0-beta.5",
     "@quasar/extras": "^1.10.2",
     "@smontero/keycatjs": "^0.9.4",
     "@smontero/ppp-client-api": "^0.0.43",

@@ -2,7 +2,7 @@
 import { Api, Serialize, JsonRpc } from 'eosjs'
 // const fetch = require('node-fetch')
 // const util = require('util')
-import util from 'util'
+// import util from 'util'
 // const zlib = require('zlib')
 import zlib from 'zlib'
 // const { SigningRequest } = require('eosio-signing-request')
@@ -21,7 +21,7 @@ class EsrApi {
 
   // async buildTransaction (actions, endpoint = 'https://node.hypha.earth') {
   async buildTransaction (actions) {
-    console.log('util', util)
+    // console.log('util', util)
     // const textEncoder = new util.TextEncoder()
     // const textDecoder = new util.TextDecoder()
     const rpc = new JsonRpc('https://test.telos.kitchen', {
@@ -79,7 +79,7 @@ class EsrApi {
       signatures: [],
       context_free_data: []
     }
-    console.log('signing', SigningRequest)
+    // console.log('signing', SigningRequest)
     // const uri = await SigningRequest.signingDigest(chainId)
     const request = await SigningRequest.create({ transaction, chainId }, opts)
     const uri = request.encode()
