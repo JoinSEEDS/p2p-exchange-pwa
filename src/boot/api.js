@@ -11,7 +11,9 @@ import {
   SeedsValueApi,
   OffersApi,
   SettingsApi,
-  EncryptionApi
+  EncryptionApi,
+  ArbitrationApi,
+  EsrApi
 } from '~/services'
 
 const signTransaction = async function (actions) {
@@ -55,19 +57,25 @@ const getTableRows = async function (options) {
 
 export default ({ store }) => {
   const rpc = new JsonRpc(`${process.env.NETWORK_PROTOCOL}://${process.env.NETWORK_HOST}:${process.env.NETWORK_PORT}`)
-  store['$defaultApi'] = new Api({ rpc, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })
-
+  const _api = new Api({ rpc, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })
+  store['$defaultApi'] = _api
   const api = {
     signTransaction: signTransaction.bind(store),
     getTableRows: getTableRows.bind(store)
   }
+
+  const esrApi = new EsrApi({
+    api: _api,
+    rpc
+  })
 
   const userApi = new UserApi({
     eosApi: api
   })
 
   const accountApi = new AccountApi({
-    eosApi: api
+    eosApi: api,
+    esrApi
   })
 
   const balanceApi = new BalanceApi({
@@ -111,6 +119,10 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  const arbitrationApi = new ArbitrationApi({
+    eosApi: api
+  })
+
   store['$api'] = api
   store['$userApi'] = userApi
   store['$accountApi'] = accountApi
@@ -124,4 +136,6 @@ export default ({ store }) => {
   store['$seedsValueApi'] = seedsValueApi
   store['$offersApi'] = offersApi
   store['$encrypionApi'] = encrypionApi
+  store['$arbitrationApi'] = arbitrationApi
+  store['$esrApi'] = esrApi
 }

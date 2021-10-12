@@ -7,8 +7,9 @@ const routes = [
   { path: '/offers', component: () => import('pages/buy/offersScreen.vue'), name: 'sellOffers', meta: { visitorScreen: true } },
   { path: '/buy/:id', component: () => import('pages/buy/buyOfferScreen.vue'), name: 'buy', meta: { visitorScreen: true } },
   { path: '/make-payment/:id', component: () => import('pages/make-payment/make-payment.vue'), name: 'make-payment', meta: { visitorScreen: true } },
-  { path: '/incoming-buy-offers/:id', component: () => import('pages/offers/incomingBuyOffers.vue'), name: 'incoming-buy-offers' }
-
+  { path: '/incoming-buy-offers/:id', component: () => import('pages/offers/incomingBuyOffers.vue'), name: 'incoming-buy-offers' },
+  { path: '/arbitration', component: () => import('pages/arbitration/arbitration.vue'), name: 'arbitration', meta: { title: 'pages.login.title', notProfile: true, visitorScreen: true } },
+  { path: '/ticket/:id', component: () => import('pages/arbitration/components/ticket-detail.vue'), name: 'ticket', meta: { visitorScreen: true } }
 ]
 
 // Always leave this as last one

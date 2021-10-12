@@ -1,15 +1,15 @@
 <template lang="pug">
 #container
   .row.justify-between
-    .subtitle.text-white.q-mt-md {{ $t('pages.offers.offers') }}
+    //- .subtitle.text-white.q-mt-md {{ $t('pages.offers.offers') }}
     //- green-flat-btn.self-center(:label="$t('common.buttons.filter')")
   q-tabs(
     v-model="tab"
     active-color="accent"
     flat
   )
-    q-tab(name="buy" :label="$t('pages.offers.buy')")
-    q-tab(v-if="userCanSell" name="sale" :label="$t('pages.offers.sale')")
+    q-tab(name="buy" :label="$t('pages.offers.buy')" noCaps)
+    q-tab(v-if="userCanSell" name="sale" :label="$t('pages.offers.sale')" noCaps)
   q-separator
 
   q-tab-panels(v-model="tab" animated).bg-primary
@@ -48,4 +48,8 @@ export default {
   .q-tab-panel
     padding-left: 0  !important
     padding-right: 0 !important
+    height: 72vh
+  @media screen and ( min-width: $breakpoint-mobile )
+    .q-tab-panel
+      height: 78vh
 </style>

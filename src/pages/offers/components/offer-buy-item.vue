@@ -6,6 +6,7 @@
         .text-white {{ $t('pages.buy.seller') }}: {{ offer.seller }}
         .text-white {{ quantity }}
         //- .text-cancel(v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING" @click="cancel = !cancel") Cancel offer
+        //- .text-cancel(v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING" @click="cancel = !cancel") Cancel offer
   .row
     .col
         q-btn.full-width(
@@ -13,18 +14,61 @@
             :label="$t('common.buttons.confirm_payment')"
             color="blue-9"
             @click="$router.push({ name: 'make-payment', params: { id: offer.id } })"
+            no-caps
+            dense
         ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID"
-            label="WAITING PAY CONFIRM"
+            label="Waiting Payment Confirmation"
             color="blue-9"
+            no-caps
+            dense
+            disable
         ).custom-round
         q-btn.full-width(
             v-if="offer.current_status === OfferStatus.BUY_OFFER_PENDING"
             :label="$t('common.buttons.waiting')"
             color="orange-8"
             @click="waiting = !waiting"
+            no-caps
+            dense
+            disable
         ).custom-round
+        q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_INPROGRESS && !isContactMethodSent"
+            :label="$t('common.buttons.sendContactMethod')"
+            color="orange-8"
+            @click="sendContactMethodsMessage"
+            no-caps
+            dense
+        ).custom-round
+        q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_INPROGRESS && isContactMethodSent"
+            :label="$t('common.buttons.sentContactMethod')"
+            color="orange-8"
+            no-caps
+            dense
+            disable
+        ).custom-round
+        .text-white.text-center.text-subtitle1(v-if="flagged && ticket") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
+        q-btn.full-width(
+          v-if="arbitragePending"
+          :label="$t('common.buttons.arbitrage')"
+          color="orange-8"
+          disabled
+          dense
+        ).custom-round
+        q-btn.full-width(
+            v-if="offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE"
+            :label="$t('common.buttons.arbitrage')"
+            color="orange-8"
+            no-caps
+            dense
+        ).custom-round
+        init-arbitrage-button(
+          v-if="offer.current_status === OfferStatus.BUY_OFFER_PAID && showArbitrage"
+          :buyOfferId="this.offer.id"
+        ).full-width
         q-separator.full-width.q-my-sm(color="warning")
   #modals
     q-dialog(v-model="waiting" transition-show="slide-up" transition-hide="slzide-down")
@@ -33,12 +77,15 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { OfferStatus } from '~/const/OfferStatus'
 import WaitingApproval from './waiting-approval.vue'
+import InitArbitrageButton from '~/components/init-arbitrage-button'
+import { EventBus } from '~/event-bus.js'
 
 export default {
   name: 'offer-buy-item',
-  components: { WaitingApproval },
+  components: { WaitingApproval, InitArbitrageButton },
   props: {
     offer: {
       type: Object,
@@ -48,15 +95,57 @@ export default {
   data () {
     return {
       OfferStatus,
-      waiting: false
+      waiting: false,
+      showArbitrage: false,
+      ticket: undefined,
+      isContactMethodSent: false
     }
   },
+  async mounted () {
+    console.log('status', this.offer.current_status)
+    if (this.offer.current_status === OfferStatus.BUY_OFFER_PAID) {
+      const dateOfPaid = this.offer.status_history.find(item => item.key === OfferStatus.BUY_OFFER_PAID).value
+      this.showArbitrage = await this.buyerCanInitArbitrage(dateOfPaid)
+    }
+    if (this.flagged) {
+      this.ticket = await this.getTicketById({ id: this.offer.id })
+    }
+    this.getIsContactMethodSent()
+  },
   computed: {
+    flagged () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_FLAGGED
+    },
     quantity () {
       const buyQuantity = this.offer.quantity_info.find(v => {
         return v.key === 'buyquantity'
       })
       return buyQuantity.value || 'UNKNOWN'
+    },
+    arbitragePending () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_PENDING
+    }
+  },
+  methods: {
+    ...mapActions('encryption', ['createMessage']),
+    ...mapActions('profiles', ['getPaypal', 'getContactMethod']),
+    ...mapActions('arbitration', ['getTicketById', 'sendContactMethods', 'getIsContactMethodSentByAccount']),
+    async sendContactMethodsMessage () {
+      try {
+        let ticket = await this.getTicketById({ id: this.offer.id })
+        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getContactMethod(), recipientAccount: ticket.arbiter })
+        await this.sendContactMethods({ messageData })
+        EventBus.$emit('canceled')
+        this.showSuccessMsg(this.$root.$t('pages.arbitration.contact_methods_sent'))
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async getIsContactMethodSent () {
+      this.isContactMethodSent = await this.getIsContactMethodSentByAccount({
+        buyOfferId: this.offer.id,
+        isBuyer: true
+      })
     }
   }
 }

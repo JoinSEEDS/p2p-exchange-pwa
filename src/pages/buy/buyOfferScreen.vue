@@ -1,16 +1,23 @@
 <template lang="pug">
 #container
+  .q-pa-md
     q-icon.cursor-pointer(name="keyboard_backspace" color="white" size="md" @click="$router.replace('/offers')")
     q-form.q-gutter-md.q-mt-sm(@submit.event="onValidForm")
         .subtitle.text-white.q-mt-md {{ $t('pages.buy.offerDetail') }}
         .text-white {{ $t('pages.buy.howManySeedsWillYouBuy') }}
         .row.justify-center
-          .col-9
-            .text-h4.text-white.text-center {{ params.amount ? Number.parseFloat(params.amount).toFixed(4) : 0 }}
-              span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
+          .col-xs-11.col-md-8
+            .row
+              .col-xs-9.col-md-10
+                .text-h4.text-white.text-center {{ params.amount ? Number.parseFloat(params.amount).toFixed(2) : 0 }}
+              .col
+                span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ $t('pages.sell.seeds') }}
             q-separator(color="warning")
-            .text-h4.text-white.text-center {{ fiatToPay }}
-              span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ currentFiatCurrency }}
+            .row
+              .col-xs-9.col-md-10
+                .text-h4.text-white.text-center {{ fiatToPay }}
+              .col
+                span.text-h6.text-white.text-center.text-uppercase.q-ml-sm {{ currentFiatCurrency }}
         .row.bg-warning.container-current.q-py-sm(v-if="availableSeeds")
             .q-pa-sm
               .iconSeeds
@@ -57,7 +64,7 @@
         //- .hint {{$t('pages.sell.marketCost', { amount: `${pricePerSeedOnUSD} USD` })}}
         .row.bg-primary.btnSave.q-py-sm
           q-btn.full-width(
-              :label="$t('pages.sell.toSell')"
+              :label="$t('pages.sell.toBuy')"
               color="accent"
               type="submit"
           )
@@ -117,7 +124,7 @@ export default {
   watch: {
     isBuyingAll (v) {
       if (v) {
-        this.params.amount = this.parseSeedSymbolToAmount(this.availableSeeds).toFixed(4)
+        this.params.amount = this.parseSeedSymbolToAmount(this.availableSeeds).toFixed(2)
       } else {
         this.params.amount = 0.0000
       }
@@ -136,7 +143,8 @@ export default {
         })
         this.getBalances()
         this.showSuccessMsg(this.$root.$t('pages.buy.successMessage', { amount: this.parseToSeedSymbol(this.params.amount) }))
-        this.$router.replace({ name: 'sellOffers' })
+        // this.$router.replace({ name: 'sellOffers' })
+        this.$router.replace({ name: 'dashboard', params: { tab: 'transactions', subTab: 'buy' } })
       } catch (e) {
 
       }
@@ -202,4 +210,6 @@ export default {
   font-weight: bolder
 .container-current
   border-radius: 10px
+// .q-pextra
+//   padding: 36px
 </style>

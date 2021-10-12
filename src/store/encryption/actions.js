@@ -33,6 +33,24 @@ export const receiveMessage = async function ({ commit, dispatch }, { buyOfferId
     commit('general/setIsLoading', true, { root: true })
     const recipientPrivateKey = await dispatch('profiles/getPrivateKey', {}, { root: true })
     const response = await this.$encrypionApi.receiveMessage({ recipientPrivateKey, buyOfferId })
+    return response[0]
+  } catch (e) {
+    console.error('An error ocurred while trying to do a deposit', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    throw new Error(e)
+  } finally {
+    commit('general/setIsLoading', false, { root: true })
+  }
+}
+
+export const receiveContactMethods = async function ({ commit, dispatch }, { buyOfferId }) {
+  try {
+    commit('general/setIsLoading', true, { root: true })
+    const arbiter = this.getters['accounts/account']
+
+    const recipientPrivateKey = await dispatch('profiles/getPrivateKey', {}, { root: true })
+    const response = await this.$encrypionApi.receiveMessage({ recipientPrivateKey, buyOfferId, arbiter })
+    console.log('receiveContactMethods', response)
     return response
   } catch (e) {
     console.error('An error ocurred while trying to do a deposit', e)

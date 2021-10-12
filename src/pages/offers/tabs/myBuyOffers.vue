@@ -1,15 +1,16 @@
 <template lang="pug">
 #containerBuyOffers
-  q-pull-to-refresh(@refresh="refresh")
-    #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
-      skeleton-offer-item
-    #noData(v-if="myOffers.rows.length === 0 && !loading")
-      .text-h5.custom-font {{ $t('pages.offers.make_first') }}
-      .text-h4.custom-font {{ $t('pages.offers.buy_offer').toUpperCase() }}
-    q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
-        #containerScroll(ref="scrollTarget")
-                #items(v-for="offer in myOffers.rows")
-                    offer-buy-item(:offer="offer" v-if="offer.buyer === account")
+  .q-pa-sm
+    q-pull-to-refresh(@refresh="refresh")
+      #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
+        skeleton-offer-item
+      #noData(v-if="myOffers.rows.length === 0 && !loading")
+        .text-h5.custom-font {{ $t('pages.offers.make_first') }}
+        .text-h4.custom-font {{ $t('pages.offers.buy_offer').toUpperCase() }}
+      q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+          #containerScroll(ref="scrollTarget")
+                  #items(v-for="offer in myOffers.rows")
+                      offer-buy-item(:offer="offer" v-if="offer.buyer === account")
 </template>
 
 <script>
@@ -113,7 +114,11 @@ export default {
 #containerScroll
   overflow: auto
   flex: 1
-  max-height: 500px
+  max-height: 66vh
+
+@media screen and ( min-width: $breakpoint-mobile )
+  #containerScroll
+    max-height: 72vh
 
 .custom-font
     font-family: 'SF Pro Display'

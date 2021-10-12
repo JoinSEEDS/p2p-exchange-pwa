@@ -11,14 +11,18 @@ export default {
       save: 'Save',
       confirm: 'Confirm',
       filter: 'Filter',
-      waiting: 'Waiting...',
+      waiting: 'Waiting for Seller to accept',
       make_payment: 'Make Payment',
       view_details: 'View Details',
-      confirm_payment: 'Confirm payment',
+      confirm_payment: 'Confirm Payment',
       dismiss: 'Dismiss',
-      waiting_payment: 'Waiting for payment...',
+      waiting_payment: 'Waiting for Payment...',
       rejected: 'Rejected',
-      waiting_payment_confirmation: 'Waiting for Payment Confirmation'
+      waiting_payment_confirmation: 'Waiting for Payment Confirmation',
+      init_arbitrage: 'Init Arbitration',
+      arbitrage: 'Awaiting for Arbitrage',
+      sendContactMethod: 'Send Contact Method to Arbitrage',
+      sentContactMethod: 'Waiting for resolution'
     },
     defaultTitle: 'Title'
   },
@@ -39,7 +43,9 @@ export default {
       token: 'The field must contain between 2 and 6 characters',
       tokenDecimals: 'The decimals must be between 2 and 9',
       minZero: 'This field must be greater than 0',
-      maxSeedsAvailable: 'This field must be less or equal than {amount}'
+      maxSeedsAvailable: 'This field must be less or equal than {amount}',
+      email: 'The field is not a valid email',
+      internationalNumber: 'The field is not a valid number phone'
     }
   },
   menu: {
@@ -77,13 +83,19 @@ export default {
       paypalLink: 'Paypal Link',
       enterPaypalLink: 'Enter your paypal link',
       hintPaypal: 'Open link to confirm you write your profile link correctly',
-      saved: 'Account saved succesfully'
+      saved: 'Account saved succesfully',
+      email: 'Email',
+      signal: 'Signal Number',
+      transferwise: 'Transferwise',
+      cashtag: 'Cashtag',
+      venmo: 'Venmo Routing Number',
+      gojek: 'GoPay Cellphone Number'
     },
     mainTab: {
       seeds: 'Seeds',
       walletBalance: 'Available Balance',
       toSell: 'Sell SEEDS for Fiat',
-      toBuy: 'Buy SEEDS with Fiat',
+      toBuy: 'Init Purchase',
       recentActivity: 'Recent Activity',
       makeYour: 'Make your',
       firstTransaction: 'First Transaction',
@@ -92,13 +104,14 @@ export default {
     },
     sell: {
       toSell: 'Sell SEEDS for Fiat',
+      toBuy: 'Initiate purchase',
       defineTheSaleOffer: 'How many seeds would you like to sell?',
       crypto: 'Crypto',
       seeds: 'Seeds',
       amountOfCrypto: 'Enter the amount of seeds to sell',
       afterTransaction: 'After the transaction in your account will be {amount} seeds.',
-      costPerCrypto: 'Price ratio in percentage',
-      marketCost: '100% (1 SEED) = {amount}',
+      costPerCrypto: 'Percentage above or below market price',
+      marketCost: '0% (1 SEED) = {amount}',
       exchangeRateEqual: '1 SEED = {amount}',
       preferredCurrency: 'Preferred Currency',
       successMessage: 'Sell Offer was created successfully for {amount}.',
@@ -117,7 +130,7 @@ export default {
       cancel: 'Cancel'
     },
     buy: {
-      buySeeds: 'Buy SEEDS',
+      buySeeds: 'Sell Offers List',
       offerDetail: 'Offer Detail',
       howManySeedsWillYouBuy: 'How many Seeds will you buy?',
       seedsAvailable: 'Seeds Available',
@@ -137,11 +150,12 @@ export default {
       amountOfCrypto: 'Enter the amount of seeds to buy',
       cancel: 'Cancel buy offer',
       confirm_cancel: 'Are you sure of canceling this offer?',
-      existing_offer: 'An offer already exists for this sale offer'
+      existing_offer: 'An offer already exists for this sale offer',
+      buyer: 'Buyer'
     },
     deposit: {
-      deposit: 'Deposit',
-      withdraw: 'Withdraw',
+      deposit: 'Deposit from Wallet',
+      withdraw: 'Withdraw to Wallet',
       amount: 'Amount',
       depositWithdraw: 'Deposit / Withdraw',
       selectTypeAction: 'Select the type of action',
@@ -149,17 +163,17 @@ export default {
       successWithdraw: 'Success withdraw for {amount}'
     },
     balance: {
-      balance: 'Balance',
+      balance: 'Balances Details',
       available: 'Available',
-      swap: 'Swap',
-      escrow: 'Escrow',
+      swap: 'Offered',
+      escrow: 'Processing Sell',
       total: 'Total',
       seeBalancesDetails: 'See balances details'
     },
     offers: {
       offers: 'Offers',
-      buy: 'Buy',
-      sale: 'Sales',
+      buy: 'My Buy Offers',
+      sale: 'My Sell Offers',
       timeZone: 'Time Zone',
       fiatCurrency: 'Fiat Currency',
       filterBy: 'Filter By',
@@ -169,6 +183,8 @@ export default {
       reject_buy_offer: 'Offer rejected successfully',
       make_first: 'Make your first',
       sell_offer: 'Sell Offer',
+      there_arent: 'There are not',
+      active_sell_offer: 'Active Sell Offers',
       buy_offer: 'Buy Offer'
     },
     make_payment: {
@@ -189,13 +205,36 @@ export default {
       time_zone: 'Time zone'
     },
     incoming_offers: {
-      incoming_offers: 'Buy offers',
+      incoming_offers: 'Details of my sale offer',
       proposals: 'Purchase proposals',
       percentage: 'Percentage',
       sold: 'Sold',
       no_offers: 'This sell offer has not',
       not_yet: 'Purchase offers yet',
       finished: 'Finished successfully'
+    },
+    arbitration: {
+      arbitration: 'Arbitration',
+      available: 'Available',
+      assigned: 'Assigned',
+      ticket: 'Ticket',
+      buyer: 'Buyer: {buyer}',
+      seller: 'Seller: {seller}',
+      follow_up: 'Follow Up',
+      view_details: 'View details',
+      close_ticket: 'Close ticket',
+      close_ticket_favor: 'Close ticket in favor of:',
+      explain_reasons: 'Please explain the reasons of the judgement*:',
+      sure_close_ticket: 'Are you sure to close Ticket {id}? this action cannot be reversed.',
+      contact_methods_sent: 'Contact methods sent to arbiter',
+      arbitrage_inited: 'Arbitrage initiated successfully',
+      payment_method_available: 'Payment method not available',
+      flagged_to: 'Arbitrage resolved to: ',
+      non_available: 'No Tickets Available',
+      ticket_taken: 'Ticket taken successfully',
+      resolved_buyer: 'Resolved to buyer successfully',
+      resolved_seller: 'Resolved to seller successfully',
+      select_favor: 'You must select a user (seller / buyer) for the resolution'
     }
   }
 }

@@ -1,6 +1,6 @@
 <template lang="pug">
 #subContainer
-  .row
+  .row.q-pa-sm
     .q-mt-sm(style="position: relative")
       .yellow-dot
       img.avatar-icon.self-center(src="../../../statics/app-icons/seller.svg")
@@ -20,6 +20,7 @@
       @click="showOptions = !showOptions"
       no-caps
       v-if="pending"
+      dense
     )
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.waiting_payment_confirmation')"
@@ -27,6 +28,8 @@
       class="text-cap"
       no-caps
       v-if="accepted"
+      disabled
+      dense
     )
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.confirm_payment')"
@@ -35,6 +38,7 @@
       @click="showOptions = !showOptions"
       no-caps
       v-if="paid"
+      dense
     )
     q-btn.custom-width.custom-round(
       :label="$t('common.buttons.rejected')"
@@ -42,20 +46,51 @@
       class="text-cap"
       no-caps
       v-if="rejected"
+      dense
     )
+    q-btn.custom-width.custom-round(
+      :label="$t('common.buttons.sendContactMethod')"
+      color="orange-8"
+      class="text-cap"
+      no-caps
+      v-if="arbitrageSendContact && !isContactMethodSent"
+      @click="sendContactMethodsMessage"
+      dense
+    )
+    q-btn.custom-width.custom-round(
+      :label="$t('common.buttons.sentContactMethod')"
+      color="orange-8"
+      class="text-cap"
+      no-caps
+      v-if="arbitrageSendContact && isContactMethodSent"
+      @click="sendContactMethodsMessage"
+      dense
+      disable
+    )
+    q-btn.full-width(
+      v-if="arbitragePending"
+      :label="$t('common.buttons.arbitrage')"
+      color="orange-8"
+      disabled
+      dense
+    ).custom-round
+    .text-white.text-center.text-subtitle1(v-if="flagged") {{ $t('pages.arbitration.flagged_to') }} {{ ticket.resolution }}
+    init-arbitrage-button(v-if="showArbitrage && (accepted || paid)" :buyOfferId="this.offer.id").custom-width
   #modals
     q-dialog(v-model="showOptions" transition-show="slide-up" transition-hide="slide-down" persistent)
       buy-offer(:offer="offer")
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { OfferStatus } from '~/const/OfferStatus'
 import buyOffer from '~/pages/buy-offer/buy-offer'
 import { EventBus } from '~/event-bus'
+import InitArbitrageButton from '~/components/init-arbitrage-button'
 
 export default {
-  name: 'offer-buy-item',
-  components: { buyOffer },
+  name: 'incoming-buy-offer-item',
+  components: { buyOffer, InitArbitrageButton },
   props: {
     offer: {
       type: Object,
@@ -67,9 +102,21 @@ export default {
     this.percentage = percentage
     this.remaining = (remaining > 0) ? this.getHoursAndMinutes(remaining) : ''
 
+    const dateOfAccepted = this.offer.status_history.find(item => item.key === OfferStatus.BUY_OFFER_ACCEPTED)
+
+    if (dateOfAccepted) {
+      this.showArbitrage = await this.sellerCanInitArbitrage(dateOfAccepted.value)
+    }
+    // console.log('showArbitrage', showArbitrage)
+    if (this.flagged) {
+      this.ticket = await this.getTicketById({ id: this.offer.id })
+    }
+
     EventBus.$on('confirmOffer', async () => {
       this.showOptions = false
     })
+
+    this.getIsContactMethodSent()
   },
   beforeDestroy () {
     EventBus.$off('confirmOffer')
@@ -84,10 +131,16 @@ export default {
         hours: 0,
         minutes: 0
       },
-      percentage: 0
+      showArbitrage: false,
+      percentage: 0,
+      ticket: undefined,
+      isContactMethodSent: false
     }
   },
   methods: {
+    ...mapActions('encryption', ['createMessage']),
+    ...mapActions('profiles', ['getPaypal', 'getContactMethod']),
+    ...mapActions('arbitration', ['getTicketById', 'sendContactMethods', 'getIsContactMethodSentByAccount']),
     getHoursAndMinutes (minutes) {
       this.hasRemainingTime = true
 
@@ -97,6 +150,22 @@ export default {
       this.remainingTime.minutes = mins
 
       return `${hours}h ${mins.toFixed(0)}m`
+    },
+    async sendContactMethodsMessage () {
+      try {
+        let ticket = await this.getTicketById({ id: this.offer.id })
+        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getContactMethod(), recipientAccount: ticket.arbiter })
+        await this.sendContactMethods({ messageData })
+        EventBus.$emit('confirmOffer')
+        this.showSuccessMsg(this.$root.$t('pages.arbitration.contact_methods_sent'))
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async getIsContactMethodSent () {
+      this.isContactMethodSent = await this.getIsContactMethodSentByAccount({
+        buyOfferId: this.offer.id
+      })
     }
   },
   computed: {
@@ -110,13 +179,22 @@ export default {
       return this.offer.current_status === OfferStatus.BUY_OFFER_ACCEPTED
     },
     quantity () {
-      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value
+      return this.offer.quantity_info.find(el => el.key === 'buyquantity').value || ''
     },
     rejected () {
       return this.offer.current_status === OfferStatus.BUY_OFFER_REJECTED
     },
     finished () {
       return this.offer.current_status === OfferStatus.BUY_OFFER_SUCCESS
+    },
+    arbitragePending () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_PENDING
+    },
+    arbitrageSendContact () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_ARBITRAGE_INPROGRESS
+    },
+    flagged () {
+      return this.offer.current_status === OfferStatus.BUY_OFFER_FLAGGED
     },
     equivalentFiat () {
       try {

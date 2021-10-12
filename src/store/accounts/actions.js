@@ -25,6 +25,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
     const users = await authenticator.login(account)
     if (users.length) {
       this.$ualUser = users[0]
+      console.log('ualUser', this.$ualUser)
       this.$type = 'ual'
       const accountName = await users[0].getAccountName()
 
@@ -55,15 +56,15 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       localStorage.setItem('account', accountName)
       localStorage.setItem('returning', true)
 
-      console.log('before')
-
       await dispatch('profiles/signIn', {}, { root: true })
       let paypal = await dispatch('profiles/getPaypal', {}, { root: true })
       commit('setPaypal', paypal)
 
-      console.log('paypal', paypal)
-
-      this.$router.push({ path: returnUrl || '/dashboard' })
+      let isArbiter
+      if (this.getters['accounts/isP2PProfileCompleted']) {
+        isArbiter = this.getters['accounts/isArbiter']
+      }
+      isArbiter ? this.$router.push({ path: '/arbitration' }) : this.$router.push({ path: returnUrl || '/dashboard' })
 
       return this.$ualUser
     }

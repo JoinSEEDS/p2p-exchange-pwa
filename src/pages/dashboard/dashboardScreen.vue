@@ -1,5 +1,6 @@
 <template lang="pug">
 #container
+  .q-pa-md
     q-tab-panels.panelContainer(
         v-model="tab"
         animated
@@ -15,9 +16,6 @@
             //- p Lorem ipsum dolor sit amet consectetur adipisicing elit.
         q-tab-panel(name="notifications").tabContainer
             .text-h6 Notifications
-            p Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        q-tab-panel(name="settings").tabContainer
-            .text-h6 Settings
             p Lorem ipsum dolor sit amet consectetur adipisicing elit.
     q-separator(color="warning")
     q-tabs.tabsContainer(
@@ -61,7 +59,7 @@ export default {
 #container
     display: flex
     flex-direction: column
-    padding: 0px
+    // padding: 0px
 
 .panelContainer
     flex: 1
@@ -94,6 +92,6 @@ export default {
 
 @media screen and ( min-width: $breakpoint-mobile )
   .tabContainer
-    padding: 10px
+    padding: 2px
 
 </style>

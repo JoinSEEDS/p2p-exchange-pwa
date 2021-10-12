@@ -1,15 +1,16 @@
 <template lang="pug">
 #containerSellOffers
-  #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
-    skeleton-offer-item
-  #noData(v-if="myOffers.rows.length === 0 && !loading")
-    .text-h4.custom-font {{ $t('pages.offers.make_first') }}
-    .text-h5.custom-font {{ $t('pages.offers.sell_offer').toUpperCase() }}
-  q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
-    q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
-      #containerScroll(ref="scrollTarget")
-        #items(v-for="offer in myOffers.rows")
-          offer-sell-item(:offer="offer")
+  .q-pa-sm
+    #offersEmpty(v-if="myOffers.rows.length === 0 && loading")
+      skeleton-offer-item
+    #noData(v-if="myOffers.rows.length === 0 && !loading")
+      .text-h4.custom-font {{ $t('pages.offers.make_first') }}
+      .text-h5.custom-font {{ $t('pages.offers.sell_offer').toUpperCase() }}
+    q-pull-to-refresh(@refresh="refresh" :scroll-target="$refs.scrollTarget")
+      q-infinite-scroll.infiniteScroll(@load="onLoad" :offset="scrollOffset" :scroll-target="$refs.scrollTarget" ref="customInfinite")
+        #containerScroll(ref="scrollTarget")
+          #items(v-for="offer in myOffers.rows")
+            offer-sell-item(:offer="offer")
 </template>
 
 <script>
@@ -61,7 +62,8 @@ export default {
         })
         if (rows) {
           for (const row of rows) {
-            if (row.seller === this.account && row.type === OfferStatus.SELL_OFFER && row.current_status !== OfferStatus.SELL_OFFER_SOLDOUT) {
+            // if (row.seller === this.account && row.type === OfferStatus.SELL_OFFER && row.current_status !== OfferStatus.SELL_OFFER_SOLDOUT) {
+            if ((row.seller === this.account) && (row.type === OfferStatus.SELL_OFFER)) {
               this.myOffers.rows.push(row)
             }
           }
@@ -102,7 +104,11 @@ export default {
 #containerScroll
   overflow: auto
   flex: 1
-  max-height: 500px
+  max-height: 66vh
+
+@media screen and ( min-width: $breakpoint-mobile )
+  #containerScroll
+    max-height: 72vh
 
 #noData
   height: 60vh !important

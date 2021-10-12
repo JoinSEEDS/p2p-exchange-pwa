@@ -7,14 +7,26 @@ export const utils = {
   components: { GreenFlatBtn, SkeletonOfferItem },
   computed: {
     ...mapGetters('accounts', ['pricePerSeedOnEUR', 'currentFiatCurrency', 'fiatExchanges']),
-    ...mapGetters('settings', ['acceptLim']),
+    ...mapGetters('settings', ['acceptLim', 'sellerConfirmLim', 'buyerConfirmLim']),
     myFiatExchangeRate () {
       return Number.parseFloat(this.fiatExchanges.rates[this.currentFiatCurrency.toUpperCase()] * this.pricePerSeedOnEUR).toFixed(4)
     }
   },
   methods: {
-    ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg', 'setIsLoading']),
+    ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg', 'setIsLoading', 'setESRRequest']),
     ...mapActions('settings', ['getSettings']),
+    async createEsrRequest (actions) {
+      this.setESRRequest(null)
+      this.showIsLoading(true)
+      const esr = await this.$store.$esrApi.buildTransactionLink(actions)
+      // const esr = await this.$store.$esrApi.generateESR(actions)
+      this.showIsLoading(false)
+      const esrRequest = {
+        ...esr
+      }
+      console.log('createEsrRequest', esrRequest)
+      this.setESRRequest(esrRequest)
+    },
     copyToClipboard (str) {
       const el = document.createElement('textarea')
       el.value = str
@@ -56,7 +68,7 @@ export const utils = {
       this.setIsLoading(state)
     },
     parseToSeedsAmount (amount) {
-      return amount ? Number.parseFloat(amount).toFixed(4) : 0
+      return amount ? Number.parseFloat(amount).toFixed(2) : 0
     },
     parseToSeedSymbol (amount) {
       if (!amount) return '0 SEEDS'
@@ -115,6 +127,48 @@ export const utils = {
 
       // let { hours, minutes } = this.getHoursAndMinutes(remainingMinutes)
       // return `${hours} h ${minutes} m`
+    },
+    async sellerCanInitArbitrage (acceptanceDate) {
+      await this.getSettings()
+
+      let sinceDate = Date.parse(acceptanceDate)
+      let limitMs = this.buyerConfirmLim * 1000
+      let nowLocal = new Date()
+      var now = new Date(
+        nowLocal.getUTCFullYear(),
+        nowLocal.getUTCMonth(),
+        nowLocal.getUTCDate(),
+        nowLocal.getUTCHours(),
+        nowLocal.getUTCMinutes(),
+        nowLocal.getUTCSeconds(),
+        nowLocal.getUTCMilliseconds()
+      )
+      let limitDate = sinceDate + limitMs
+      let remainingTime = limitDate - now
+      let remainingMinutes = remainingTime / 60000
+
+      return remainingMinutes <= 0
+    },
+    async buyerCanInitArbitrage (payDate) {
+      await this.getSettings()
+
+      let sinceDate = Date.parse(payDate)
+      let limitMs = this.sellerConfirmLim * 1000
+      let nowLocal = new Date()
+      var now = new Date(
+        nowLocal.getUTCFullYear(),
+        nowLocal.getUTCMonth(),
+        nowLocal.getUTCDate(),
+        nowLocal.getUTCHours(),
+        nowLocal.getUTCMinutes(),
+        nowLocal.getUTCSeconds(),
+        nowLocal.getUTCMilliseconds()
+      )
+      let limitDate = sinceDate + limitMs
+      let remainingTime = limitDate - now
+      let remainingMinutes = remainingTime / 60000
+
+      return remainingMinutes <= 0
     }
   }
 }
