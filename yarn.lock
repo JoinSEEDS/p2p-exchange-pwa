@@ -2516,6 +2516,13 @@ anchor-link-browser-transport@^3.2.3:
   dependencies:
     tslib "^2.0.3"
 
+anchor-link-console-transport@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/anchor-link-console-transport/-/anchor-link-console-transport-1.0.0.tgz#168ce7a1919a04f4e4d4ca534f5a39757f179d5d"
+  integrity sha512-oJxze16krzuQyEfyMOBWXoDk4NDRhxcd9BncLXCf5+srN3AR45+4dpR05NQy6earp7SGvJDJoyGLZLGCwaN6Ww==
+  dependencies:
+    qrcode-terminal "^0.12.0"
+
 anchor-link@^3.3.2:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/anchor-link/-/anchor-link-3.3.3.tgz#7eb667c07e74f438c41b5376496911e4a3d70592"
@@ -11325,6 +11332,11 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qrcode-terminal@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/qrcode-terminal/-/qrcode-terminal-0.12.0.tgz#bb5b699ef7f9f0505092a3748be4464fe71b5819"
+  integrity sha512-EXtzRZmC+YGmGlDFbXKxQiMZNwCLEO6BANKXG4iCtSIM0yqc/pappSx3RIKr4r0uh5JsBckOXeKrB3Iz7mdQpQ==
 
 qrcode@^1.4.4:
   version "1.4.4"

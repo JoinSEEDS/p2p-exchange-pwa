@@ -25,6 +25,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
     const users = await authenticator.login(account)
     if (users.length) {
       this.$ualUser = users[0]
+      console.log('ualUser', this.$ualUser)
       this.$type = 'ual'
       const accountName = await users[0].getAccountName()
 

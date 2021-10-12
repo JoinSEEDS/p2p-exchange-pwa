@@ -6,7 +6,8 @@ import { Api, Serialize, JsonRpc } from 'eosjs'
 // const zlib = require('zlib')
 import zlib from 'zlib'
 // const { SigningRequest } = require('eosio-signing-request')
-import { SigningRequest } from 'eosio-signing-request'
+import * as ESR from 'eosio-signing-request'
+// import { SigningRequest, CallbackPayload } from 'eosio-signing-request'
 
 import QRCode from 'qrcode'
 import md5 from 'md5'
@@ -14,10 +15,66 @@ import md5 from 'md5'
 // const md5 = require('md5')
 import HyperionSocketClient from '@eosrio/hyperion-stream-client'
 
+import AnchorLink from 'anchor-link'
+// import { Link } from '~/lib/anchor-link/src/link.ts'
+import AnchorLinkBrowserTransport from 'anchor-link-browser-transport'
+import { v4 as uuid } from 'uuid'
+// import AnchorLinkConsoleTransport from 'anchor-link-console-transport'
+
 class EsrApi {
   constructor ({ api, rpc }) {
     this.rpc = rpc
     this.api = api
+  }
+
+  async buildTransactionLink (actions) {
+    const info = await this.rpc.get_info()
+    console.log('info', info)
+    const chainId = info.chain_id
+    // console.log('transport', AnchorLinkConsoleTransport())
+
+    console.log('Anchor Link generated', this.link)
+    this.link = new AnchorLink({
+      chains: [{
+        // chainId: '1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f',
+        chainId,
+        nodeUrl: 'https://test.telos.kitchen'
+      }],
+      // service: this.service,
+      // transport: LinkTransport
+      transport: new AnchorLinkBrowserTransport()
+      // verifyProofs: this.verifyProofs,
+    })
+    // const identity = await this.link.login('test')
+    // const identity = await this.link.transact({ actions })
+    const headBlock = await this.rpc.get_block(info.last_irreversible_block_num)
+    // const chainId = info.chain_id
+    // ref_block_num: headBlock.block_num & 0xffff, //
+    // ref_block_prefix: headBlock.ref_block_prefix,
+
+    const args = {
+      transaction: {
+        expiration: '2021-10-10T00:00:00',
+        ref_block_num: headBlock.block_num & 0xffff, //
+        ref_block_prefix: headBlock.ref_block_prefix,
+        max_net_usage_words: 0,
+        max_cpu_usage_ms: 0,
+        delay_sec: 0,
+        actions
+      }
+    }
+    let c, t
+    const { request } = await this.link.createRequest(args, c, t)
+    const esr = request.encode(true, false)
+    console.log('request ESR', esr)
+    const qrPath = await this.buildQrCode(esr)
+    // const qr = 'https://' + window.hostname + '/' + qrPath
+
+    return {
+      esr,
+      qr: qrPath
+    }
+    // return esr
   }
 
   // async buildTransaction (actions, endpoint = 'https://node.hypha.earth') {
@@ -68,22 +125,34 @@ class EsrApi {
 
     const transaction = {
       expiration,
+      // ref_block_num: '11016', //
+      // ref_block_prefix: '3396720483',
       ref_block_num: headBlock.block_num & 0xffff, //
       ref_block_prefix: headBlock.ref_block_prefix,
       max_net_usage_words: 0,
       delay_sec: 0,
       context_free_actions: [],
-      // callback: 'https://ptm-dev.hypha.earth/',
+      // callback: 'https://cb.anchor.link',
       actions: actions,
       // identity,
-      transaction_extensions: [],
-      signatures: [],
-      context_free_data: []
+      transaction_extensions: []
+      // signatures: [],
+      // context_free_data: [],
+      // blocks_behind: 3,
+      // expire_seconds: 30
     }
     // console.log('signing', SigningRequest)
     // const uri = await SigningRequest.signingDigest(chainId)
-    const request = await SigningRequest.create({ transaction, chainId }, opts)
-    const uri = request.encode()
+    const request = await ESR.SigningRequest.create({ transaction, chainId }, opts)
+    request.setInfoKey('same_device', true)
+    request.setInfoKey('return_path', 'googlechrome://')
+    request.setBroadcast(true)
+    console.log('creating callback', ESR)
+    const callback = `https://cb.anchor.link/${uuid()}`
+    console.log('callback', callback)
+    request.setCallback(callback)
+    const uri = request.encode(true, false)
+    // googlechrome://
     // console.log('encode success', uri, transaction, opts)
     return uri
   }
@@ -182,7 +251,7 @@ class EsrApi {
 
         setTimeout(() => {
           reject('TimeOut')
-        }, 30 * 1000)
+        }, 120 * 1000)
       })
     } catch (e) {
       console.error('error using ESR', e)

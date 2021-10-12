@@ -18,7 +18,8 @@ export const utils = {
     async createEsrRequest (actions) {
       this.setESRRequest(null)
       this.showIsLoading(true)
-      const esr = await this.$store.$esrApi.generateESR(actions)
+      const esr = await this.$store.$esrApi.buildTransactionLink(actions)
+      // const esr = await this.$store.$esrApi.generateESR(actions)
       this.showIsLoading(false)
       const esrRequest = {
         ...esr
