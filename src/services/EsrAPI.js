@@ -10,7 +10,7 @@ import * as ESR from 'eosio-signing-request'
 // import { SigningRequest, CallbackPayload } from 'eosio-signing-request'
 
 import QRCode from 'qrcode'
-import md5 from 'md5'
+// import md5 from 'md5'
 // const QRCode = require('qrcode')
 // const md5 = require('md5')
 import HyperionSocketClient from '@eosrio/hyperion-stream-client'
@@ -158,11 +158,11 @@ class EsrApi {
   }
 
   async buildQrCode (esr) {
-    const filename = md5(esr)
+    // const filename = md5(esr)
     // const filepath = `images/${filename}.png`
     // console.log('buildQrCode', filename, QRCode)
     try {
-      const qr = await QRCode.toDataURL(filename)
+      const qr = await QRCode.toDataURL(esr)
       return qr
     } catch (err) {
       console.error(err)

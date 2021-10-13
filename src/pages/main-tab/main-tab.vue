@@ -63,7 +63,7 @@ export default {
         const data = {
           from: 'jmgayosso155',
           to: 'm1escrowp2px',
-          quantity: '0.1000 SEEDS',
+          quantity: '0.0001 SEEDS',
           memo: 'test esr deposit 15'
         }
         const actions = [{
@@ -72,10 +72,10 @@ export default {
           data,
           authorization: [
             {
-              actor: 'jmgayosso155',
-              permission: 'active'
-              // actor: '............1',
-              // permission: '............2'
+              // actor: 'jmgayosso155',
+              // permission: 'active'
+              actor: '............1',
+              permission: '............2'
             }
           ]
         }]
