@@ -82,7 +82,8 @@ class EsrApi {
     // console.log('util', util)
     // const textEncoder = new util.TextEncoder()
     // const textDecoder = new util.TextDecoder()
-    const rpc = new JsonRpc('https://test.telos.kitchen', {
+    // const rpc = new JsonRpc('https://test.telos.kitchen', {
+    const rpc = new JsonRpc('https://api.telosfoundation.io', {
       fetch
     })
     const textDecoder = new TextDecoder()
@@ -110,6 +111,7 @@ class EsrApi {
     }
 
     const info = await rpc.get_info()
+    console.log('info')
     const headBlock = await rpc.get_block(info.last_irreversible_block_num)
     const chainId = info.chain_id
     // set expiration to 7 days from now.
