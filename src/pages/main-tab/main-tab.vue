@@ -61,8 +61,8 @@ export default {
       try {
         this.showIsLoading(true)
         const data = {
-          from: 'jmgayosso155',
-          to: 'm1escrowp2px',
+          from: '............1',
+          to: 'p2p.seeds',
           quantity: '0.0001 SEEDS',
           memo: 'test esr deposit 15'
         }
