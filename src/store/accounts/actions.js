@@ -9,6 +9,65 @@ const getAuthenticator = function (ual, wallet = null) {
   }
 }
 
+export const loginPPP = async function ({ commit, dispatch }, { returnUrl, accountName }) {
+  try {
+    console.log('login with PPP', accountName, returnUrl)
+    // this.$ualUser = users[0]
+    this.$type = 'esr'
+    this.$accountName = accountName
+    // const accountName = await users[0].getAccountName()
+    const user = await dispatch('profiles/signIn', { accountName }, { root: true })
+    console.log('loginPPP', user)
+    // const accountName = user.eosAccount || 'jmgayosso155'
+
+    const isUserSeeds = await this.$userApi.checkExistUserSeeds({ accountName })
+
+    if (!isUserSeeds || !isUserSeeds.userExist) {
+      commit('general/setErrorMsg', 'Please login with a seeds account.', { root: true })
+      // await authenticator.logout()
+      localStorage.removeItem('autoLogin')
+      commit('setAccount')
+      commit('setSeedsAccount')
+      commit('setP2PAccount')
+      commit('setCurrentSeedsPerUsd')
+      commit('setP2PBalances')
+      return
+    }
+
+    const userAccount = await this.$accountApi.getAccountInfo({ accountName })
+
+    commit('setAccount', accountName)
+    commit('setSeedsAccount', isUserSeeds.userData)
+    commit('setP2PAccount', userAccount.rows[0])
+    await dispatch('getBalances')
+    await dispatch('getCurrentSeedsPerUsd')
+    await dispatch('getFiatExchanges')
+
+    // localStorage.setItem('autoLogin', authenticator.constructor.name)
+    localStorage.setItem('account', accountName)
+    localStorage.setItem('returning', true)
+
+    // await dispatch('profiles/signIn', {}, { root: true })
+    let paypal = await dispatch('profiles/getPaypal', {}, { root: true })
+    commit('setPaypal', paypal)
+
+    let isArbiter
+    if (this.getters['accounts/isP2PProfileCompleted']) {
+      isArbiter = this.getters['accounts/isArbiter']
+    }
+    isArbiter ? this.$router.push({ path: '/arbitration' }) : this.$router.push({ path: returnUrl || '/dashboard' })
+
+    // return this.$ualUser
+  } catch (e) {
+    // const error = (authenticator.getError() && authenticator.getError().message) || e.message || e.reason
+    commit('general/setErrorMsg', e | e.message, { root: true })
+    console.error(e)
+    return null
+  } finally {
+    commit('setLoadingWallet')
+  }
+}
+
 export const login = async function ({ commit, dispatch }, { idx, account, returnUrl }) {
   const authenticator = this.$ual.authenticators[idx]
   try {
@@ -105,7 +164,7 @@ export const logout = async function ({ commit }) {
   localStorage.removeItem('autoLogin')
   localStorage.removeItem('account')
   localStorage.removeItem('returning')
-  this.$api = null
+  // this.$api = null
   this.$router.push({ path: '/' })
 }
 

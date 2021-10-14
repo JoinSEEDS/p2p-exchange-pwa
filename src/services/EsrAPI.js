@@ -185,19 +185,20 @@ class EsrApi {
   async listenTransaction ({ contractName, actionName, data }) {
     try {
       const ENDPOINT = 'https://testnet.telos.caleos.io/'
-      const client = new HyperionSocketClient(ENDPOINT, { async: false })
+      const client = new HyperionSocketClient(ENDPOINT, { async: true })
 
       return new Promise((resolve, reject) => {
         const current = new Date().toISOString()
         // const current = '2021-09-30T00:00:00.000Z'
         // const filters = []
         const _dataArray = Object.entries(data)
-        const filters = _dataArray.map(prop => {
+        const _filters = _dataArray.map(prop => {
           return {
             field: `act.data.${prop[0]}`,
-            value: prop[1]
+            value: prop[1].toString()
           }
         })
+        const filters = _filters.filter(v => v.value !== '............1')
         console.log('dataArray', _dataArray, filters)
 
         const configs = {
@@ -223,7 +224,7 @@ class EsrApi {
         client.onData = async (data, ack) => {
           console.log('On Data Listened', data) // process incoming data, replace with your code
           resolve(data)
-          // ack() // ACK when done
+          ack() // ACK when done
         }
 
         client.connect(() => {

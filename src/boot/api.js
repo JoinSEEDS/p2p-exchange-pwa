@@ -17,6 +17,7 @@ import {
 } from '~/services'
 
 const signTransaction = async function (actions) {
+  console.log('signTransactionApi', actions)
   actions.forEach(action => {
     if (!action.authorization || !action.authorization.length) {
       action.authorization = [{

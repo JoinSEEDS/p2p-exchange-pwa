@@ -2,18 +2,39 @@ import PPP from '@smontero/ppp-client-api'
 
 export const signUp = async function ({ state }, mData) {
   // console.log('signUp!', mData)
-  PPP.setActiveUser(this.$ualUser)
+  // PPP.setActiveUser(this.$ualUser)
+  PPP.setActiveUser({
+    // ...this.$api,
+    signTransaction: (a) => {
+      // console.log('signIn transaction', a)
+      return this.$api.signTransaction(a.actions)
+    },
+    getAccountName: () => '............1'
+    // getAccountName: () => 'jmgayosso155'
+  })
   const profileApi = PPP.profileApi()
   return profileApi.register(mData)
 }
 
-export const signIn = async function ({ state }) {
-  PPP.setActiveUser(this.$ualUser)
+export const signIn = async function ({ state }, { accountName }) {
+  PPP.setActiveUser({
+    // ...this.$api,
+    signTransaction: (a) => {
+      // console.log('signIn transaction', a)
+      return this.$api.signTransaction(a.actions)
+    },
+    getAccountName: () => accountName
+    // getAccountName: () => 'jmgayosso155'
+  })
   const authApi = PPP.authApi()
   const validSession = await authApi.hasValidSession()
-  if (!validSession) await authApi.signIn()
-  // const profileApi = PPP.profileApi()
-  // await profileApi.getProfile()
+  console.log('validSession', validSession)
+  if (!validSession) console.log('validSessionResponse', await authApi.signIn())
+  console.log('getUser', await authApi.userInfo())
+  const profileApi = PPP.profileApi()
+  console.log('profileApi', profileApi)
+  const profile = await profileApi.getProfile()
+  return profile
 }
 
 export const getPaypal = async function ({ state }) {

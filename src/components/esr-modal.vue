@@ -1,8 +1,8 @@
 <template lang="pug">
     .row.justify-center
         .col-6
-            q-dialog(ref="esrModal" @before-hide="onHide")
-                q-card.q-pa-md.full-width(v-if="esrRequest")
+            q-dialog.esrModal(ref="esrModal" @before-hide="onHide")
+                q-card.q-pa-md.full-width.esrModal(v-if="esrRequest")
                     .text-h5.text-center Sign Request
                     //- p {{ esrRequest }}
                     .row.justify-center
@@ -72,5 +72,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-
+.esrModal
+  z-index: 9999 !important
 </style>

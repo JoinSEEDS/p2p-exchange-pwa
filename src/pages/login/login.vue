@@ -9,17 +9,22 @@ export default {
   },
   data () {
     return {
-      idx: null
+      idx: null,
+      accountName: 'jmgayosso155'
     }
   },
   computed: {
     ...mapGetters('accounts', ['loading'])
   },
   methods: {
-    ...mapActions('accounts', ['login', 'autoLogin']),
+    ...mapActions('accounts', ['login', 'autoLogin', 'loginPPP']),
     async onLogin (idx) {
       this.idx = idx
       await this.login({ idx: this.idx, returnUrl: '/dashboard' })
+    },
+    async onLoginPPP () {
+      console.log('onLoginPPP')
+      await this.loginPPP({ returnUrl: '/dashboard', accountName: this.accountName })
     },
     async onAccountEntered (account) {
       await this.login({ idx: this.idx, account, returnUrl: this.$route.query.returnUrl })
@@ -40,76 +45,63 @@ export default {
     .cm
       .c1.background-login
       q-list.q-pa-xl.wallets-container
-        .label.text-white.q-mb-md Select your wallet
-        q-item.q-my-md.wallet-item(
-          v-for="(wallet, idx) in $ual.authenticators"
-          :key="wallet.getStyle().text"
-          :style="{ background: wallet.getStyle().background, color: wallet.getStyle().textColor }"
-          v-if="wallet.shouldRender()"
-          v-ripple
+        q-input(
+          label="Seeds Account Name"
+          outlined
+          dark
+          standout="text-accent"
+          v-model="accountName"
         )
-          .logo-wallet-container.cursor-pointer.logo-background(
-            @click="onLogin(idx)"
-          )
-            img(
-              :src="wallet.getStyle().icon"
-              width="30"
+        //- .label.text-white.q-mb-md Login
+        q-item.q-my-md.wallet-item.bg-accent.text-white(
+          v-ripple
+          @click="onLoginPPP()"
+        )
+          .logo-wallet-container.cursor-pointer.logo-background
+            q-icon(
+              name="login"
+              color="white"
+              @click="onLoginPPP()"
             )
-          .cursor-pointer.wallet-name(@click="onLogin(idx)")
-            .q-ml-md {{ wallet.getStyle().text }}
-          .flex
-              q-spinner.q-mt-xs(
-                v-if="loading === wallet.getStyle().text"
-                :color="wallet.getStyle().textColor"
-                size="2em"
-              )
-              q-btn(
-                v-else
-                :color="wallet.getStyle().textColor"
-                icon="fas fa-download"
-                @click="openUrl(wallet.getOnboardingLink())"
-                target="_blank"
-                dense
-                flat
-                size="12px"
-              )
-                q-tooltip {{ $t('pages.login.getApp') }}
-      //- q-item.q-my-md(
-      //-   v-for="(wallet, idx) in $ual.authenticators"
-      //-   :key="wallet.getStyle().text"
-      //-   v-ripple
-      //-   :style="{ background: wallet.getStyle().background, color: wallet.getStyle().textColor }"
-      //-   v-if="wallet.shouldRender()"
-      //- )
-      //-   q-item-section.cursor-pointer.logo-background(
-      //-     @click="onLogin(idx)"
-      //-   )
-      //-     img(
-      //-       :src="wallet.getStyle().icon"
-      //-       width="30"
-      //-     )
-      //-   q-item-section.cursor-pointer(@click="onLogin(idx)") {{ wallet.getStyle().text }}
-      //-   q-item-section(avatar)
-      //-     .flex
-      //-       q-spinner(
-      //-         v-if="loading === wallet.getStyle().text"
-      //-         :color="wallet.getStyle().textColor"
-      //-         size="2em"
-      //-       )
-      //-       q-btn(
-      //-         v-else
-      //-         :color="wallet.getStyle().textColor"
-      //-         icon="fas fa-download"
-      //-         @click="openUrl(wallet.getOnboardingLink())"
-      //-         target="_blank"
-      //-         dense
-      //-         flat
-      //-         size="12px"
-      //-       )
-      //-         q-tooltip {{ $t('pages.login.getApp') }}
-    request-account(
-      @accountEntered="onAccountEntered"
-    )
+          .cursor-pointer.wallet-name(@click="onLoginPPP()")
+            .q-ml-md.text-center Login
+        //- .label.text-white.q-mb-md Select your wallet
+        //- q-item.q-my-md.wallet-item(
+        //-   v-for="(wallet, idx) in $ual.authenticators"
+        //-   :key="wallet.getStyle().text"
+        //-   :style="{ background: wallet.getStyle().background, color: wallet.getStyle().textColor }"
+        //-   v-if="wallet.shouldRender()"
+        //-   v-ripple
+        //- )
+        //-   .logo-wallet-container.cursor-pointer.logo-background(
+        //-     @click="onLogin(idx)"
+        //-   )
+        //-     img(
+        //-       :src="wallet.getStyle().icon"
+        //-       width="30"
+        //-     )
+        //-   .cursor-pointer.wallet-name(@click="onLogin(idx)")
+        //-     .q-ml-md {{ wallet.getStyle().text }}
+        //-   .flex
+        //-       q-spinner.q-mt-xs(
+        //-         v-if="loading === wallet.getStyle().text"
+        //-         :color="wallet.getStyle().textColor"
+        //-         size="2em"
+        //-       )
+        //-       q-btn(
+        //-         v-else
+        //-         :color="wallet.getStyle().textColor"
+        //-         icon="fas fa-download"
+        //-         @click="openUrl(wallet.getOnboardingLink())"
+        //-         target="_blank"
+        //-         dense
+        //-         flat
+        //-         size="12px"
+        //-       )
+        //-         q-tooltip {{ $t('pages.login.getApp') }}
+    //- request-account(
+    //-   @accountEntered="onAccountEntered"
+    //- )
 
 </template>
 
@@ -138,6 +130,7 @@ export default {
   display: flex
   justify-items: center
   align-items: center
+  text-align: center
   flex: 0.95
 .info-container
   vertical-align: middle
