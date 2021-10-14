@@ -69,15 +69,7 @@ export default {
         const actions = [{
           account: 'token.seeds',
           name: 'transfer',
-          data,
-          authorization: [
-            {
-              // actor: 'jmgayosso155',
-              // permission: 'active'
-              actor: '............1',
-              permission: '............2'
-            }
-          ]
+          data
         }]
         // this.showIsLoading(true)
         this.createEsrRequest(actions)

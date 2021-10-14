@@ -27,12 +27,21 @@ const signTransaction = async function (actions) {
   })
   let transaction = null
   try {
+    console.log('type of eos handler:', this.$type)
     if (this.$type === 'ual') {
       transaction = await this.$ualUser.signTransaction({
         actions
       }, {
         blocksBehind: 3,
         expireSeconds: 30
+      })
+    } else if (this.$type === 'esr') {
+      const { esr } = await this.$esrApi.generateESR(actions)
+      transaction = await this.$esrApi.signEsrTransaction({
+        esr,
+        contractName: actions[0].account,
+        actionName: actions[0].name,
+        memo: actions[0].data.memo
       })
     }
   } catch (e) {

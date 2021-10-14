@@ -27,6 +27,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       this.$ualUser = users[0]
       console.log('ualUser', this.$ualUser)
       this.$type = 'ual'
+      this.$type = 'esr'
       const accountName = await users[0].getAccountName()
 
       const isUserSeeds = await this.$userApi.checkExistUserSeeds({ accountName })

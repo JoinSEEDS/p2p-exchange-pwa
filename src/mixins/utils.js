@@ -22,7 +22,8 @@ export const utils = {
       const esr = await this.$store.$esrApi.generateESR(actions)
       this.showIsLoading(false)
       const esrRequest = {
-        ...esr
+        ...esr,
+        actions
       }
       console.log('createEsrRequest', esrRequest)
       this.setESRRequest(esrRequest)

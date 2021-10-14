@@ -54,7 +54,7 @@ class EsrApi {
 
     const args = {
       transaction: {
-        expiration: '2021-10-10T00:00:00',
+        expiration: new Date().getTime() + (1000 * 60 * 60),
         ref_block_num: headBlock.block_num & 0xffff, //
         ref_block_prefix: headBlock.ref_block_prefix,
         max_net_usage_words: 0,
@@ -77,15 +77,25 @@ class EsrApi {
     // return esr
   }
 
-  // async buildTransaction (actions, endpoint = 'https://node.hypha.earth') {
-  async buildTransaction (actions) {
-    // console.log('util', util)
-    // const textEncoder = new util.TextEncoder()
-    // const textDecoder = new util.TextDecoder()
-    // const rpc = new JsonRpc('https://test.telos.kitchen', {
-    const rpc = new JsonRpc('https://api.telosfoundation.io', {
-      fetch
+  async buildTransaction (_actions) {
+    const actions = _actions.map(action => {
+      action.authorization = [
+        {
+          // actor: 'jmgayosso155',
+          // permission: 'active'
+          actor: '............1',
+          permission: '............2'
+        }
+      ]
+
+      action.data.memo = (action.data.memo) ? `${action.data.memo}-${uuid()}` : `${action.name}-${uuid()}`
+      return action
     })
+
+    const chainEndpoint = `${process.env.NETWORK_PROTOCOL}://${process.env.NETWORK_HOST}`
+    // console.log('chainEndpoint', chainEndpoint, actions)
+    const rpc = new JsonRpc(chainEndpoint)
+    // const rpc = new JsonRpc(chainEndpoint)
     const textDecoder = new TextDecoder()
     const textEncoder = new TextEncoder()
 
@@ -109,53 +119,32 @@ class EsrApi {
         getAbi: async (account) => await eos.getAbi(account)
       }
     }
-
     const info = await rpc.get_info()
-    console.log('info')
+
     const headBlock = await rpc.get_block(info.last_irreversible_block_num)
     const chainId = info.chain_id
     // set expiration to 7 days from now.
     const expiration = Serialize.timePointSecToDate(Serialize.dateToTimePointSec(headBlock.timestamp) + 3600)
 
-    // const identity = {
-    //   account: '',
-    //   name: 'identity',
-    //   data: {
-    //     scope: 'PTM'
-    //   }
-    // }
-
     const transaction = {
       expiration,
-      // ref_block_num: '11016', //
-      // ref_block_prefix: '3396720483',
       ref_block_num: headBlock.block_num & 0xffff, //
       ref_block_prefix: headBlock.ref_block_prefix,
       max_net_usage_words: 0,
       delay_sec: 0,
       context_free_actions: [],
-      // callback: 'https://cb.anchor.link',
       actions: actions,
-      // identity,
       transaction_extensions: []
-      // signatures: [],
-      // context_free_data: [],
-      // blocks_behind: 3,
-      // expire_seconds: 30
     }
-    // console.log('signing', SigningRequest)
-    // const uri = await SigningRequest.signingDigest(chainId)
     const request = await ESR.SigningRequest.create({ transaction, chainId }, opts)
     request.setInfoKey('same_device', true)
-    request.setInfoKey('return_path', 'googlechrome://')
-    request.setBroadcast(true)
-    console.log('creating callback', ESR)
-    const callback = `https://cb.anchor.link/${uuid()}`
-    console.log('callback', callback)
-    request.setCallback(callback)
+    // request.setInfoKey('return_path', 'googlechrome://')
+    // request.setBroadcast(true)
+    // console.log('creating callback', ESR)
+    // const callback = `https://cb.anchor.link/${uuid()}`
+    // console.log('callback', callback)
+    // request.setCallback(callback)
     const uri = request.encode(true, false)
-    // googlechrome://
-    // console.log('encode success', uri, transaction, opts)
     return uri
   }
 
@@ -183,61 +172,31 @@ class EsrApi {
     }
   }
 
-  async signEsrTransaction ({ actions }) {
+  async signEsrTransaction ({ esr, contractName, actionName, memo }) {
     try {
-      // const data = {
-      //   from: 'jmgayosso155',
-      //   to: 'm1escrowp2px',
-      //   quantity: '0.1000 SEEDS',
-      //   memo: 'test esr deposit 15'
-      // }
-      // const actions = [{
-      //   account: 'token.seeds',
-      //   name: 'transfer',
-      //   data,
-      //   authorization: [
-      //     {
-      //       actor: 'jmgayosso155',
-      //       permission: 'active'
-      //       // actor: '............1',
-      //       // permission: '............2'
-      //     }
-      //   ]
-      // }]
-      // const _actions = {
-      //   ...actions,
-      //   authorization: [
-      //     {
-      //       actor: 'jmgayosso155',
-      //       permission: 'active'
-      //     }
-      //   ]
-      // }
-      const { esr } = await this.generateESR(actions)
-      // const r = await window.open(esr.replace('esr://', 'https://eosio.to/'))
-      const r = await window.open(esr, '_blank')
-      console.log('store', esr, r)
       const ENDPOINT = 'https://testnet.telos.caleos.io/'
       const client = new HyperionSocketClient(ENDPOINT, { async: false })
 
       return new Promise((resolve, reject) => {
         const current = new Date().toISOString()
         // const current = '2021-09-30T00:00:00.000Z'
+        const configs = {
+          contract: contractName,
+          action: actionName,
+          // account: '',
+          start_from: current,
+          read_until: 0,
+          // filters: []
+          filters: [
+            {
+              field: 'act.data.memo',
+              value: memo
+            }
+          ]
+        }
         client.onConnect = () => {
-          client.streamActions({
-            contract: 'token.seeds',
-            action: 'transfer',
-            account: '',
-            start_from: current,
-            read_until: 0,
-            // filters: []
-            filters: [
-              {
-                field: 'act.data.memo',
-                value: actions[0].data.memo
-              }
-            ]
-          })
+          client.streamActions(configs)
+          console.log('onConnect', configs)
         }
 
         // see 3 for handling data
@@ -249,6 +208,7 @@ class EsrApi {
 
         client.connect(() => {
           console.log('connected!', current)
+          window.open(esr, '_blank')
         })
 
         setTimeout(() => {

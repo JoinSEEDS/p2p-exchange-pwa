@@ -11,10 +11,9 @@
                                 :src="esrRequest.qr"
                             )
                     q-btn.full-width(
-                        type="a"
                         label="Launch wallet"
-                        :href="esrRequest.esr"
                         color="primary"
+                        @click="signTransaction"
                     )
 </template>
 
@@ -36,6 +35,19 @@ export default {
     ...mapMutations('general', ['setESRRequest']),
     onHide () {
       this.setESRRequest(null)
+    },
+    async signTransaction () {
+      try {
+        const r = await this.$store.$esrApi.signEsrTransaction({
+          esr: this.esrRequest.esr,
+          contractName: this.esrRequest.actions[0].account,
+          actionName: this.esrRequest.actions[0].name,
+          memo: this.esrRequest.actions[0].data.memo
+        })
+        console.log('signTransactionSuccess', r)
+      } catch (e) {
+        console.error(e)
+      }
     }
   },
   watch: {
