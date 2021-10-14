@@ -37,11 +37,12 @@ const signTransaction = async function (actions) {
       })
     } else if (this.$type === 'esr') {
       const { esr } = await this.$esrApi.generateESR(actions)
+      const lastAction = actions[actions.length - 1]
       transaction = await this.$esrApi.signEsrTransaction({
         esr,
-        contractName: actions[0].account,
-        actionName: actions[0].name,
-        memo: actions[0].data.memo
+        contractName: lastAction.account,
+        actionName: lastAction.name,
+        data: lastAction.data
       })
     }
   } catch (e) {

@@ -18,7 +18,7 @@ import HyperionSocketClient from '@eosrio/hyperion-stream-client'
 import AnchorLink from 'anchor-link'
 // import { Link } from '~/lib/anchor-link/src/link.ts'
 import AnchorLinkBrowserTransport from 'anchor-link-browser-transport'
-import { v4 as uuid } from 'uuid'
+// import { v4 as uuid } from 'uuid'
 // import AnchorLinkConsoleTransport from 'anchor-link-console-transport'
 
 class EsrApi {
@@ -88,7 +88,7 @@ class EsrApi {
         }
       ]
 
-      action.data.memo = (action.data.memo) ? `${action.data.memo}-${uuid()}` : `${action.name}-${uuid()}`
+      // action.data.memo = (action.data.memo) ? `${action.data.memo}-${uuid()}` : `${action.name}-${uuid()}`
       return action
     })
 
@@ -172,7 +172,7 @@ class EsrApi {
     }
   }
 
-  async signEsrTransaction ({ esr, contractName, actionName, memo }) {
+  async signEsrTransaction ({ esr, contractName, actionName, data }) {
     try {
       const ENDPOINT = 'https://testnet.telos.caleos.io/'
       const client = new HyperionSocketClient(ENDPOINT, { async: false })
@@ -180,19 +180,29 @@ class EsrApi {
       return new Promise((resolve, reject) => {
         const current = new Date().toISOString()
         // const current = '2021-09-30T00:00:00.000Z'
+        // const filters = []
+        const _dataArray = Object.entries(data)
+        const filters = _dataArray.map(prop => {
+          return {
+            field: `act.data.${prop[0]}`,
+            value: prop[1]
+          }
+        })
+        console.log('dataArray', _dataArray, filters)
+
         const configs = {
           contract: contractName,
           action: actionName,
-          // account: '',
+          account: '',
           start_from: current,
           read_until: 0,
-          // filters: []
-          filters: [
-            {
-              field: 'act.data.memo',
-              value: memo
-            }
-          ]
+          filters
+          // filters: [
+          //   {
+          //     field: 'act.data.memo',
+          //     value: memo
+          //   }
+          // ]
         }
         client.onConnect = () => {
           client.streamActions(configs)

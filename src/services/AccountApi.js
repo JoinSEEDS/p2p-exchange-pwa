@@ -2,7 +2,7 @@ import BaseEosApi from './BaseEosApi'
 import {
   Contracts
 } from '~/const/Contracts'
-import { v4 as uuid } from 'uuid'
+// import { v4 as uuid } from 'uuid'
 // import User from '../domain/User'
 
 class AccountApi extends BaseEosApi {
@@ -83,8 +83,8 @@ class AccountApi extends BaseEosApi {
       data: {
         // to: 'token.seeds',
         account: accountName,
-        quantity,
-        memo: `withdraw-${quantity}-${uuid()}`
+        quantity
+        // memo: `withdraw-${quantity}-${uuid()}`
       }
     }]
 
@@ -111,14 +111,14 @@ class AccountApi extends BaseEosApi {
       // ]
     }]
 
-    const { esr } = await this.esrApi.generateESR(actions)
-    return this.esrApi.signEsrTransaction({
-      esr,
-      contractName: actions[0].account,
-      actionName: actions[0].name,
-      memo: actions[0].data.memo
-    })
-    // return this.eosApi.signTransaction(actions)
+    // const { esr } = await this.esrApi.generateESR(actions)
+    // return this.esrApi.signEsrTransaction({
+    //   esr,
+    //   contractName: actions[0].account,
+    //   actionName: actions[0].name,
+    //   memo: actions[0].data.memo
+    // })
+    return this.eosApi.signTransaction(actions)
   }
 }
 
