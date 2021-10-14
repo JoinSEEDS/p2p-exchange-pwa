@@ -174,6 +174,16 @@ class EsrApi {
 
   async signEsrTransaction ({ esr, contractName, actionName, data }) {
     try {
+      window.open(esr, '_blank')
+      return this.listenTransaction({ contractName, actionName, data })
+    } catch (e) {
+      console.error('error using ESR', e)
+    } finally {
+    }
+  }
+
+  async listenTransaction ({ contractName, actionName, data }) {
+    try {
       const ENDPOINT = 'https://testnet.telos.caleos.io/'
       const client = new HyperionSocketClient(ENDPOINT, { async: false })
 
@@ -218,7 +228,6 @@ class EsrApi {
 
         client.connect(() => {
           console.log('connected!', current)
-          window.open(esr, '_blank')
         })
 
         setTimeout(() => {
@@ -226,8 +235,7 @@ class EsrApi {
         }, 120 * 1000)
       })
     } catch (e) {
-      console.error('error using ESR', e)
-    } finally {
+      console.error('error listenign transaction', e)
     }
   }
 }

@@ -37,7 +37,7 @@ const signTransaction = async function (actions) {
       })
     } else if (this.$type === 'esr') {
       const { esr, qr } = await this.$esrApi.generateESR(actions)
-      // const lastAction = actions[actions.length - 1]
+      const lastAction = actions[actions.length - 1]
 
       const esrRequest = {
         esr,
@@ -54,6 +54,11 @@ const signTransaction = async function (actions) {
       //   actionName: lastAction.name,
       //   data: lastAction.data
       // })
+      transaction = await this.$esrApi.listenTransaction({
+        contractName: lastAction.account,
+        actionName: lastAction.name,
+        data: lastAction.data
+      })
     }
   } catch (e) {
     throw new Error(e.cause.message)
