@@ -184,7 +184,8 @@ class EsrApi {
 
   async listenTransaction ({ contractName, actionName, data }) {
     try {
-      const ENDPOINT = 'https://testnet.telos.caleos.io/'
+      // const ENDPOINT = 'https://testnet.telos.caleos.io/'
+      const ENDPOINT = 'https://telos.caleos.io/v2'
       const client = new HyperionSocketClient(ENDPOINT, { async: true })
 
       return new Promise((resolve, reject) => {
