@@ -10,7 +10,7 @@ export default {
   data () {
     return {
       idx: null,
-      accountName: 'jmgayosso155'
+      accountName: ''
     }
   },
   computed: {
@@ -23,8 +23,16 @@ export default {
       await this.login({ idx: this.idx, returnUrl: '/dashboard' })
     },
     async onLoginPPP () {
-      console.log('onLoginPPP')
-      await this.loginPPP({ returnUrl: '/dashboard', accountName: this.accountName })
+      try {
+        console.log('onLoginPPP')
+        if (this.accountName.length === 12) {
+          await this.loginPPP({ returnUrl: '/dashboard', accountName: this.accountName })
+        } else {
+          this.showErrorMsg('The account name must be 12 length')
+        }
+      } catch (e) {
+        console.error(e)
+      }
     },
     async onAccountEntered (account) {
       await this.login({ idx: this.idx, account, returnUrl: this.$route.query.returnUrl })

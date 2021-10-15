@@ -151,11 +151,11 @@ export const logout = async function ({ commit }) {
   await PPP.authApi().signOut()
   // commit('profiles/setProfile', null, { root: true })
 
-  const { authenticator } = getAuthenticator(this.$ual)
-  try {
-    authenticator && await authenticator.logout()
-  } catch (error) {
-  }
+  // const { authenticator } = getAuthenticator(this.$ual)
+  // try {
+  //   authenticator && await authenticator.logout()
+  // } catch (error) {
+  // }
   // commit('profiles/setProfile', undefined, { root: true })
   commit('setAccount')
   commit('setSeedsAccount')
