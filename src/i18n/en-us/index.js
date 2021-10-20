@@ -19,7 +19,7 @@ export default {
       waiting_payment: 'Waiting for Payment...',
       rejected: 'Rejected',
       waiting_payment_confirmation: 'Waiting for Payment Confirmation',
-      init_arbitrage: 'Init Arbitration',
+      init_arbitrage: 'Initiate Arbitration',
       arbitrage: 'Awaiting for Arbitrage',
       sendContactMethod: 'Send Contact Method to Arbitrage',
       sentContactMethod: 'Waiting for resolution'
@@ -95,7 +95,7 @@ export default {
       seeds: 'Seeds',
       walletBalance: 'Available Balance',
       toSell: 'Sell SEEDS for Fiat',
-      toBuy: 'Init Purchase',
+      toBuy: 'Initiate Purchase',
       recentActivity: 'Recent Activity',
       makeYour: 'Make your',
       firstTransaction: 'First Transaction',
@@ -183,7 +183,7 @@ export default {
       reject_buy_offer: 'Offer rejected successfully',
       make_first: 'Make your first',
       sell_offer: 'Sell Offer',
-      there_arent: 'There are not',
+      there_arent: 'There are no',
       active_sell_offer: 'Active Sell Offers',
       buy_offer: 'Buy Offer'
     },

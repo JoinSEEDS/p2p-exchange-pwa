@@ -62,13 +62,14 @@ export default {
     },
     async signTransaction () {
       try {
-        const r = await this.$store.$esrApi.signEsrTransaction({
-          esr: this.esrRequest.esr,
-          contractName: this.esrRequest.actions[0].account,
-          actionName: this.esrRequest.actions[0].name,
-          memo: this.esrRequest.actions[0].data.memo
-        })
-        console.log('signTransactionSuccess', r)
+        // const r = await this.$store.$esrApi.signEsrTransaction({
+        //   esr: this.esrRequest.esr,
+        //   contractName: this.esrRequest.actions[0].account,
+        //   actionName: this.esrRequest.actions[0].name,
+        //   memo: this.esrRequest.actions[0].data.memo
+        // })
+        console.log('signTransactionSuccess', this.esrRequest)
+        window.open(this.esrRequest.esr, '_blank')
       } catch (e) {
         console.error(e)
       }

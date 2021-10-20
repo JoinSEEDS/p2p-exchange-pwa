@@ -9,7 +9,7 @@
       //-   no-caps
       //-   @click="$emit('clickOnDeposit')"
       //- ).full-width.custom-round.q-my-sm.custom-btn
-      q-btn(label="Test ESR" dense color="accent" @click="$emit('clickOnTest')").full-width.q-my-sm
+      //- q-btn(label="Test ESR" dense color="accent" @click="$emit('clickOnTest')").full-width.q-my-sm
       custom-dw-btn(@click="$emit('clickOnDeposit')").full-width.q-my-sm
       custom-sell-btn(@click="goToSellScreen" v-if="userCanSell").full-width.q-my-sm
       custom-buy-btn(@click="goToBuyScreen").full-width.q-my-sm
