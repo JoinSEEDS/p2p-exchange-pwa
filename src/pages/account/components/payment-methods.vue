@@ -2,7 +2,7 @@
 div
   q-select(
     label="Preferred Payment Method"
-    v-model="paramsPayment.selectedPaymentMethod"
+    v-model.trim="paymentMethods.selectedPaymentMethod"
     outlined
     dark
     standout="text-accent"
@@ -12,8 +12,8 @@ div
     color="white"
     :rules="[rules.required]"
   )
-  #contactMethods(v-if="paramsPayment.selectedPaymentMethod")
-    #paypal(v-if="paramsPayment.selectedPaymentMethod === 'paypal'")
+  #contactMethods(v-if="paymentMethods.selectedPaymentMethod")
+    #paypal(v-if="paymentMethods.selectedPaymentMethod === 'paypal'")
       .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
       q-input(
         :label="$t('pages.account.paypalLink')"
@@ -34,7 +34,7 @@ div
           )
             q-tooltip {{ $t('pages.account.hintPaypal') }}
     q-input(
-      v-else-if="paramsPayment.selectedPaymentMethod === 'transferwise'"
+      v-else-if="paymentMethods.selectedPaymentMethod === 'transferwise'"
       :label="$t('pages.account.transferwise')"
       v-model.trim="paymentMethods.transferwise"
       outlined
@@ -45,7 +45,7 @@ div
       autocomplete="off"
     )
     q-input(
-      v-else-if="paramsPayment.selectedPaymentMethod === 'cashapp'"
+      v-else-if="paymentMethods.selectedPaymentMethod === 'cashapp'"
       :label="$t('pages.account.cashtag')"
       v-model="paymentMethods.cashapp"
       outlined
@@ -56,7 +56,7 @@ div
       autocomplete="off"
     )
     q-input(
-      v-else-if="paramsPayment.selectedPaymentMethod === 'venmo'"
+      v-else-if="paymentMethods.selectedPaymentMethod === 'venmo'"
       :label="$t('pages.account.venmo')"
       v-model="paymentMethods.venmo"
       outlined
@@ -66,7 +66,7 @@ div
       autocomplete="off"
     )
     q-input(
-      v-else-if="paramsPayment.selectedPaymentMethod === 'gojek'"
+      v-else-if="paymentMethods.selectedPaymentMethod === 'gojek'"
       :label="$t('pages.account.gojek')"
       v-model="paymentMethods.gojek"
       outlined
@@ -85,10 +85,6 @@ export default {
   mixins: [validation],
   props: {
     paymentMethods: {
-      type: Object,
-      required: true
-    },
-    paramsPayment: {
       type: Object,
       required: true
     }

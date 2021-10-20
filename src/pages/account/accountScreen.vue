@@ -79,7 +79,7 @@
               autocomplete="off"
             )
           q-separator.full-width(dark)
-          PaymenthMethods(:paymentMethods.sync="params.paymentMethods" :paramsPayment.sync="params.paramsPayment")
+          PaymenthMethods(:paymentMethods.sync="params.paymentMethods" :selectedPaymentMethod.sync="params.selectedPaymentMethod")
           //-
             q-separator.full-width(dark)
             .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
@@ -132,10 +132,9 @@ export default {
           signal: undefined,
           email: undefined
         },
-        paramsPayment: {
-          selectedPaymentMethod: undefined
-        },
+        // selectedPaymentMethod: undefined,
         paymentMethods: {
+          selectedPaymentMethod: undefined,
           paypal: undefined,
           transferwise: undefined,
           cashapp: undefined,
@@ -223,12 +222,24 @@ export default {
           }
         }
       }
+
+      if (isRegistered && PPPprofile.appData.privateData && PPPprofile.appData.privateData.prefPaymentMeth) {
+        this.params = {
+          ...this.params,
+          paypalLink: PPPprofile.appData.privateData.paypal.replace(this.paypalBase, ''),
+          paymentMethods: {
+            selectedPaymentMethod: PPPprofile.appData.privateData.prefPaymentMeth,
+            [PPPprofile.appData.privateData.prefPaymentMeth]: PPPprofile.appData.privateData.prefPaymentMethValue
+          }
+        }
+      }
+
       // paypal = undefined
       PPPprofile = undefined
       this.setIsLoading(false)
     },
     async onSubmitForm () {
-      console.log(this.params.paramsPayment.selectedPaymentMethod, 'Payment Method')
+      console.log(this.params.selectedPaymentMethod, 'Payment Method')
       console.log(this.params.paymentMethods, 'Payment Method')
       try {
         this.setIsLoading(true)
@@ -259,9 +270,11 @@ export default {
           appData: {
             privateData: {
               privateKey,
-              paypal: this.paypalBase + this.params.paypalLink,
+              // paypal: this.paypalBase + this.params.paypalLink,
               prefContactMeth: this.params.selectedContactMethod,
-              prefContactMethValue
+              prefContactMethValue,
+              prefPaymentMeth: this.params.paymentMethods.selectedPaymentMethod,
+              prefPaymentMethValue: this.params.paymentMethods[this.params.paymentMethods.selectedPaymentMethod]
             }
           }
         }
@@ -272,14 +285,21 @@ export default {
           fiatCurrency: this.params.fiatCurrency,
           publicKey
         }) // Savev public data in contract
+        console.log('after save Account')
         this.setIsLoading(true)
         publicKey = null // Delete publicKey after save
+        console.log('before signUp')
         await this.signUp(mData) // Save private key in PPP service
+        console.log('after signUp')
         this.setIsLoading(true)
         privateKey = null
-        this.isArbiter ? await this.$router.push({ path: '/arbitration' }) : await this.$router.push({ path: '/dashboard' })
-        await this.showSuccessMsg(this.$t('pages.account.saved'))
+        this.showSuccessMsg(this.$t('pages.account.saved'))
         this.setIsLoading(false)
+        if (this.isArbiter) {
+          this.$router.push({ path: '/arbitration' })
+        } else {
+          this.$router.push({ path: '/dashboard' })
+        }
       } catch (error) {
         this.setIsLoading(false)
       }

@@ -20,6 +20,9 @@ import AnchorLink from 'anchor-link'
 import AnchorLinkBrowserTransport from 'anchor-link-browser-transport'
 // import { v4 as uuid } from 'uuid'
 // import AnchorLinkConsoleTransport from 'anchor-link-console-transport'
+const {
+  HYPERION_TIME_OUT
+} = process.env
 
 class EsrApi {
   constructor ({ api, rpc }) {
@@ -182,7 +185,7 @@ class EsrApi {
     }
   }
 
-  async listenTransaction ({ contractName, actionName, data }) {
+  async listenTransaction ({ contractName, actionName, data, store }) {
     try {
       // const ENDPOINT = 'https://testnet.telos.caleos.io/'
       const ENDPOINT = 'https://telos.caleos.io/'
@@ -224,18 +227,20 @@ class EsrApi {
 
         // see 3 for handling data
         client.onData = async (data, ack) => {
+          ack() // ACK when done
           console.log('On Data Listened', data) // process incoming data, replace with your code
           resolve(data)
-          ack() // ACK when done
+          store.commit('general/setESRRequest', null, { root: true })
         }
 
         client.connect(() => {
           console.log('connected!', current)
+          store.commit('general/setIsLoading', false, { root: false })
         })
 
         setTimeout(() => {
           reject('TimeOut')
-        }, 120 * 1000)
+        }, HYPERION_TIME_OUT * 1000)
       })
     } catch (e) {
       console.error('error listenign transaction', e)

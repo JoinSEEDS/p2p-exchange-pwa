@@ -37,6 +37,7 @@ const signTransaction = async function (actions) {
         expireSeconds: 30
       })
     } else if (this.$type === 'esr') {
+      this.commit('general/setESRRequest', null, { root: true })
       const { esr, qr } = await this.$esrApi.generateESR(actions)
       const lastAction = actions[actions.length - 1]
 
@@ -58,7 +59,8 @@ const signTransaction = async function (actions) {
       transaction = await this.$esrApi.listenTransaction({
         contractName: lastAction.account,
         actionName: lastAction.name,
-        data: lastAction.data
+        data: lastAction.data,
+        store: this
       })
     }
   } catch (e) {

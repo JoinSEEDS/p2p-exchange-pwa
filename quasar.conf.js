@@ -130,7 +130,8 @@ module.exports = function (ctx) {
         CONTRACT_P2P: process.env.CONTRACT_P2P,
         CONTRACT_SEEDS_WALLET: process.env.CONTRACT_SEEDS_WALLET,
         CONTRACT_SEEDS_VALUES: process.env.CONTRACT_SEEDS_VALUES,
-        PPP_ENV: process.env.PPP_ENV
+        PPP_ENV: process.env.PPP_ENV,
+        HYPERION_TIME_OUT: process.env.HYPERION_TIME_OUT
       },
       scopeHoisting: true,
       vueRouterMode: 'history',

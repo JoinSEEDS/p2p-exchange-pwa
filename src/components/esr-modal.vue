@@ -1,24 +1,37 @@
 <template lang="pug">
     .row.justify-center
         .col-6
-            q-dialog.esrModal(ref="esrModal" @before-hide="onHide")
+            q-dialog.esrModal(ref="esrModal" @before-hide="onHide" persistent)
                 q-card.q-pa-md.full-width.esrModal(v-if="esrRequest")
+                  #listening(v-if="listeningTransaction")
                     .text-h5.text-center Sign Request
-                    //- p {{ esrRequest }}
                     .row.justify-center
                         .col-6
                             q-img(
                                 :src="esrRequest.qr"
                             )
+                    .text-h5.text-center {{ leftTime }} sec
+                    .text-center Listening for approved transaction
+                    .text-body2.text-primary.text-weight-bold.text-center.cursor-pointer.q-mt-sm(@click="signTransaction") Launch Wallet
+                    //- q-btn.full-width(
+                    //-     label="Launch wallet"
+                    //-     color="primary"
+                    //-     @click="signTransaction"
+                    //- )
+                  #expired(v-else)
+                    .text-h6.text-negative.text-center.q-my-md Transaction expired
                     q-btn.full-width(
-                        label="Launch wallet"
-                        color="primary"
-                        @click="signTransaction"
+                      label="Close"
+                      color="negative"
+                      @click="$refs.esrModal.hide()"
                     )
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
+const {
+  HYPERION_TIME_OUT
+} = process.env
 
 export default {
   name: 'esr-modal',
@@ -29,10 +42,21 @@ export default {
   },
   data () {
     return {
+      leftTime: 1000,
+      interval: undefined
     }
+  },
+  mounted () {
+    this.showIsLoading(false)
   },
   methods: {
     ...mapMutations('general', ['setESRRequest']),
+    listenTransaction () {
+      this.leftTime = HYPERION_TIME_OUT + 8
+      this.interval = setInterval(() => {
+        this.leftTime = this.leftTime - 1
+      }, 1000)
+    },
     onHide () {
       this.setESRRequest(null)
     },
@@ -55,16 +79,25 @@ export default {
       console.log('showModal', v)
       if (v) {
         this.$refs.esrModal.show()
+        this.listenTransaction()
       } else {
         this.$refs.esrModal.hide()
         this.onHide()
         this.$emit('cancel')
+      }
+    },
+    leftTime (v) {
+      if (v === 0) {
+        clearInterval(this.interval)
       }
     }
   },
   computed: {
     showModal () {
       return !!this.esrRequest
+    },
+    listeningTransaction () {
+      return !(this.leftTime === 0)
     }
   }
 
