@@ -21,7 +21,8 @@ import AnchorLinkBrowserTransport from 'anchor-link-browser-transport'
 // import { v4 as uuid } from 'uuid'
 // import AnchorLinkConsoleTransport from 'anchor-link-console-transport'
 const {
-  HYPERION_TIME_OUT
+  HYPERION_TIME_OUT,
+  HYPERION_ENDPOINT
 } = process.env
 
 class EsrApi {
@@ -188,9 +189,9 @@ class EsrApi {
   async listenTransaction ({ contractName, actionName, data, store }) {
     try {
       // const ENDPOINT = 'https://testnet.telos.caleos.io/'
-      const ENDPOINT = 'https://telos.caleos.io/'
-      console.log('listenTransaction', ENDPOINT)
-      const client = new HyperionSocketClient(ENDPOINT, { async: true })
+      // const ENDPOINT = 'https://telos.caleos.io/'
+      console.log('listenTransaction', HYPERION_ENDPOINT)
+      const client = new HyperionSocketClient(HYPERION_ENDPOINT, { async: true })
 
       return new Promise((resolve, reject) => {
         const current = new Date().toISOString()

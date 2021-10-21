@@ -131,7 +131,8 @@ module.exports = function (ctx) {
         CONTRACT_SEEDS_WALLET: process.env.CONTRACT_SEEDS_WALLET,
         CONTRACT_SEEDS_VALUES: process.env.CONTRACT_SEEDS_VALUES,
         PPP_ENV: process.env.PPP_ENV,
-        HYPERION_TIME_OUT: process.env.HYPERION_TIME_OUT
+        HYPERION_TIME_OUT: process.env.HYPERION_TIME_OUT,
+        HYPERION_ENDPOINT: process.env.HYPERION_ENDPOINT
       },
       scopeHoisting: true,
       vueRouterMode: 'history',

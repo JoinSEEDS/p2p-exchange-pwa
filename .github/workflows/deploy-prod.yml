@@ -35,6 +35,7 @@ jobs:
           CONTRACT_P2P_SETTINGS: "'m1sttgsp2pex'"
           PPP_ENV: "'prod'"
           HYPERION_TIME_OUT: '120'
+          HYPERION_ENDPOINT: '"https://telos.caleos.io/"'
 
       - name: S3 sync
         uses: jakejarvis/s3-sync-action@master
