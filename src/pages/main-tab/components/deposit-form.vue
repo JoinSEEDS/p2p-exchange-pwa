@@ -30,6 +30,7 @@
 <script>
 import { validation } from '~/mixins/validation'
 import { mapActions } from 'vuex'
+import { v4 as uuid } from 'uuid'
 
 export default {
   name: 'deposit-form',
@@ -50,7 +51,7 @@ export default {
         if (this.params.typeTransaction === 'deposit') {
           await this.deposit({
             quantity,
-            memo: `Deposit for ${quantity} SEEDS`
+            memo: `Deposit for ${quantity} - ${uuid()}`
           })
           this.$q.notify({
             type: 'positive',
@@ -60,7 +61,7 @@ export default {
         } else if (this.params.typeTransaction === 'withdraw') {
           await this.withdraw({
             quantity,
-            memo: `Deposit for ${quantity} SEEDS`
+            memo: `withdraw for ${quantity} - ${uuid()}`
           })
           this.$q.notify({
             type: 'positive',

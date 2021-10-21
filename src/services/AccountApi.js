@@ -2,7 +2,7 @@ import BaseEosApi from './BaseEosApi'
 import {
   Contracts
 } from '~/const/Contracts'
-// import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid'
 // import User from '../domain/User'
 
 class AccountApi extends BaseEosApi {
@@ -51,7 +51,8 @@ class AccountApi extends BaseEosApi {
           contact_methods: contactMethods,
           payment_methods: paymentMethods,
           time_zone: timeZone,
-          fiat_currency: fiatCurrency
+          fiat_currency: fiatCurrency,
+          memo: `upsertuser - ${uuid()}`
         }
       },
       {
@@ -59,7 +60,8 @@ class AccountApi extends BaseEosApi {
         name: 'addpublickey',
         data: {
           account: accountName,
-          public_key: publicKey
+          public_key: publicKey,
+          memo: `addpublickey - ${uuid()}`
         }
       }
     ]
@@ -76,15 +78,15 @@ class AccountApi extends BaseEosApi {
     return this.eosApi.signTransaction(actions)
   }
 
-  async withdraw ({ accountName, quantity }) {
+  async withdraw ({ accountName, quantity, memo }) {
     const actions = [{
       account: Contracts.CONTRACT_P2P,
       name: 'withdraw',
       data: {
         // to: 'token.seeds',
         account: accountName,
-        quantity
-        // memo: `withdraw-${quantity}-${uuid()}`
+        quantity,
+        memo
       }
     }]
 

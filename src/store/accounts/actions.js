@@ -1,16 +1,17 @@
 import PPP from '@smontero/ppp-client-api'
 
-const getAuthenticator = function (ual, wallet = null) {
-  wallet = wallet || localStorage.getItem('autoLogin')
-  const idx = ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
-  return {
-    authenticator: ual.authenticators[idx],
-    idx
-  }
-}
+// const getAuthenticator = function (ual, wallet = null) {
+//   wallet = wallet || localStorage.getItem('autoLogin')
+//   const idx = ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
+//   return {
+//     authenticator: ual.authenticators[idx],
+//     idx
+//   }
+// }
 
 export const loginPPP = async function ({ commit, dispatch }, { returnUrl, accountName }) {
   try {
+    commit('general/setIsLoading', false, { root: true })
     console.log('login with PPP', accountName, returnUrl)
     // this.$ualUser = users[0]
     this.$type = 'esr'
@@ -56,13 +57,14 @@ export const loginPPP = async function ({ commit, dispatch }, { returnUrl, accou
       isArbiter = this.getters['accounts/isArbiter']
     }
     isArbiter ? this.$router.push({ path: '/arbitration' }) : this.$router.push({ path: returnUrl || '/dashboard' })
-
+    commit('general/setIsLoading', false, { root: false })
     // return this.$ualUser
   } catch (e) {
     // const error = (authenticator.getError() && authenticator.getError().message) || e.message || e.reason
     commit('general/setErrorMsg', e | e.message, { root: true })
+    commit('general/setIsLoading', false, { root: false })
     console.error(e)
-    return null
+    throw new Error(e)
   } finally {
     commit('setLoadingWallet')
   }
@@ -169,11 +171,11 @@ export const logout = async function ({ commit }) {
 }
 
 export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
-  const { authenticator, idx } = getAuthenticator(this.$ual)
+  // const { authenticator } = getAuthenticator(this.$ual)
   let user = null
-  if (authenticator) {
+  if (localStorage.getItem('account')) {
     commit('setAutoLogin', true)
-    user = await dispatch('login', { idx, returnUrl, account: localStorage.getItem('account') })
+    user = await dispatch('loginPPP', { returnUrl, accountName: localStorage.getItem('account') })
     commit('setAutoLogin', false)
   }
   return user

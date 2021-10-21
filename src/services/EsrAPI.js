@@ -85,10 +85,10 @@ class EsrApi {
     const actions = _actions.map(action => {
       action.authorization = [
         {
-          // actor: 'jmgayosso155',
-          // permission: 'active'
-          actor: '............1',
-          permission: '............2'
+          actor: 'jmgayosso155',
+          permission: 'active'
+          // actor: '............1',
+          // permission: '............2'
         }
       ]
 
@@ -198,14 +198,27 @@ class EsrApi {
         // const current = '2021-09-30T00:00:00.000Z'
         // const filters = []
         const _dataArray = Object.entries(data)
-        const _filters = _dataArray.map(prop => {
-          return {
-            field: `act.data.${prop[0]}`,
-            value: prop[1].toString()
-          }
-        })
+        let _filters
+        const haveMemo = _dataArray.find(v => v[0] === 'memo')
+        console.log('_dataArray', haveMemo, _dataArray)
+
+        if (haveMemo) {
+          _filters = [
+            {
+              field: `act.data.memo`,
+              value: haveMemo[1]
+            }
+          ]
+        } else {
+          _filters = _dataArray.map(prop => {
+            return {
+              field: `act.data.${prop[0]}`,
+              value: prop[1].toString()
+            }
+          })
+        }
         const filters = _filters.filter(v => v.value !== '............1')
-        console.log('dataArray', _dataArray, filters)
+        console.log('filters', filters)
 
         const configs = {
           contract: contractName,
