@@ -11,13 +11,15 @@ import PPP from '@smontero/ppp-client-api'
 
 export const loginPPP = async function ({ commit, dispatch }, { returnUrl, accountName }) {
   try {
-    commit('general/setIsLoading', false, { root: true })
+    commit('general/setIsLoading', true, { root: true })
     console.log('login with PPP', accountName, returnUrl)
     // this.$ualUser = users[0]
     this.$type = 'esr'
     this.$accountName = accountName
+    localStorage.setItem('account', accountName)
     // const accountName = await users[0].getAccountName()
     const user = await dispatch('profiles/signIn', { accountName }, { root: true })
+    commit('general/setIsLoading', true, { root: true })
     console.log('loginPPP', user)
     // const accountName = user.eosAccount || 'jmgayosso155'
 
@@ -32,6 +34,7 @@ export const loginPPP = async function ({ commit, dispatch }, { returnUrl, accou
       commit('setP2PAccount')
       commit('setCurrentSeedsPerUsd')
       commit('setP2PBalances')
+      dispatch('logout')
       return
     }
 
@@ -57,12 +60,13 @@ export const loginPPP = async function ({ commit, dispatch }, { returnUrl, accou
       isArbiter = this.getters['accounts/isArbiter']
     }
     isArbiter ? this.$router.push({ path: '/arbitration' }) : this.$router.push({ path: returnUrl || '/dashboard' })
-    commit('general/setIsLoading', false, { root: false })
+    commit('general/setIsLoading', false, { root: true })
     // return this.$ualUser
   } catch (e) {
     // const error = (authenticator.getError() && authenticator.getError().message) || e.message || e.reason
     commit('general/setErrorMsg', e | e.message, { root: true })
-    commit('general/setIsLoading', false, { root: false })
+    commit('general/setIsLoading', false, { root: true })
+    dispatch('logout')
     console.error(e)
     throw new Error(e)
   } finally {

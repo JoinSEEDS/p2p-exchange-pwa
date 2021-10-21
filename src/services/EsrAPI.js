@@ -85,7 +85,8 @@ class EsrApi {
     const actions = _actions.map(action => {
       action.authorization = [
         {
-          actor: 'jmgayosso155',
+          // actor: 'jmgayosso155',
+          actor: localStorage.getItem('account'),
           permission: 'active'
           // actor: '............1',
           // permission: '............2'

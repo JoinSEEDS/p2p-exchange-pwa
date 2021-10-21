@@ -34,8 +34,11 @@
           standout="text-accent"
           :rules="[rules.required, rules.minZero, customMaxValidation]"
           :hint="$t('pages.sell.afterTransaction', { amount: afterAmount })"
-          type="number"
-          step="0.01"
+          mask="#.##"
+          fill-mask="0"
+          reverse-fill-mask
+          hint="Mask: #.##"
+          input-class="text-right"
       )
         template(v-slot:append)
           .text SEEDS
@@ -85,7 +88,7 @@
           )
     #modals
       q-dialog(v-model="showConfirmSell" transition-show="slide-up" transition-hide="slide-down" persistent)
-        confirm-sell.custom-size-modal(:seeds="params.amount" :percentage="params.costPerCrypt" :exchange="exchangeRate" @confirm="onConfirmSell")
+        confirm-sell.custom-size-modal(:seeds="params.amount" :percentage="percentageMarketPrice" :exchange="exchangeRate" @confirm="onConfirmSell")
 </template>
 
 <script>
@@ -103,7 +106,7 @@ export default {
       availableSeeds: undefined,
       isSellAll: false,
       params: {
-        amount: Number.parseFloat(0).toFixed(2),
+        amount: undefined,
         costPerCrypt: 0
       },
       customMaxValidation: val => (val <= this.parseSeedSymbolToAmount(this.availableSeeds)) || this.$t('forms.errors.maxSeedsAvailable', { amount: this.availableSeeds })

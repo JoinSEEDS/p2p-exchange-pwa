@@ -2,6 +2,7 @@ import BaseEosApi from './BaseEosApi'
 import {
   Contracts
 } from '~/const/Contracts'
+import { v4 as uuid } from 'uuid'
 
 class SellOfferApi extends BaseEosApi {
   constructor ({
@@ -43,7 +44,8 @@ class SellOfferApi extends BaseEosApi {
       data: {
         seller: accountName,
         total_offered: totalOffered,
-        price_percentage: pricePercentage
+        price_percentage: pricePercentage,
+        memo: `addselloffer - ${uuid()}`
       }
     }]
 
