@@ -2,6 +2,7 @@ import BaseEosApi from './BaseEosApi'
 import {
   Contracts
 } from '~/const/Contracts'
+import { v4 as uuid } from 'uuid'
 
 class BuyOfferApi extends BaseEosApi {
   constructor ({
@@ -35,7 +36,8 @@ class BuyOfferApi extends BaseEosApi {
         buyer: accountName,
         sell_offer_id: sellOfferId,
         quantity,
-        payment_method: paymentMethod
+        payment_method: paymentMethod,
+        memo: `addbuyoffer - ${uuid()}`
       }
     }]
 
@@ -48,14 +50,16 @@ class BuyOfferApi extends BaseEosApi {
         account: Contracts.CONTRACT_P2P,
         name: 'accptbuyoffr',
         data: {
-          buy_offer_id: buyOfferId
+          buy_offer_id: buyOfferId,
+          memo: `accptbuyoffr - ${uuid()}`
         }
       },
       {
         account: Contracts.CONTRACT_P2P,
         name: 'addoffermsg',
         data: {
-          ...messageData
+          ...messageData,
+          memo: `addoffermsg - ${uuid()}`
         }
       }
     ]
@@ -67,7 +71,8 @@ class BuyOfferApi extends BaseEosApi {
       account: Contracts.CONTRACT_P2P,
       name: 'delbuyoffer',
       data: {
-        buy_offer_id: buyOfferId
+        buy_offer_id: buyOfferId,
+        memo: `delbuyoffer - ${uuid()}`
       }
     }]
 
@@ -79,7 +84,8 @@ class BuyOfferApi extends BaseEosApi {
       account: Contracts.CONTRACT_P2P,
       name: 'rejctbuyoffr',
       data: {
-        buy_offer_id: buyOfferId
+        buy_offer_id: buyOfferId,
+        memo: `rejctbuyoffr - ${uuid()}`
       }
     }]
 
@@ -91,7 +97,8 @@ class BuyOfferApi extends BaseEosApi {
       account: Contracts.CONTRACT_P2P,
       name: 'confrmpaymnt',
       data: {
-        buy_offer_id: buyOfferId
+        buy_offer_id: buyOfferId,
+        memo: `confrmpaymnt - ${uuid()}`
       }
     }]
 
@@ -103,7 +110,8 @@ class BuyOfferApi extends BaseEosApi {
       account: Contracts.CONTRACT_P2P,
       name: 'payoffer',
       data: {
-        buy_offer_id: buyOfferId
+        buy_offer_id: buyOfferId,
+        memo: `payoffer - ${uuid()}`
       }
     }]
 
