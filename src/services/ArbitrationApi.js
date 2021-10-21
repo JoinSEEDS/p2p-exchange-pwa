@@ -3,6 +3,7 @@ import {
   Contracts
 } from '~/const/Contracts'
 import eosjsAccountName from 'eosjs-account-name'
+import { v4 as uuid } from 'uuid'
 
 class ArbitrationApi extends BaseEosApi {
   constructor ({
@@ -34,7 +35,8 @@ class ArbitrationApi extends BaseEosApi {
       name: 'arbtrgeoffer',
       data: {
         arbiter,
-        offer_id: offerId
+        offer_id: offerId,
+        memo: `arbtrgeoffer - ${uuid()}`
       }
     }]
 
@@ -46,7 +48,8 @@ class ArbitrationApi extends BaseEosApi {
       account: Contracts.CONTRACT_P2P,
       name: 'initarbitrage',
       data: {
-        buy_offer_id: offerId
+        buy_offer_id: offerId,
+        memo: `initarbitrage - ${uuid()}`
       }
     }]
 
@@ -59,7 +62,8 @@ class ArbitrationApi extends BaseEosApi {
       name: 'resolvebuyer',
       data: {
         offer_id: offerId,
-        notes: notes
+        notes: notes,
+        memo: `resolvebuyer - ${uuid()}`
       }
     }]
 
@@ -72,7 +76,8 @@ class ArbitrationApi extends BaseEosApi {
       name: 'resolvesellr',
       data: {
         offer_id: offerId,
-        notes: notes
+        notes: notes,
+        memo: `resolvesellr - ${uuid()}`
       }
     }]
 
@@ -117,7 +122,8 @@ class ArbitrationApi extends BaseEosApi {
         account: Contracts.CONTRACT_P2P,
         name: 'sendconmethd',
         data: {
-          ...messageData
+          ...messageData,
+          memo: `sendconmethd - ${uuid()}`
         }
       }
     ]

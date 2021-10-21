@@ -57,7 +57,8 @@ class SellOfferApi extends BaseEosApi {
       account: Contracts.CONTRACT_P2P,
       name: 'delselloffer',
       data: {
-        sell_offer_id: sellOfferId
+        sell_offer_id: sellOfferId,
+        memo: `delselloffer - ${uuid()}`
       }
     }]
 
