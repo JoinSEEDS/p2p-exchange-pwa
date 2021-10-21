@@ -114,6 +114,8 @@ export default {
     async confOffer () {
       try {
         this.setIsLoading(true)
+        const message = await this.getPaypal()
+        console.log('message', message)
         let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getPaypal(), recipientAccount: this.buyer.account })
         await this.acceptBuyOffer({ buyOfferId: this.offer.id, messageData })
         EventBus.$emit('confirmOffer')

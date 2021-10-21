@@ -26,7 +26,7 @@ export default {
       try {
         console.log('onLoginPPP')
         if (this.accountName.length === 12) {
-          await this.loginPPP({ returnUrl: '/dashboard', accountName: this.accountName })
+          await this.loginPPP({ returnUrl: '/dashboard', accountName: this.accountName.toLowerCase() })
         } else {
           this.showErrorMsg('The account name must be 12 length')
         }

@@ -54,7 +54,9 @@ export default {
     listenTransaction () {
       this.leftTime = HYPERION_TIME_OUT + 8
       this.interval = setInterval(() => {
-        this.leftTime = this.leftTime - 1
+        if (this.leftTime > 0) {
+          this.leftTime = this.leftTime - 1
+        }
       }, 1000)
     },
     onHide () {
