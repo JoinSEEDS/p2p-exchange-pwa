@@ -1,19 +1,33 @@
 <template lang="pug">
 div
-  q-select(
-    label="Preferred Payment Method"
-    v-model.trim="paymentMethods.selectedPaymentMethod"
-    outlined
-    dark
-    standout="text-accent"
-    :options="options.paymentMethods"
-    emit-value
-    map-options
-    color="white"
-    :rules="[rules.required]"
-  )
+  .row.q-col-gutter-xs
+    .col
+      q-select(
+        label="Payment Method"
+        v-model.trim="paymentMethods.selectedPaymentMethod"
+        outlined
+        dark
+        standout="text-accent"
+        :options="options.paymentMethods"
+        emit-value
+        map-options
+        color="white"
+        :rules="[rules.required]"
+      )
+    .col
+      q-select(
+        label="Details"
+        v-model="paymentMethods.selectedType"
+        :options="detailOptions"
+        outlined
+        dark
+        standout="text-accent"
+        emit-value
+        map-options
+        color="white"
+      )
   #contactMethods(v-if="paymentMethods.selectedPaymentMethod")
-    #paypal(v-if="paymentMethods.selectedPaymentMethod === 'paypal'")
+    #paypal(v-if="paymentMethods.selectedPaymentMethod === 'paypal' && paymentMethods.selectedType === 'link'")
       .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
       q-input(
         :label="$t('pages.account.paypalLink')"
@@ -33,6 +47,17 @@ div
             v-show="paymentMethods.paypal"
           )
             q-tooltip {{ $t('pages.account.hintPaypal') }}
+    //- q-input(
+    //-   v-else-if="paymentMethods.selectedType === 'email'"
+    //-   :label="paymentMethods.selectedPaymentMethod"
+    //-   v-model.trim="paymentMethods.transferwise"
+    //-   outlined
+    //-   dark
+    //-   standout="text-accent"
+    //-   :rules="[rules.required]"
+    //-   mask="#### #### #### ####"
+    //-   autocomplete="off"
+    //- )
     q-input(
       v-else-if="paymentMethods.selectedPaymentMethod === 'transferwise'"
       :label="$t('pages.account.transferwise')"
@@ -92,6 +117,7 @@ export default {
   data () {
     return {
       paypalBase: 'https://paypal.me/',
+      type: 'email',
       options: {
         paymentMethods: [
           {
@@ -114,6 +140,24 @@ export default {
             label: 'Gojek',
             value: 'gojek'
           }
+        ],
+        types: [
+          {
+            label: 'Email',
+            value: 'email'
+          },
+          {
+            label: 'Cellphone',
+            value: 'cellphone'
+          },
+          {
+            label: 'Link',
+            value: 'link'
+          },
+          {
+            label: 'Account Name',
+            value: 'accountname'
+          }
         ]
       }
     }
@@ -121,6 +165,99 @@ export default {
   methods: {
     openPayPalLink () {
       window.open(`${this.paypalBase}${this.paymentMethods.paypal}`)
+    }
+  },
+  watch: {
+    'paymentMethods.selectedPaymentMethod' (v) {
+      // console.log('selectedPaymentMethod', v)
+      this.paymentMethods.selectedType = this.detailOptions[0].value
+    }
+  },
+  computed: {
+    detailOptions () {
+      if (this.paymentMethods.selectedPaymentMethod === 'paypal') {
+        return [
+          {
+            label: 'Link',
+            value: 'link'
+          },
+          {
+            label: 'Email',
+            value: 'email'
+          }
+        ]
+      } else if (this.paymentMethods.selectedPaymentMethod === 'transferwise') {
+        return [
+          {
+            label: 'Email',
+            value: 'email'
+          },
+          {
+            label: 'Cellphone',
+            value: 'cellphone'
+          },
+          {
+            label: 'Link',
+            value: 'link'
+          },
+          {
+            label: 'Account',
+            value: 'accountname'
+          }
+        ]
+      } else if (this.paymentMethods.selectedPaymentMethod === 'cashapp') {
+        return [
+          {
+            label: 'Cashtag',
+            value: 'cashtag'
+          },
+          {
+            label: 'Email',
+            value: 'email'
+          },
+          {
+            label: 'Cellphone',
+            value: 'cellphone'
+          }
+        ]
+      } else if (this.paymentMethods.selectedPaymentMethod === 'venmo') {
+        return [
+          {
+            label: 'Routing #',
+            value: 'routing'
+          },
+          {
+            label: 'Cellphone',
+            value: 'cellphone'
+          }
+        ]
+      } else if (this.paymentMethods.selectedPaymentMethod === 'gojek') {
+        return [
+          {
+            label: 'Cellphone',
+            value: 'cellphone'
+          }
+        ]
+      } else {
+        return [
+          {
+            label: 'Email',
+            value: 'email'
+          },
+          {
+            label: 'Cellphone',
+            value: 'cellphone'
+          },
+          {
+            label: 'Link',
+            value: 'link'
+          },
+          {
+            label: 'Account',
+            value: 'accountname'
+          }
+        ]
+      }
     }
   }
 }

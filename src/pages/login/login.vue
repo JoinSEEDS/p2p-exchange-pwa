@@ -16,6 +16,11 @@ export default {
   computed: {
     ...mapGetters('accounts', ['loading'])
   },
+  watch: {
+    accountName (v, old) {
+      if (v !== old) this.accountName = v.toLowerCase()
+    }
+  },
   methods: {
     ...mapActions('accounts', ['login', 'autoLogin', 'loginPPP']),
     async onLogin (idx) {

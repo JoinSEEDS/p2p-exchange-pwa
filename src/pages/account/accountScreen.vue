@@ -6,7 +6,7 @@
       img.logoImg(src="../../statics/backgrounds/simple_logo.svg")
     .row.justify-center
       .col-xs-12.col-sm-8
-        .text-h5.text-white {{$t('pages.account.nickname')}}
+        //- .text-h5.text-white {{$t('pages.account.nickname')}}
         .text-weight-bold.text-white.q-mt-sm {{$t('pages.account.generalInformation')}}
         q-form.q-gutter-y-md.q-mt-sm(@submit="onSubmitForm" ref="form")
           q-input(
@@ -79,7 +79,7 @@
               autocomplete="off"
             )
           q-separator.full-width(dark)
-          PaymenthMethods(:paymentMethods.sync="params.paymentMethods" :selectedPaymentMethod.sync="params.selectedPaymentMethod")
+          PaymenthMethods(:paymentMethods.sync="params.paymentMethods" :selectedType.sync="params.paymentMethods.selectedType" :selectedPaymentMethod.sync="params.selectedPaymentMethod")
           //-
             q-separator.full-width(dark)
             .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
@@ -135,6 +135,7 @@ export default {
         // selectedPaymentMethod: undefined,
         paymentMethods: {
           selectedPaymentMethod: undefined,
+          selectedType: undefined,
           paypal: undefined,
           transferwise: undefined,
           cashapp: undefined,
@@ -229,6 +230,7 @@ export default {
           paypalLink: PPPprofile.appData.privateData.paypal.replace(this.paypalBase, ''),
           paymentMethods: {
             selectedPaymentMethod: PPPprofile.appData.privateData.prefPaymentMeth,
+            selectedType: PPPprofile.appData.privateData.prefPaymentMethType,
             [PPPprofile.appData.privateData.prefPaymentMeth]: PPPprofile.appData.privateData.prefPaymentMethValue
           }
         }
@@ -274,7 +276,8 @@ export default {
               prefContactMeth: this.params.selectedContactMethod,
               prefContactMethValue,
               prefPaymentMeth: this.params.paymentMethods.selectedPaymentMethod,
-              prefPaymentMethValue: this.params.paymentMethods[this.params.paymentMethods.selectedPaymentMethod]
+              prefPaymentMethValue: this.params.paymentMethods[this.params.paymentMethods.selectedPaymentMethod],
+              prefPaymentMethType: this.params.paymentMethods.selectedType
             }
           }
         }
@@ -315,6 +318,8 @@ export default {
 .logoImg
   text-align: center
   padding: 20px
+  width: 100px
+  height: 100px
 .btnSave
   position: sticky
   bottom: 0px
