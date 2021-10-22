@@ -30,8 +30,8 @@ div
     #paypal(v-if="paymentMethods.selectedPaymentMethod === 'paypal' && paymentMethods.selectedType === 'link'")
       .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
       q-input(
-        :label="$t('pages.account.paypalLink')"
-        v-model="paymentMethods.paypal"
+        :label="inputLabel"
+        v-model="paymentMethods.paymentValue"
         outlined
         dark
         standout="text-accent"
@@ -47,17 +47,26 @@ div
             v-show="paymentMethods.paypal"
           )
             q-tooltip {{ $t('pages.account.hintPaypal') }}
-    //- q-input(
-    //-   v-else-if="paymentMethods.selectedType === 'email'"
-    //-   :label="paymentMethods.selectedPaymentMethod"
-    //-   v-model.trim="paymentMethods.transferwise"
-    //-   outlined
-    //-   dark
-    //-   standout="text-accent"
-    //-   :rules="[rules.required]"
-    //-   mask="#### #### #### ####"
-    //-   autocomplete="off"
-    //- )
+    q-input(
+      v-else-if="paymentMethods.selectedType === 'email'"
+      :label="inputLabel"
+      v-model.trim="paymentMethods.paymentValue"
+      outlined
+      dark
+      standout="text-accent"
+      :rules="[rules.required, rules.email]"
+      autocomplete="off"
+    )
+    q-input(
+      v-else-if="paymentMethods.selectedType === 'cellphone'"
+      :label="inputLabel"
+      v-model.trim="paymentMethods.paymentValue"
+      outlined
+      dark
+      standout="text-accent"
+      :rules="[rules.required, rules.internationalNumber]"
+      autocomplete="off"
+    )
     q-input(
       v-else-if="paymentMethods.selectedPaymentMethod === 'transferwise'"
       :label="$t('pages.account.transferwise')"
@@ -168,9 +177,13 @@ export default {
     }
   },
   watch: {
-    'paymentMethods.selectedPaymentMethod' (v) {
+    'paymentMethods.selectedPaymentMethod' () {
       // console.log('selectedPaymentMethod', v)
       this.paymentMethods.selectedType = this.detailOptions[0].value
+    },
+    'paymentMethods.selectedType' () {
+      // console.log('selectedPaymentMethod', v)
+      this.paymentMethods.paymentValue = undefined
     }
   },
   computed: {
@@ -196,10 +209,10 @@ export default {
             label: 'Cellphone',
             value: 'cellphone'
           },
-          {
-            label: 'Link',
-            value: 'link'
-          },
+          // {
+          //   label: 'Link',
+          //   value: 'link'
+          // },
           {
             label: 'Account',
             value: 'accountname'
@@ -258,6 +271,10 @@ export default {
           }
         ]
       }
+    },
+    inputLabel () {
+      const label = `${this.paymentMethods.selectedType} (${this.paymentMethods.selectedPaymentMethod})`
+      return label.toUpperCase()
     }
   }
 }

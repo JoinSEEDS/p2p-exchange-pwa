@@ -136,6 +136,7 @@ export default {
         paymentMethods: {
           selectedPaymentMethod: undefined,
           selectedType: undefined,
+          paymentValue: undefined,
           paypal: undefined,
           transferwise: undefined,
           cashapp: undefined,
