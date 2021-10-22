@@ -79,7 +79,7 @@
               autocomplete="off"
             )
           q-separator.full-width(dark)
-          PaymenthMethods(:paymentMethods.sync="params.paymentMethods" :selectedType.sync="params.paymentMethods.selectedType" :selectedPaymentMethod.sync="params.selectedPaymentMethod")
+          payment-methods(:paymentMethods.sync="params.paymentMethods")
           //-
             q-separator.full-width(dark)
             .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
@@ -115,12 +115,12 @@ import { mapActions, mapState, mapMutations, mapGetters } from 'vuex'
 import { CommonCurrencies, CommonTimeZone } from '~/const'
 import { RootFields } from '@smontero/ppp-common'
 import { utils } from '~/mixins/utils'
-import PaymenthMethods from './components/payment-methods.vue'
+import PaymentMethods from './components/payment-methods.vue'
 
 export default {
   name: 'account',
   mixins: [validation, utils],
-  components: { PaymenthMethods },
+  components: { PaymentMethods },
   data () {
     return {
       paypalBase: 'https://paypal.me/',
@@ -136,12 +136,12 @@ export default {
         paymentMethods: {
           selectedPaymentMethod: undefined,
           selectedType: undefined,
-          paymentValue: undefined,
-          paypal: undefined,
-          transferwise: undefined,
-          cashapp: undefined,
-          venmo: undefined,
-          gojek: undefined
+          paymentMethodValue: undefined
+          // paypal: undefined,
+          // transferwise: undefined,
+          // cashapp: undefined,
+          // venmo: undefined,
+          // gojek: undefined
         },
         paypalLink: undefined,
         timeZone: undefined
@@ -228,13 +228,14 @@ export default {
       if (isRegistered && PPPprofile.appData.privateData && PPPprofile.appData.privateData.prefPaymentMeth) {
         this.params = {
           ...this.params,
-          paypalLink: PPPprofile.appData.privateData.paypal.replace(this.paypalBase, ''),
+          // paypalLink: PPPprofile.appData.privateData.paypal.replace(this.paypalBase, ''),
           paymentMethods: {
             selectedPaymentMethod: PPPprofile.appData.privateData.prefPaymentMeth,
             selectedType: PPPprofile.appData.privateData.prefPaymentMethType,
-            [PPPprofile.appData.privateData.prefPaymentMeth]: PPPprofile.appData.privateData.prefPaymentMethValue
+            paymentMethodValue: PPPprofile.appData.privateData.prefPaymentMethValue
           }
         }
+        console.log('Loading payment method', this.params)
       }
 
       // paypal = undefined
@@ -277,7 +278,7 @@ export default {
               prefContactMeth: this.params.selectedContactMethod,
               prefContactMethValue,
               prefPaymentMeth: this.params.paymentMethods.selectedPaymentMethod,
-              prefPaymentMethValue: this.params.paymentMethods[this.params.paymentMethods.selectedPaymentMethod],
+              prefPaymentMethValue: this.params.paymentMethods.paymentMethodValue,
               prefPaymentMethType: this.params.paymentMethods.selectedType
             }
           }

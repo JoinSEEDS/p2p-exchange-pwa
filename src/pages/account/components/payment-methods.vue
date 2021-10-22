@@ -17,7 +17,7 @@ div
     .col
       q-select(
         label="Details"
-        v-model="paymentMethods.selectedType"
+        v-model.trim="paymentMethods.selectedType"
         :options="detailOptions"
         outlined
         dark
@@ -31,7 +31,7 @@ div
       .text-weight-bold.text-white  {{$t('pages.account.enterPaypalLink')}}
       q-input(
         :label="inputLabel"
-        v-model="paymentMethods.paymentValue"
+        v-model.trim="paymentMethods.paymentMethodValue"
         outlined
         dark
         standout="text-accent"
@@ -50,7 +50,7 @@ div
     q-input(
       v-else-if="paymentMethods.selectedType === 'email'"
       :label="inputLabel"
-      v-model.trim="paymentMethods.paymentValue"
+      v-model.trim="paymentMethods.paymentMethodValue"
       outlined
       dark
       standout="text-accent"
@@ -60,7 +60,7 @@ div
     q-input(
       v-else-if="paymentMethods.selectedType === 'cellphone'"
       :label="inputLabel"
-      v-model.trim="paymentMethods.paymentValue"
+      v-model.trim="paymentMethods.paymentMethodValue"
       outlined
       dark
       standout="text-accent"
@@ -68,9 +68,9 @@ div
       autocomplete="off"
     )
     q-input(
-      v-else-if="paymentMethods.selectedPaymentMethod === 'transferwise'"
-      :label="$t('pages.account.transferwise')"
-      v-model.trim="paymentMethods.transferwise"
+      v-else-if="paymentMethods.selectedPaymentMethod === 'transferwise' && paymentMethods.selectedType === 'account'"
+      :label="inputLabel"
+      v-model.trim="paymentMethods.paymentMethodValue"
       outlined
       dark
       standout="text-accent"
@@ -79,9 +79,9 @@ div
       autocomplete="off"
     )
     q-input(
-      v-else-if="paymentMethods.selectedPaymentMethod === 'cashapp'"
+      v-else-if="paymentMethods.selectedPaymentMethod === 'cashapp' && paymentMethods.selectedType === 'cashtag'"
       :label="$t('pages.account.cashtag')"
-      v-model="paymentMethods.cashapp"
+      v-model.trim="paymentMethods.paymentMethodValue"
       outlined
       dark
       prefix="$"
@@ -90,25 +90,25 @@ div
       autocomplete="off"
     )
     q-input(
-      v-else-if="paymentMethods.selectedPaymentMethod === 'venmo'"
+      v-else-if="paymentMethods.selectedPaymentMethod === 'venmo' && paymentMethods.selectedType === 'routing'"
       :label="$t('pages.account.venmo')"
-      v-model="paymentMethods.venmo"
+      v-model.trim="paymentMethods.paymentMethodValue"
       outlined
       dark
       standout="text-accent"
       :rules="[rules.required]"
       autocomplete="off"
     )
-    q-input(
-      v-else-if="paymentMethods.selectedPaymentMethod === 'gojek'"
-      :label="$t('pages.account.gojek')"
-      v-model="paymentMethods.gojek"
-      outlined
-      dark
-      standout="text-accent"
-      :rules="[rules.required, rules.internationalNumber]"
-      autocomplete="off"
-    )
+    //- q-input(
+    //-   v-else-if="paymentMethods.selectedPaymentMethod === 'gojek'"
+    //-   :label="$t('pages.account.gojek')"
+    //-   v-model="paymentMethods.gojek"
+    //-   outlined
+    //-   dark
+    //-   standout="text-accent"
+    //-   :rules="[rules.required, rules.internationalNumber]"
+    //-   autocomplete="off"
+    //- )
 </template>
 
 <script>
@@ -165,7 +165,7 @@ export default {
           },
           {
             label: 'Account Name',
-            value: 'accountname'
+            value: 'account'
           }
         ]
       }
@@ -177,13 +177,15 @@ export default {
     }
   },
   watch: {
-    'paymentMethods.selectedPaymentMethod' () {
-      // console.log('selectedPaymentMethod', v)
+    'paymentMethods.selectedPaymentMethod' (v, old) {
+      if (!old) return
+      console.log('selectedPaymentMethod', v, old)
       this.paymentMethods.selectedType = this.detailOptions[0].value
     },
-    'paymentMethods.selectedType' () {
-      // console.log('selectedPaymentMethod', v)
-      this.paymentMethods.paymentValue = undefined
+    'paymentMethods.selectedType' (v, old) {
+      if (!old) return
+      console.log('selectedPaymentMethod', v, old)
+      this.paymentMethods.paymentMethodValue = ''
     }
   },
   computed: {
@@ -215,7 +217,7 @@ export default {
           // },
           {
             label: 'Account',
-            value: 'accountname'
+            value: 'account'
           }
         ]
       } else if (this.paymentMethods.selectedPaymentMethod === 'cashapp') {
@@ -267,7 +269,7 @@ export default {
           },
           {
             label: 'Account',
-            value: 'accountname'
+            value: 'account'
           }
         ]
       }
