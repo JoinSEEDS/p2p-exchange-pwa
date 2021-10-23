@@ -11,14 +11,17 @@
         .row
             q-radio(v-model="params.typeTransaction" val="withdraw" :label="$t('pages.deposit.withdraw')" color="dark")
         q-input(
-            :label="$t('pages.deposit.amount')"
-            v-model="params.amount"
-            outlined
-            standout="text-dark"
-            :rules="[rules.required]"
-            type="number"
-            min="0"
-            step="0.000001"
+          autofocus
+          :label="$t('pages.deposit.amount')"
+          v-model="params.amount"
+          outlined
+          standout="text-dark"
+          :rules="[rules.required]"
+          min="0"
+          mask="#.##"
+          fill-mask="0"
+          reverse-fill-mask
+          input-class="text-right"
         )
         q-btn.full-width(
           :label="params.typeTransaction"

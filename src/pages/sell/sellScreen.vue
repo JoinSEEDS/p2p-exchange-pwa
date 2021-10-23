@@ -37,7 +37,6 @@
           mask="#.##"
           fill-mask="0"
           reverse-fill-mask
-          hint="Mask: #.##"
           input-class="text-right"
       )
         template(v-slot:append)

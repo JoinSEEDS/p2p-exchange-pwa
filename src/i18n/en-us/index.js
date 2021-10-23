@@ -190,7 +190,7 @@ export default {
     make_payment: {
       make_payment: 'Make payment',
       has_accepted: 'has accepted your purchase offer.',
-      to_complete: 'To complete the purchase, make the payment through PayPal to the following account.',
+      to_complete: 'To complete purchase make the payment to the seller’s payment method. Then confirm payment.',
       more_info: 'More information',
       confirm: 'Confirm payment',
       success_pay: 'Offer paid succesfully',

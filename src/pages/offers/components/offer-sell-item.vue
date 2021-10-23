@@ -8,7 +8,8 @@
         //- .text-white Available: {{ quantity }}
         .text-white {{  $t('pages.sell.available', { amount: quantity }) }}
         //- .text-white Offered: {{ offered }}
-        .text-white {{  $t('pages.sell.percentage', { percentage }) }}
+        //- .text-white {{  $t('pages.sell.percentage', { percentage }) }}
+        .text-white {{  percentage }}
         .text-white {{  $t('pages.sell.sold', { sold }) }}
           q-icon(name="arrow_upward" color="red").q-ml-sm
   .row
@@ -59,7 +60,15 @@ export default {
       return `${value} ${key}`
     },
     percentage () {
-      return `${this.offer.price_info.find(el => el.key === 'priceper').value}%`
+      const percentage = this.offer.price_info.find(el => el.key === 'priceper').value
+      const diffPercent = percentage - 100
+      if (diffPercent === 0) {
+        return 'Market Price'
+      } else if (diffPercent > 0) {
+        return `${diffPercent}% Above Market Price`
+      } else if (diffPercent < 0) {
+        return `${Math.abs(diffPercent)}% Below Market Price`
+      } else return 'Unknown Percentage'
     },
     sold () {
       let available = this.quantity

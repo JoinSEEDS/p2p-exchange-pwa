@@ -14,17 +14,21 @@
     .row
       .col-12.text-h4.text-center ${{ equivalentFiat }}
       .col-12.text-h6.text-center {{ currentFiatCurrency.toUpperCase() }}
-    .row.q-my-xl
+      //- .text-accent.more-info.cursor-pointer {{ $t('pages.make_payment.more_info') }}
+    q-card.bg-blue.q-pa-sm.q-mt-sm(v-if="paymentMethod" round)
+      //- .text-subtitle1.text-bold.text-capitalize Seller's payment details
+      .text-subtitle2.text-capitalize.text-center {{ paymentMethod.prefPaymentMeth }} ({{ paymentMethod.prefPaymentMethType }})
+      .text-subtitle1.text-bold.text-center {{ paymentMethod.prefPaymentMethValue }}
+    .row.q-mb-md.q-mt-xs
       .text-white {{ $t('pages.make_payment.to_complete') }}
-      .text-accent.more-info.cursor-pointer {{ $t('pages.make_payment.more_info') }}
-    q-btn(color="blue" v-if="hasPaymentMethod" no-caps).full-width.q-my-sm.custon-btn
-      template(v-slot:default).flex-justify-between.cursor-pointer
-        .col-2.bg-white.flex.align-center.justify-center.btn-img-container
-          q-img(src="~/assets/paypal.png").self-center.btn-img
-        label.col-9.cursor-pointer {{ paymentMethod }}
-        //- q-icon.animated-icon.cursor-pointer.linkBtn(
-        //-   name="open_in_new" @click="openPayPalLink"
-        //- )
+    //- q-btn(color="blue" v-if="hasPaymentMethod" no-caps).full-width.q-my-sm.custon-btn
+    //-   template(v-slot:default).flex-justify-between.cursor-pointer
+    //-     .col-2.bg-white.flex.align-center.justify-center.btn-img-container
+    //-       q-img(src="~/assets/paypal.png").self-center.btn-img
+    //-     label.col-9.cursor-pointer {{ paymentMethod.prefPaymentMeth }}
+    //-     q-icon.animated-icon.cursor-pointer.linkBtn(
+    //-       name="open_in_new" @click="openPayPalLink"
+    //-     )
     q-btn(:label="$t('common.buttons.confirm_payment')" color="positive" @click="makePayment()" no-caps).full-width.q-my-sm.custon-btn
     //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
@@ -65,7 +69,8 @@ export default {
     }
   },
   async mounted () {
-    this.paymentMethod = await this.receiveMessage({ buyOfferId: this.offerId })
+    const paymentData = await this.receiveMessage({ buyOfferId: this.offerId })
+    this.paymentMethod = JSON.parse(paymentData)
     this.getOfferData()
   },
   methods: {

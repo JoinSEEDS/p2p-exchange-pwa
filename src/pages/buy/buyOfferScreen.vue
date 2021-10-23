@@ -54,9 +54,11 @@
             dark
             standout="text-accent"
             :rules="[rules.required, rules.minZero, customMaxValidation]"
-            type="number"
-            step="0.0001"
             autofocus
+            mask="#.##"
+            fill-mask="0"
+            reverse-fill-mask
+            input-class="text-right"
         )
           template(v-slot:append)
             .text SEEDS
