@@ -60,6 +60,7 @@ class EncryptionApi extends BaseEosApi {
     buyOfferId
   }) {
     let rcptKey = null
+    console.log('createMessage pk', privateKey)
 
     privateKey = PrivateKey.fromString(privateKey).toElliptic() // <<- Eliptic from string of sender private key
 
@@ -74,9 +75,10 @@ class EncryptionApi extends BaseEosApi {
     // create the ephemeral key pair
     const ephemKey = new EC('secp256k1').genKeyPair()
     const ephemPublicKey = PublicKey.fromElliptic(ephemKey, KeyType.k1)
-
+    console.log()
     // obtaining the shared secret
     const shared = Buffer.from(ephemKey.derive(rcptKey.getPublic()).toString('hex'), 'hex')
+    console.log()
     // eslint-disable-next-line new-cap
     const hash = new shajs.sha512().update(shared).digest()
 
@@ -96,6 +98,7 @@ class EncryptionApi extends BaseEosApi {
         Buffer.from(ciphertext.buffer, 'hex')
       ]
     )
+    console.log()
     let mac = crypto.createHmac('sha256', macKey).update(dataToMac).digest()
 
     return {

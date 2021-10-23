@@ -50,6 +50,20 @@ export const getContactMethod = async function ({ state }) {
   }
   return undefined
 }
+export const getPaymentMethod = async function ({ state }) {
+  const profileApi = PPP.profileApi()
+  const profile = await profileApi.getProfile()
+  if ((profile && profile.appData && profile.appData.privateData)) {
+    const data = {
+      prefPaymentMeth: profile.appData.privateData.prefPaymentMeth,
+      prefPaymentMethType: profile.appData.privateData.prefPaymentMethType,
+      prefPaymentMethValue: profile.appData.privateData.prefPaymentMethValue
+    }
+    return JSON.stringify(data)
+    // return `${profile.appData.privateData.prefPaymentMeth}/${profile.appData.privateData.prefPaymentMethType}/${profile.appData.privateData.prefPaymentMethValue}`
+  }
+  return undefined
+}
 export const getPrivateKey = async function ({ state }) {
   const profileApi = PPP.profileApi()
   const profile = await profileApi.getProfile()

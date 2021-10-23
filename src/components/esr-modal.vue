@@ -60,6 +60,7 @@ export default {
       }, 1000)
     },
     onHide () {
+      clearInterval(this.interval)
       this.setESRRequest(null)
     },
     async signTransaction () {

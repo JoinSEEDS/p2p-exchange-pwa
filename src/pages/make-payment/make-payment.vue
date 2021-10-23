@@ -17,14 +17,14 @@
     .row.q-my-xl
       .text-white {{ $t('pages.make_payment.to_complete') }}
       .text-accent.more-info.cursor-pointer {{ $t('pages.make_payment.more_info') }}
-    q-btn(color="blue" v-if="hasPypal" no-caps).full-width.q-my-sm.custon-btn
+    q-btn(color="blue" v-if="hasPaymentMethod" no-caps).full-width.q-my-sm.custon-btn
       template(v-slot:default).flex-justify-between.cursor-pointer
         .col-2.bg-white.flex.align-center.justify-center.btn-img-container
           q-img(src="~/assets/paypal.png").self-center.btn-img
-        label.col-9.cursor-pointer {{ paypal }}
-        q-icon.animated-icon.cursor-pointer.linkBtn(
-          name="open_in_new" @click="openPayPalLink"
-        )
+        label.col-9.cursor-pointer {{ paymentMethod }}
+        //- q-icon.animated-icon.cursor-pointer.linkBtn(
+        //-   name="open_in_new" @click="openPayPalLink"
+        //- )
     q-btn(:label="$t('common.buttons.confirm_payment')" color="positive" @click="makePayment()" no-caps).full-width.q-my-sm.custon-btn
     //- q-btn(label="Report arbtration" color="warning").full-width.q-my-sm.custon-btn
 </template>
@@ -38,7 +38,7 @@ export default {
     return {
       offer: undefined,
       copied: true,
-      paypal: ''
+      paymentMethod: ''
     }
   },
   computed: {
@@ -46,8 +46,8 @@ export default {
     offerId () {
       return this.$route.params.id
     },
-    hasPypal () {
-      return !!this.paypal
+    hasPaymentMethod () {
+      return !!this.paymentMethod
     },
     quantity () {
       return this.offer.quantity_info.find(el => el.key === 'buyquantity').value.split(' ')[0]
@@ -65,7 +65,7 @@ export default {
     }
   },
   async mounted () {
-    this.paypal = await this.receiveMessage({ buyOfferId: this.offerId })
+    this.paymentMethod = await this.receiveMessage({ buyOfferId: this.offerId })
     this.getOfferData()
   },
   methods: {
@@ -78,10 +78,10 @@ export default {
       await this.payOffer({ buyOfferId: this.offerId })
       await this.showSuccessMsg(this.$root.$t('pages.make_payment.success_pay'))
       this.$router.replace({ name: 'dashboard', params: { tab: 'transactions' } })
-    },
-    openPayPalLink () {
-      window.open(this.paypal)
     }
+    // openPayPalLink () {
+    //   window.open(this.paypal)
+    // }
   }
 }
 </script>

@@ -110,13 +110,13 @@ export default {
   methods: {
     ...mapActions('buyOffers', ['acceptBuyOffer', 'confirmPayment', 'rejectBuyOffer']),
     ...mapActions('encryption', ['createMessage']),
-    ...mapActions('profiles', ['getPaypal']),
+    ...mapActions('profiles', ['getPaymentMethod']),
     async confOffer () {
       try {
         this.setIsLoading(true)
-        const message = await this.getPaypal()
+        const message = await this.getPaymentMethod()
         console.log('message', message)
-        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message: await this.getPaypal(), recipientAccount: this.buyer.account })
+        let messageData = await this.createMessage({ buyOfferId: this.offer.id, message, recipientAccount: this.buyer.account })
         await this.acceptBuyOffer({ buyOfferId: this.offer.id, messageData })
         EventBus.$emit('confirmOffer')
         this.showSuccessMsg(this.$root.$t('pages.offers.accept_buy_offer'))
