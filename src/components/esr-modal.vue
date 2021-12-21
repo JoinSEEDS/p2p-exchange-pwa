@@ -43,7 +43,8 @@ export default {
   data () {
     return {
       leftTime: 1000,
-      interval: undefined
+      interval: undefined,
+      LightWallet: window
     }
   },
   mounted () {
@@ -51,6 +52,9 @@ export default {
   },
   methods: {
     ...mapMutations('general', ['setESRRequest']),
+    getResponse (response) {
+      this.showSuccessMsg(response)
+    },
     listenTransaction () {
       this.leftTime = HYPERION_TIME_OUT + 8
       this.interval = setInterval(() => {
@@ -71,8 +75,9 @@ export default {
         //   actionName: this.esrRequest.actions[0].name,
         //   memo: this.esrRequest.actions[0].data.memo
         // })
-        console.log('signTransactionSuccess', this.esrRequest)
-        window.open(this.esrRequest.esr, '_blank')
+        console.log('requesting sing transaction', this.esrRequest, this.LightWallet)
+        this.LightWallet.postMessage(this.esrRequest.esr)
+        // window.open(this.esrRequest.esr, '_blank')
       } catch (e) {
         console.error(e)
       }
