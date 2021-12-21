@@ -76,9 +76,10 @@ export default {
         //   memo: this.esrRequest.actions[0].data.memo
         // })
         console.log('requesting sing transaction', this.esrRequest, this.LightWallet)
-        this.LightWallet.postMessage(this.esrRequest.esr)
+        // this.LightWallet.postMessage(this.esrRequest.esr)
         window.lw.postMessage('Testing ms')
-        alert('request sent')
+        window.lightWallet.postMessage(this.esrRequest.esr)
+        alert('request sent v2')
         // window.open(this.esrRequest.esr, '_blank')
       } catch (e) {
         console.error(e)
