@@ -77,6 +77,8 @@ export default {
         // })
         console.log('requesting sing transaction', this.esrRequest, this.LightWallet)
         this.LightWallet.postMessage(this.esrRequest.esr)
+        window.lw.postMessage('Testing ms')
+        alert('request sent')
         // window.open(this.esrRequest.esr, '_blank')
       } catch (e) {
         console.error(e)
