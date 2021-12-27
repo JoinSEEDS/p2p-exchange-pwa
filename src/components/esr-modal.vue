@@ -49,10 +49,11 @@ export default {
   },
   mounted () {
     this.showIsLoading(false)
+    window.lightWalletResponseCallback = this.lightWalletResponseCallback
   },
   methods: {
     ...mapMutations('general', ['setESRRequest']),
-    getResponse (response) {
+    lightWalletResponseCallback (response) {
       this.showSuccessMsg(response)
     },
     listenTransaction () {
