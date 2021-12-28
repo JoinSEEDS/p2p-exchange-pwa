@@ -13,6 +13,13 @@ export default {
       return `layout-${this.$route.meta.layout || 'main'}`
     }
   },
+  mounted () {
+    window.testLWCallback = function (message) {
+      console.log('this is a test')
+      alert(message)
+      return 'this is a test response'
+    }
+  },
   watch: {
     errorMsg (msg) {
       if (msg) {

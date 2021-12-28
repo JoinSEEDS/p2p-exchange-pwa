@@ -54,7 +54,9 @@ export default {
   methods: {
     ...mapMutations('general', ['setESRRequest']),
     lightWalletResponseCallback (response) {
+      console.log('exceuting lightWalletResponseCallback from VUE')
       this.showSuccessMsg(response)
+      return 'this is a response'
     },
     listenTransaction () {
       this.leftTime = HYPERION_TIME_OUT + 8
