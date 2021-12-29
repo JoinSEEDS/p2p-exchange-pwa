@@ -52,8 +52,8 @@ export const loginPPP = async function ({ commit, dispatch }, { returnUrl, accou
     localStorage.setItem('returning', true)
 
     // await dispatch('profiles/signIn', {}, { root: true })
-    let paypal = await dispatch('profiles/getPaypal', {}, { root: true })
-    commit('setPaypal', paypal)
+    let paymentMethod = await dispatch('profiles/getPaymentMethod', {}, { root: true })
+    commit('setPaymentMethod', paymentMethod)
 
     let isArbiter
     if (this.getters['accounts/isP2PProfileCompleted']) {
@@ -123,8 +123,8 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       localStorage.setItem('returning', true)
 
       await dispatch('profiles/signIn', {}, { root: true })
-      let paypal = await dispatch('profiles/getPaypal', {}, { root: true })
-      commit('setPaypal', paypal)
+      let paymentMethod = await dispatch('profiles/getPaymentMethod', {}, { root: true })
+      commit('setPaymentMethod', paymentMethod)
 
       let isArbiter
       if (this.getters['accounts/isP2PProfileCompleted']) {

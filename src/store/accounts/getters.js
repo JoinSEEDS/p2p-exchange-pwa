@@ -9,8 +9,9 @@ export const requestAccount = ({ requestAccount }) => requestAccount
 export const userCanSell = ({ seedsAccount }) => {
   return (seedsAccount.status === 'citizen' || seedsAccount.status === 'resident')
 }
-export const userHasPaypal = ({ paypal }) => {
-  return paypal.length > 0
+// export const userHasPaypal = ({ paypal }) => {
+export const userHasPaymentMethod = ({ paymentMethod }) => {
+  return !!paymentMethod
 }
 export const userCanMoveBalance = ({ seedsAccount }) => {
   return (seedsAccount.status === 'citizen' || seedsAccount.status === 'resident')
