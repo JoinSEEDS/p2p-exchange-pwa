@@ -23,6 +23,9 @@ export default {
   },
   methods: {
     ...mapActions('accounts', ['login', 'autoLogin', 'loginPPP']),
+    setAccountNameFromLw (accountName) {
+      this.accountName = accountName
+    },
     async onLogin (idx) {
       this.idx = idx
       await this.login({ idx: this.idx, returnUrl: '/dashboard' })
@@ -48,6 +51,7 @@ export default {
   },
   async mounted () {
     await this.autoLogin(this.$route.query.returnUrl)
+    window.setAccountNameFromLw = this.setAccountNameFromLw
   }
 }
 </script>
@@ -64,6 +68,7 @@ export default {
           dark
           standout="text-accent"
           v-model="accountName"
+          readonly
         )
         //- .label.text-white.q-mb-md Login
         q-item.q-my-md.wallet-item.bg-accent.text-white(
