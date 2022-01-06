@@ -192,7 +192,7 @@ class EsrApi {
       return new Promise((resolve, reject) => {
         window.setResponseCallbackLW = ({ status, message }) => {
           console.log('SetResponseCallbackLW', status, message)
-          if (status) {
+          if (status === 'success') {
             resolve()
             store.commit('general/setESRRequest', null, { root: true })
           } else {
