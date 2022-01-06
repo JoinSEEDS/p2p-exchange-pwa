@@ -187,6 +187,24 @@ class EsrApi {
     }
   }
 
+  async listenCallbackFromLW ({ store }) {
+    try {
+      return new Promise((resolve, reject) => {
+        window.setResponseCallbackLW = ({ status, message }) => {
+          console.log('SetResponseCallbackLW', status, message)
+          if (status) {
+            resolve()
+            store.commit('general/setESRRequest', null, { root: true })
+          } else {
+            reject(message)
+          }
+        }
+      })
+    } catch (e) {
+      console.error('Error listenign transaction: ', e)
+    }
+  }
+
   async listenTransaction ({ contractName, actionName, data, store }) {
     try {
       // const ENDPOINT = 'https://testnet.telos.caleos.io/'
@@ -258,7 +276,7 @@ class EsrApi {
         }, HYPERION_TIME_OUT * 1000)
       })
     } catch (e) {
-      console.error('error listenign transaction', e)
+      console.error('Error listenign transaction', e)
     }
   }
 }
