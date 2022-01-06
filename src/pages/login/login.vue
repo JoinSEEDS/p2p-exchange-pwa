@@ -50,11 +50,11 @@ export default {
     }
   },
   async mounted () {
+    window.setAccountNameFromLw = this.setAccountNameFromLw
     if (this.accountName.length < 1) {
       window.onLogin.postMessage('Requesting Login account name')
     }
     await this.autoLogin(this.$route.query.returnUrl)
-    window.setAccountNameFromLw = this.setAccountNameFromLw
   }
 }
 </script>
