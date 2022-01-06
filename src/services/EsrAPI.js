@@ -189,6 +189,7 @@ class EsrApi {
 
   async listenCallbackFromLW ({ store }) {
     try {
+      store.commit('general/setIsLoading', false, { root: false })
       return new Promise((resolve, reject) => {
         window.setResponseCallbackLW = ({ status, message }) => {
           console.log('SetResponseCallbackLW', status, message)
