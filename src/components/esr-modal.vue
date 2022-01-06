@@ -82,7 +82,7 @@ export default {
         // this.LightWallet.postMessage(this.esrRequest.esr)
         window.lw.postMessage(this.esrRequest.esr)
         window.lightWallet.postMessage(this.esrRequest)
-        alert('request sent v2')
+        // alert('request sent v2')
         // window.open(this.esrRequest.esr, '_blank')
       } catch (e) {
         console.error(e)
