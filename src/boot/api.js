@@ -67,6 +67,7 @@ const signTransaction = async function (actions) {
       transaction = await this.$esrApi.listenCallbackFromLW({ store: this })
     }
   } catch (e) {
+    this.commit('general/setESRRequest', null, { root: true })
     throw new Error(e.cause.message || e.message)
   }
   return transaction
