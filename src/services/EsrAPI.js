@@ -196,7 +196,7 @@ class EsrApi {
             resolve()
             store.commit('general/setESRRequest', null, { root: true })
           } else {
-            reject(message)
+            reject({ message })
           }
         }
       })
