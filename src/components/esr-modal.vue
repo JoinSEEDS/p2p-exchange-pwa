@@ -5,11 +5,11 @@
                 q-card.q-pa-md.full-width.esrModal(v-if="esrRequest")
                   #listening(v-if="listeningTransaction")
                     .text-h5.text-center Sign Request
-                    .row.justify-center
-                        .col-6
-                            q-img(
-                                :src="esrRequest.qr"
-                            )
+                    //- .row.justify-center
+                    //-     .col-6
+                    //-         q-img(
+                    //-             :src="esrRequest.qr"
+                    //-         )
                     .text-h5.text-center {{ leftTime }} sec
                     .text-center Listening for approved transaction
                     .text-body2.text-primary.text-weight-bold.text-center.cursor-pointer.q-mt-sm(@click="signTransaction") Launch Wallet
