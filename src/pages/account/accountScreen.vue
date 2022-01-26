@@ -188,7 +188,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('accounts', ['saveAccountData', 'getPublicKey']),
+    ...mapActions('accounts', ['saveAccountData', 'getPublicKey', 'getAccountInfo']),
     ...mapActions('profiles', ['signUp', 'signIn', 'isRegistered', 'getPrivateKey', 'getProfile']),
     ...mapActions('encryption', ['generateKeys', 'addPublicKey']),
     ...mapMutations('general', ['setIsLoading']),
@@ -298,6 +298,7 @@ export default {
         console.log('after signUp')
         this.setIsLoading(true)
         privateKey = null
+        await this.getAccountInfo()
         this.showSuccessMsg(this.$t('pages.account.saved'))
         this.setIsLoading(false)
         if (this.isArbiter) {
