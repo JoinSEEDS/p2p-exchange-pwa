@@ -1,6 +1,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import RequestAccount from './components/request-account'
+import { wallet } from '~/const/wallet'
 
 export default {
   name: 'page-login',
@@ -14,7 +15,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('accounts', ['loading'])
+    ...mapGetters('accounts', ['loading']),
+    isEsr () {
+      return wallet === 'esr'
+    }
   },
   watch: {
     accountName (v, old) {
@@ -65,65 +69,63 @@ export default {
     .cm
       .c1.background-login
       q-list.q-pa-xl.wallets-container
-        q-input(
-          label="Seeds Account Name"
-          outlined
-          dark
-          standout="text-accent"
-          v-model="accountName"
-          readonly
-        )
-        //- .label.text-white.q-mb-md Login
-        q-item.q-my-md.wallet-item.bg-accent.text-white(
-          v-ripple
-          @click="onLoginPPP()"
-        )
-          .logo-wallet-container.cursor-pointer.logo-background
-            q-icon(
-              name="login"
-              color="white"
-              @click="onLoginPPP()"
+        template(v-if="isEsr")
+          q-input(
+            label="Seeds Account Name"
+            outlined
+            dark
+            standout="text-accent"
+            v-model="accountName"
+            readonly
+          )
+          //- .label.text-white.q-mb-md Login
+          q-item.q-my-md.wallet-item.bg-accent.text-white(
+            v-ripple
+            @click="onLoginPPP()"
+          )
+            .logo-wallet-container.cursor-pointer.logo-background
+              q-icon(
+                name="login"
+                color="white"
+                @click="onLoginPPP()"
+              )
+            .cursor-pointer.wallet-name(@click="onLoginPPP()")
+              .q-ml-md.text-center Login
+        template(v-else)
+          .label.text-white.q-mb-md Select your wallet
+          q-item.q-my-md.wallet-item(
+            v-for="(wallet, idx) in $ual.authenticators"
+            :key="wallet.getStyle().text"
+            :style="{ background: wallet.getStyle().background, color: wallet.getStyle().textColor }"
+            v-if="wallet.shouldRender()"
+            v-ripple
+          )
+            .logo-wallet-container.cursor-pointer.logo-background(
+              @click="onLogin(idx)"
             )
-          .cursor-pointer.wallet-name(@click="onLoginPPP()")
-            .q-ml-md.text-center Login
-        //- .label.text-white.q-mb-md Select your wallet
-        //- q-item.q-my-md.wallet-item(
-        //-   v-for="(wallet, idx) in $ual.authenticators"
-        //-   :key="wallet.getStyle().text"
-        //-   :style="{ background: wallet.getStyle().background, color: wallet.getStyle().textColor }"
-        //-   v-if="wallet.shouldRender()"
-        //-   v-ripple
-        //- )
-        //-   .logo-wallet-container.cursor-pointer.logo-background(
-        //-     @click="onLogin(idx)"
-        //-   )
-        //-     img(
-        //-       :src="wallet.getStyle().icon"
-        //-       width="30"
-        //-     )
-        //-   .cursor-pointer.wallet-name(@click="onLogin(idx)")
-        //-     .q-ml-md {{ wallet.getStyle().text }}
-        //-   .flex
-        //-       q-spinner.q-mt-xs(
-        //-         v-if="loading === wallet.getStyle().text"
-        //-         :color="wallet.getStyle().textColor"
-        //-         size="2em"
-        //-       )
-        //-       q-btn(
-        //-         v-else
-        //-         :color="wallet.getStyle().textColor"
-        //-         icon="fas fa-download"
-        //-         @click="openUrl(wallet.getOnboardingLink())"
-        //-         target="_blank"
-        //-         dense
-        //-         flat
-        //-         size="12px"
-        //-       )
-        //-         q-tooltip {{ $t('pages.login.getApp') }}
-    //- request-account(
-    //-   @accountEntered="onAccountEntered"
-    //- )
-
+              img(
+                :src="wallet.getStyle().icon"
+                width="30"
+              )
+            .cursor-pointer.wallet-name(@click="onLogin(idx)")
+              .q-ml-md {{ wallet.getStyle().text }}
+            .flex
+                q-spinner.q-mt-xs(
+                  v-if="loading === wallet.getStyle().text"
+                  :color="wallet.getStyle().textColor"
+                  size="2em"
+                )
+                q-btn(
+                  v-else
+                  :color="wallet.getStyle().textColor"
+                  icon="fas fa-download"
+                  @click="openUrl(wallet.getOnboardingLink())"
+                  target="_blank"
+                  dense
+                  flat
+                  size="12px"
+                )
+                  q-tooltip {{ $t('pages.login.getApp') }}
 </template>
 
 <style lang="sass" scoped>
