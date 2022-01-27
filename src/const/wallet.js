@@ -1,1 +1,1 @@
-export const wallet = process.env.WALLET
+export const wallet = process.env.WALLET || 'esr'
