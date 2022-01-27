@@ -155,6 +155,7 @@ export default ({ store }) => {
     eosApi: api
   })
 
+  store['$type'] = process.env.WALLET
   store['$api'] = api
   store['$userApi'] = userApi
   store['$accountApi'] = accountApi
