@@ -191,7 +191,7 @@ export const fetchAvailableAccounts = async function ({ commit }, idx) {
   commit('setAvailableAccounts', accounts)
 }
 
-export const getAccountInfo = async function ({ commit }, { entryStatus, offset, limit }) {
+export const getAccountInfo = async function ({ commit }) {
   try {
     commit('general/setIsLoading', true, { root: true })
     const accountName = this.getters['accounts/account']
