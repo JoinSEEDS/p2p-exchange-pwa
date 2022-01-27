@@ -119,7 +119,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       localStorage.setItem('account', accountName)
       localStorage.setItem('returning', true)
 
-      await dispatch('profiles/signIn', {}, { root: true })
+      await dispatch('profiles/signIn', { accountName }, { root: true })
       let paymentMethod = await dispatch('profiles/getPaymentMethod', {}, { root: true })
       commit('setPaymentMethod', paymentMethod)
 
