@@ -14,7 +14,6 @@ export const loginPPP = async function ({ commit, dispatch }, { returnUrl, accou
     commit('general/setIsLoading', true, { root: true })
     console.log('login with PPP', accountName, returnUrl)
     // this.$ualUser = users[0]
-    this.$type = 'esr'
     this.$accountName = accountName
     localStorage.setItem('account', accountName)
     // const accountName = await users[0].getAccountName()
@@ -91,8 +90,6 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
     if (users.length) {
       this.$ualUser = users[0]
       console.log('ualUser', this.$ualUser)
-      this.$type = 'ual'
-      this.$type = 'esr'
       const accountName = await users[0].getAccountName()
 
       const isUserSeeds = await this.$userApi.checkExistUserSeeds({ accountName })
