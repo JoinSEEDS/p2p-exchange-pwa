@@ -27,8 +27,7 @@ export default {
   q-layout(view="lHh Lpr lFf")
     q-header(elevated)
       q-toolbar
-        q-icon(name="app:title" class="title-icon")
-        q-toolbar-title.flex.items-center
+        q-icon(name="app:title" class="title-icon").q-mx-auto.center-icon
         right-menu-authenticated(v-if="isAuthenticated")
     q-page-container
       .row.justify-center.bg-accent
@@ -50,4 +49,6 @@ export default {
 .title-icon
   width: 70px
   height: 25px
+.center-icon
+  transform: translateX(40%)
 </style>
