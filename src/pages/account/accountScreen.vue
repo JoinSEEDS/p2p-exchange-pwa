@@ -295,18 +295,21 @@ export default {
         publicKey = null // Delete publicKey after save
         console.log('before signUp')
         await this.signUp(mData) // Save private key in PPP service
+        this.setIsLoading(true)
         console.log('after signUp')
         this.setIsLoading(true)
         privateKey = null
         await this.getAccountInfo()
+        this.setIsLoading(true)
         this.showSuccessMsg(this.$t('pages.account.saved'))
-        this.setIsLoading(false)
         if (this.isArbiter) {
           this.$router.push({ path: '/arbitration' })
         } else {
           this.$router.push({ path: '/dashboard' })
         }
       } catch (error) {
+        this.setIsLoading(false)
+      } finally {
         this.setIsLoading(false)
       }
     },
