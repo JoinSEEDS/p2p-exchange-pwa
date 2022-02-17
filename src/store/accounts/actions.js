@@ -76,6 +76,7 @@ export const loginPPP = async function ({ commit, dispatch }, { returnUrl, accou
 export const login = async function ({ commit, dispatch }, { idx, account, returnUrl }) {
   const authenticator = this.$ual.authenticators[idx]
   try {
+    commit('general/setIsLoading', true, { root: true })
     commit('setLoadingWallet', authenticator.getStyle().text)
     await authenticator.init()
     if (!account) {
@@ -137,6 +138,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
     return null
   } finally {
     commit('setLoadingWallet')
+    commit('general/setIsLoading', false, { root: true })
   }
 }
 
@@ -197,13 +199,14 @@ export const getAccountInfo = async function ({ commit }) {
     const accountName = this.getters['accounts/account']
     const userAccount = await this.$accountApi.getAccountInfo({ accountName })
     commit('setP2PAccount', userAccount.rows[0])
+    commit('setPaymentMethod', userAccount.rows[0]['payment_methods'])
     return userAccount
   } catch (e) {
     console.error('An error ocurred while trying to get account info', e)
     commit('general/setErrorMsg', e.message || e, { root: true })
     throw new Error(e)
   } finally {
-    commit('general/setIsLoading', false, { root: true })
+    // commit('general/setIsLoading', false, { root: true })
   }
 }
 
