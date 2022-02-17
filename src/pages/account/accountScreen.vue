@@ -217,7 +217,6 @@ export default {
       if (isRegistered && PPPprofile.appData.privateData && PPPprofile.appData.privateData.prefContactMeth) {
         this.params = {
           ...this.params,
-          paypalLink: PPPprofile.appData.privateData.paypal.replace(this.paypalBase, ''),
           selectedContactMethod: PPPprofile.appData.privateData.prefContactMeth,
           contactMethods: {
             [PPPprofile.appData.privateData.prefContactMeth]: PPPprofile.appData.privateData.prefContactMethValue
