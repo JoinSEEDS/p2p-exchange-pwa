@@ -199,6 +199,7 @@ export const getAccountInfo = async function ({ commit }) {
     const accountName = this.getters['accounts/account']
     const userAccount = await this.$accountApi.getAccountInfo({ accountName })
     commit('setP2PAccount', userAccount.rows[0])
+    commit('setPaymentMethod', userAccount.rows[0]['payment_methods'])
     return userAccount
   } catch (e) {
     console.error('An error ocurred while trying to get account info', e)
