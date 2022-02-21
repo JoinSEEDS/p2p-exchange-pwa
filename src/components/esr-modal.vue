@@ -84,8 +84,10 @@ export default {
         // window.lightWallet.postMessage(this.esrRequest)
         // alert('request sent v2')
         // window.open(this.esrRequest.esr, '_blank')
+        this.showIsLoading(true)
       } catch (e) {
         console.error(e)
+        this.showIsLoading(false)
       }
     }
   },
