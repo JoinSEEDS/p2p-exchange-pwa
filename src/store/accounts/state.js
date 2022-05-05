@@ -3,6 +3,7 @@ export default () => ({
   paymentMethod: undefined,
   seedsAccount: undefined,
   p2pAccount: undefined,
+  isValidKeyPair: false,
   balances: undefined,
   currentSeedsPerUsd: 0,
   autoLogin: false,
