@@ -5,7 +5,7 @@ const escrow = Contracts.CONTRACT_P2P
 const { KeyType } = require('eosjs/dist/eosjs-numeric')
 import { PublicKey } from 'eosjs/dist/PublicKey'
 import { PrivateKey } from 'eosjs/dist/PrivateKey'
-
+// import ecc from 'eosjs-ecc'
 const crypto = require('crypto')
 import shajs from 'sha.js'
 // import { tmpdir } from 'os'
@@ -108,6 +108,19 @@ class EncryptionApi extends BaseEosApi {
       message: ciphertext.toString('hex'),
       mac: mac.toString('hex')
     }
+  }
+
+  async validateKeyPairs ({
+    publicKey,
+    privateKey
+  }) {
+    const _privateKey = PrivateKey.fromString(privateKey)
+    // const _publicKey = PublicKey.fromString(publicKey)
+    const _publicKeyFromPrivate = _privateKey.getPublicKey()
+
+    if (_publicKeyFromPrivate.toString() === publicKey) {
+      return true
+    } else return false
   }
 
   async receiveMessage ({

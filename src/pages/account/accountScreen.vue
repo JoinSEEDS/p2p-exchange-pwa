@@ -165,7 +165,7 @@ export default {
   },
   computed: {
     ...mapState('accounts', ['p2pAccount', 'seedsAccount']),
-    ...mapGetters('accounts', ['isP2PProfileCompleted']),
+    ...mapGetters('accounts', ['isP2PProfileCompleted', 'isValidKeyPair']),
     ...mapGetters('profiles', ['isLoggedIn']),
     ...mapGetters('accounts', ['isArbiter']),
     commonCurrenciesOptions () {
@@ -242,7 +242,7 @@ export default {
       this.setIsLoading(false)
     },
     async onSubmitForm () {
-      console.log(this.params.selectedPaymentMethod, 'Payment Method')
+      console.log(this.params.selectedPaymentMethod, 'Selected Payment Method')
       console.log(this.params.paymentMethods, 'Payment Method')
       try {
         this.setIsLoading(true)
@@ -251,7 +251,7 @@ export default {
         let publicKey
         let privateKey
 
-        if (!isRegistered || !this.isP2PProfileCompleted) { // <<- Registered in P2P validation)
+        if (!isRegistered || !this.isP2PProfileCompleted || !this.isValidKeyPair) { // <<- Registered in P2P validation)
           const keys = await this.generateKeys()
           publicKey = keys.publicKey
           privateKey = keys.privateKey
@@ -287,7 +287,7 @@ export default {
           paymentMethods: [ { 'key': 'paypal', 'value': '' } ],
           timeZone: this.params.timeZone,
           fiatCurrency: this.params.fiatCurrency,
-          publicKey
+          publicKey: !this.isValidKeyPair ? publicKey : undefined
         }) // Savev public data in contract
         console.log('after save Account')
         this.setIsLoading(true)
@@ -295,6 +295,7 @@ export default {
         console.log('before signUp')
         await this.signUp(mData) // Save private key in PPP service
         this.setIsLoading(true)
+        this.$store.commit('accounts/setValidKeyPair', true)
         console.log('after signUp')
         this.setIsLoading(true)
         privateKey = null

@@ -29,8 +29,8 @@ export default function ({ store }) {
     if (to.matched.some(record => !record.meta.guest)) {
       // Verify if the user is authenticated
       if (store.getters['accounts/isAuthenticated']) {
-        // Verify if the user has profile completed
-        if ((store.getters['accounts/isP2PProfileCompleted'] && store.getters['accounts/userHasPaymentMethod']) || to.matched.some(record => record.meta.notProfile)) {
+        // Verify if the user has profile completed, payment method and a valid key pair
+        if ((store.getters['accounts/isP2PProfileCompleted'] && store.getters['accounts/userHasPaymentMethod'] && store.getters['accounts/isValidKeyPair']) || to.matched.some(record => record.meta.notProfile)) {
         // if (store.getters['accounts/isP2PProfileCompleted'] || to.matched.some(record => record.meta.notProfile)) {
           if (to.matched.some(record => !record.meta.visitorScreen) && !store.getters['accounts/userCanSell']) {
             return next({ path: '/dashboard' })
