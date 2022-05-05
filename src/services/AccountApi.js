@@ -42,29 +42,33 @@ class AccountApi extends BaseEosApi {
   }
 
   async saveAccountData ({ accountName, contactMethods, paymentMethods, timeZone, fiatCurrency, publicKey }) {
-    const actions = [
-      {
-        account: Contracts.CONTRACT_P2P,
-        name: 'upsertuser',
-        data: {
-          account: accountName,
-          contact_methods: contactMethods,
-          payment_methods: paymentMethods,
-          time_zone: timeZone,
-          fiat_currency: fiatCurrency,
-          memo: `upsertuser - ${uuid()}`
-        }
-      },
-      {
-        account: Contracts.CONTRACT_P2P,
-        name: 'addpublickey',
-        data: {
-          account: accountName,
-          public_key: publicKey,
-          memo: `addpublickey - ${uuid()}`
-        }
+    const upsert = {
+      account: Contracts.CONTRACT_P2P,
+      name: 'upsertuser',
+      data: {
+        account: accountName,
+        contact_methods: contactMethods,
+        payment_methods: paymentMethods,
+        time_zone: timeZone,
+        fiat_currency: fiatCurrency,
+        memo: `upsertuser - ${uuid()}`
       }
-    ]
+    }
+
+    const addPublicKey = {
+      account: Contracts.CONTRACT_P2P,
+      name: 'addpublickey',
+      data: {
+        account: accountName,
+        public_key: publicKey,
+        memo: `addpublickey - ${uuid()}`
+      }
+    }
+
+    const actions = [ upsert ]
+    if (publicKey) {
+      actions.push(addPublicKey)
+    }
 
     // const actions = [{
     //   account: Contracts.CONTRACT_P2P,
