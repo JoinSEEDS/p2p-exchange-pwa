@@ -35,3 +35,6 @@ export const fiatExchanges = ({ fiatExchanges }) => {
   return fiatExchanges
 }
 export const isArbiter = ({ p2pAccount }) => p2pAccount ? p2pAccount.is_arbiter : 0
+export const isValidKeyPair = ({ isValidKeyPair }) => {
+  return isValidKeyPair
+}

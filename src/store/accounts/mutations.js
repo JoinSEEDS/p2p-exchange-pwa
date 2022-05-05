@@ -51,3 +51,7 @@ export const setCurrentSeedsPerUsd = (state, currentSeedsPerUsd) => {
 export const setFiatExchanges = (state, fiatExchanges) => {
   state.fiatExchanges = fiatExchanges
 }
+
+export const setValidKeyPair = (state, isValidKeyPair) => {
+  state.isValidKeyPair = isValidKeyPair
+}

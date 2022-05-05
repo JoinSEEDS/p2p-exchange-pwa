@@ -107,7 +107,9 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
         return
       }
 
+      // Get p2p profile
       const userAccount = await this.$accountApi.getAccountInfo({ accountName })
+      // console.log('userAccount', userAccount)
 
       commit('setAccount', accountName)
       commit('setSeedsAccount', isUserSeeds.userData)
@@ -122,7 +124,23 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
 
       await dispatch('profiles/signIn', { accountName }, { root: true })
       let paymentMethod = await dispatch('profiles/getPaymentMethod', {}, { root: true })
+      // console.log('paymentMethod', paymentMethod)
       commit('setPaymentMethod', paymentMethod)
+
+      // Get KeyPairs
+      const priK = await dispatch('profiles/getPrivateKey', {}, { root: true })
+      const pubK = await dispatch('getPublicKey')
+
+      if (priK && pubK) {
+        const isKeysPairValid = await this.$encrypionApi.validateKeyPairs({
+          privateKey: priK,
+          publicKey: pubK
+        })
+        console.log('isKeysPairValid', isKeysPairValid)
+        commit('setValidKeyPair', isKeysPairValid)
+      } else if ((priK && !pubK) || (!priK && pubK)) {
+        console.warn('Inconsistency in keysPair:', !!priK, !!pubK)
+      }
 
       let isArbiter
       if (this.getters['accounts/isP2PProfileCompleted']) {
